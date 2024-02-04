@@ -17,13 +17,13 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) { return; } // If it's not Owner, return;(go back and check again)
+        if (!IsOwner) return; // If it's not Owner, return;(go back and check again)
         inputReader.MoveEvent += HandleMove;
     }
 
     public override void OnNetworkDespawn()
     {
-        if (!IsOwner) { return; } // If it's not Owner, return;(go back and check again)
+        if (!IsOwner) return; // If it's not Owner, return;(go back and check again)
         inputReader.MoveEvent -= HandleMove;
     }
 
