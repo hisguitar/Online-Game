@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2973629209
+  GlobalObjectIdHash: 4048931861
   InScenePlacedSourceGlobalObjectIdHash: 4048931861
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -496,9 +496,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp:
-    m_InternalValue: 100
+    m_InternalValue: 0
   hp:
-    m_InternalValue: 100
+    m_InternalValue: 0
+  Str: 10
+  Def: 10
+  Agi: 10
+  Vit: 10
+  Int: 10
   hpBar: {fileID: 610460649838397910}
 --- !u!1 &4922571504014082235
 GameObject:

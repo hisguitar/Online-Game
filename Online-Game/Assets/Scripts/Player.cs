@@ -5,13 +5,27 @@ using Unity.Netcode;
 public class Player : NetworkBehaviour, ITakeDamage
 {
     [Header("Settings")]
-    [SerializeField] private NetworkVariable<float> maxHp = new(100f);
-    [SerializeField] private NetworkVariable<float> hp = new(100f);
+    [SerializeField] private NetworkVariable<float> maxHp = new();
+    [SerializeField] private NetworkVariable<float> hp = new();
+
+    [Header("Player Stats")]
+    [SerializeField] private int playerStr = 10;
+    [SerializeField] private int playerDef = 10;
+    [SerializeField] private int playerAgi = 10;
+    [SerializeField] private int playerVit = 10;
+    [SerializeField] private int playerInt = 10;
 
     [Header("Reference")]
     [SerializeField] private Image hpBar;
 
+    private readonly int statsConvert = 10;
     private readonly float lerpSpeed = 3f;
+
+    private void Start()
+    {
+        maxHp.Value = playerVit * statsConvert;
+        hp.Value = maxHp.Value;
+    }
 
     private void Update()
     {
@@ -20,16 +34,23 @@ public class Player : NetworkBehaviour, ITakeDamage
 
     private void UIUpdate()
     {
+        // Change color hp bar
+        Color redFF5858 = new(1f, 0.345f, 0.345f);
+        Color greenCFFF57 = new(0.78f, 1f, 0.341f);
+        Color hpBarColor = Color.Lerp(redFF5858, greenCFFF57, hp.Value / maxHp.Value);
+        hpBar.color = hpBarColor;
+
+        // Fill hp bar
         hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, hp.Value / maxHp.Value, lerpSpeed * Time.deltaTime);
         hpBar.fillAmount = Mathf.Clamp01(hpBar.fillAmount);
     }
     
     // ITakeDamage Interface
-    public void TakeDamage(int amount)
+    public void TakeDamage(int dmg)
     {
         if (IsOwner)
         {
-            TakeDamageServerRpc(amount);
+            TakeDamageServerRpc(playerStr);
         }
     }
 
