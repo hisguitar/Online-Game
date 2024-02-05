@@ -27,28 +27,38 @@ public class Player : NetworkBehaviour, ITakeDamage
     // ITakeDamage Interface
     public void TakeDamage(int amount)
     {
-        TakeDamageServerRpc(amount);
+        if (IsOwner)
+        {
+            TakeDamageServerRpc(amount);
+        }
     }
 
     #region Networking
-    [ServerRpc] // This client[Host] -> Server
+    // This client[Host] -> Server
+    // ServerRpc can called by owner only.
+    [ServerRpc]
     private void TakeDamageServerRpc(int amount)
     {
-        // The code below effects all client[Client]
         // Call 'ClientRpc' to send data from Server -> all client[Client]
         TakeDamageClientRpc(amount);
 
-        // The code below affects this client[Host] only.
-        if (!IsOwner) return;
-        hp.Value -= amount;
+        // The code below affects to owner(This game object) only.
+        if (IsOwner)
+        {
+            hp.Value -= amount;
+        }
     }
 
-    [ClientRpc] // Server -> all client[Client]
+    // Server -> all client[Client]
+    [ClientRpc]
     private void TakeDamageClientRpc(int amount)
     {
-        // The code below affects all client[Client] except this client[Host]
-        if (IsOwner) return;
-        hp.Value -= amount;
+        // The code below affects all client[Client]
+        // Except the owner[This game object]
+        if (!IsOwner)
+        {
+            hp.Value -= amount;
+        }
     }
     #endregion
 }
