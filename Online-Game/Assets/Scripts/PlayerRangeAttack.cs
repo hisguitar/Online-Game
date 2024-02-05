@@ -70,8 +70,7 @@ public class PlayerRangeAttack : NetworkBehaviour
         }
     }
 
-    // Server projectile shooting (Multiplayer case: This client -> Server)
-    // 'This client' send data to 'Server' and 'Server' will send this data to 'Others client'
+    // This client[Host] -> Server
     [ServerRpc]
     private void PrimaryFireServerRpc(Vector3 shootingPos, Vector3 direction)
     {
@@ -87,17 +86,16 @@ public class PlayerRangeAttack : NetworkBehaviour
             rb.velocity = rb.transform.up * projectileSpeed;
         }
 
-        // ServerRpc use ClientRpc method to get client data
+        // Call 'ClientRpc' to send data from Server -> all client[Client]
         SpawnDummyProjectileClientRpc(shootingPos, direction);
     }
 
-    // Client projectile shooting (Multiplayer case: Server -> Others client)
-    // 'Server' send 'Others client' data to 'This client'
+    // Server -> all client[Client]
     [ClientRpc]
     private void SpawnDummyProjectileClientRpc(Vector3 shootingPos, Vector3 direction)
     {
+        // The code below affects Client[Client] only.
         if (IsOwner) { return; }
-
         SpawnDummyProjectile(shootingPos, direction);
     }
 }
