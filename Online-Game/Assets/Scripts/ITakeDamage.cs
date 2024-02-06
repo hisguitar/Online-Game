@@ -1,4 +1,4 @@
 public interface ITakeDamage
 {
-    public void TakeDamage(int dmg);
+    public void TakeDamage();
 }

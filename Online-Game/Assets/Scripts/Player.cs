@@ -46,7 +46,7 @@ public class Player : NetworkBehaviour, ITakeDamage
     }
     
     // ITakeDamage Interface
-    public void TakeDamage(int dmg)
+    public void TakeDamage()
     {
         if (IsOwner)
         {

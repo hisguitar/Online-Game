@@ -8,7 +8,7 @@ public class ProjectileDamage : MonoBehaviour
         switch (col.gameObject.tag)
         {
             case "Player":
-                col.gameObject.GetComponent<ITakeDamage>().TakeDamage(25);
+                col.gameObject.GetComponent<ITakeDamage>().TakeDamage();
                 Destroy(gameObject);
                 break;
         }
