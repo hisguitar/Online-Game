@@ -10,10 +10,10 @@ public class Player : NetworkBehaviour, ITakeDamage
 
     [Header("Player Stats")]
     [SerializeField] private int playerStr = 10;
-    [SerializeField] private int playerDef = 10;
-    [SerializeField] private int playerAgi = 10;
+    //[SerializeField] private int playerDef = 10;
+    //[SerializeField] private int playerAgi = 10;
     [SerializeField] private int playerVit = 10;
-    [SerializeField] private int playerInt = 10;
+    //[SerializeField] private int playerInt = 10;
 
     [Header("Reference")]
     [SerializeField] private Image hpBar;
