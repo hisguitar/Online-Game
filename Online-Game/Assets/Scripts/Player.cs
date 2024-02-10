@@ -1,84 +1,79 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
+using System;
 
-public class Player : NetworkBehaviour, ITakeDamage
+public class Player : NetworkBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private NetworkVariable<float> maxHp = new();
-    [SerializeField] private NetworkVariable<float> hp = new();
+    [SerializeField] private Color redFF5858 = new(1f, 0.345f, 0.345f);
+    [SerializeField] private Color greenCFFF57 = new(0.78f, 1f, 0.341f);
 
     [Header("Player Stats")]
+    [SerializeField] private NetworkVariable<int> maxHp = new();
+    [SerializeField] private NetworkVariable<int> hp = new();
     [SerializeField] private int playerStr = 10;
-    //[SerializeField] private int playerDef = 10;
-    //[SerializeField] private int playerAgi = 10;
     [SerializeField] private int playerVit = 10;
-    //[SerializeField] private int playerInt = 10;
 
     [Header("Reference")]
     [SerializeField] private Image hpBar;
 
+    private bool isDead;
     private readonly int statsConvert = 10;
     private readonly float lerpSpeed = 3f;
 
-    private void Start()
+    // OnNetworkSpawn is used when an object begins network connection.
+    public override void OnNetworkSpawn()
     {
-        maxHp.Value = playerVit * statsConvert;
-        hp.Value = maxHp.Value;
+        if (IsServer)
+        {
+            maxHp.Value = playerVit * statsConvert;
+            hp.Value = maxHp.Value;
+        }
     }
 
     private void Update()
     {
-        UIUpdate();
+        if (IsClient)
+        {
+            UIUpdate();
+        }
     }
 
     private void UIUpdate()
     {
         // Change color hp bar
-        Color redFF5858 = new(1f, 0.345f, 0.345f);
-        Color greenCFFF57 = new(0.78f, 1f, 0.341f);
-        Color hpBarColor = Color.Lerp(redFF5858, greenCFFF57, hp.Value / maxHp.Value);
+        Color hpBarColor = Color.Lerp(redFF5858, greenCFFF57, (float)hp.Value / maxHp.Value);
         hpBar.color = hpBarColor;
 
         // Fill hp bar
-        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, hp.Value / maxHp.Value, lerpSpeed * Time.deltaTime);
+        float targetFillAmount = (float)hp.Value / maxHp.Value;
+        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
         hpBar.fillAmount = Mathf.Clamp01(hpBar.fillAmount);
     }
-    
-    // ITakeDamage Interface
-    public void TakeDamage()
+
+    #region Take Damage
+    public void TakeDamage(int amount)
     {
-        if (IsOwner)
-        {
-            TakeDamageServerRpc(playerStr);
-        }
+        ModifyHealth(-amount);
     }
 
-    #region Networking
-    // This client[Host] -> Server
-    // ServerRpc can called by owner only.
-    [ServerRpc]
-    private void TakeDamageServerRpc(int amount)
+    public void RestoreHealth(int amount)
     {
-        // Call 'ClientRpc' to send data from Server -> all client[Client]
-        TakeDamageClientRpc(amount);
-
-        // The code below affects to owner(This game object) only.
-        if (IsOwner)
-        {
-            hp.Value -= amount;
-        }
+        ModifyHealth(amount);
     }
 
-    // Server -> all client[Client]
-    [ClientRpc]
-    private void TakeDamageClientRpc(int amount)
+    private void ModifyHealth(int amount)
     {
-        // The code below affects all client[Client]
-        // Except the owner[This game object]
-        if (!IsOwner)
+        if (isDead) { return; }
+
+        int newHealth = hp.Value + amount;
+        hp.Value = Mathf.Clamp(newHealth, 0, maxHp.Value);
+
+        if (hp.Value <= 0)
         {
-            hp.Value -= amount;
+            hp.Value = 0;
+            isDead = true;
         }
     }
     #endregion

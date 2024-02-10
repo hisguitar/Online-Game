@@ -81,6 +81,11 @@ public class PlayerRangeAttack : NetworkBehaviour
         // Ignore player collision
         Physics2D.IgnoreCollision(playerCollider, projectile.GetComponent<Collider2D>());
 
+        if (projectile.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact dealDamage))
+        {
+            dealDamage.SetOwner(OwnerClientId);
+        }
+
         if (projectile.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
         {
             rb.velocity = rb.transform.up * projectileSpeed;
