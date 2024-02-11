@@ -19,6 +19,7 @@ public class Player : NetworkBehaviour
     [Header("Reference")]
     [SerializeField] private Image hpBar;
     [SerializeField] private TMP_Text hpText;
+    [SerializeField] private TMP_Text nameText;
 
     private bool isDead;
     private readonly int statsConvert = 10;

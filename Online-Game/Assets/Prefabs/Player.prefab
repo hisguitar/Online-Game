@@ -111,14 +111,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411857282685164253}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.5075384, w: 0.8616291}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2267265566214109161}
   m_Father: {fileID: 8584919424961494982}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -61}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3643527913973041390
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 460784976
+  GlobalObjectIdHash: 2973629209
   InScenePlacedSourceGlobalObjectIdHash: 4048931861
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -639,6 +639,7 @@ MonoBehaviour:
   playerVit: 10
   hpBar: {fileID: 610460649838397910}
   hpText: {fileID: 1667885097521568175}
+  nameText: {fileID: 1218768580983334570}
 --- !u!1 &4922571504014082235
 GameObject:
   m_ObjectHideFlags: 0
