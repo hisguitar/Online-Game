@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public enum EnemyState
@@ -7,7 +8,7 @@ public enum EnemyState
     Chase
 }
 
-public class Enemies : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     [Header("Patrol")]
     [SerializeField] private float patrolSpeed = 1f;
@@ -17,6 +18,8 @@ public class Enemies : MonoBehaviour
     [Header("Chase")]
     [SerializeField] private float chaseSpeed = 2f;
     [SerializeField] private float chaseDistance = 5f;
+
+    public int EnemyStr { get; private set; } = 10;
 
     private float countIdleTime = 0f;
     private float distance;
@@ -72,6 +75,7 @@ public class Enemies : MonoBehaviour
         }
         else
         {
+            // Play 'Idle' animation
             countIdleTime += Time.deltaTime;
         }
     }
@@ -82,6 +86,7 @@ public class Enemies : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, randomDirection) > 0.1f)
         {
+            // Play 'Walk' animation
             transform.position = Vector2.MoveTowards(transform.position, randomDirection, patrolSpeed * Time.deltaTime);
         }
         else
@@ -107,6 +112,8 @@ public class Enemies : MonoBehaviour
 
         // Select the closest Player
         player = GetClosestPlayer(playerGameObject);
+
+        if (player == null ) return;
 
         // Calculate distance
         distance = Vector2.Distance(transform.position, player.transform.position);
@@ -142,7 +149,12 @@ public class Enemies : MonoBehaviour
     // If found target
     private void ChasePlayer(GameObject player)
     {
+        if (player == null) return;
+
+        // Play 'Walk' animation
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
+
+        // If target distance > 5f
         if (Vector2.Distance(transform.position, player.transform.position) > 5f)
         {
             state = EnemyState.Idle;
@@ -150,12 +162,15 @@ public class Enemies : MonoBehaviour
     }
     #endregion
 
-    #region Take Damage
-    private void OnCollisionEnter2D(Collision2D col)
+    #region Deal damage to player
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Player"))
+        if (col.attachedRigidbody == null) return;
+
+        // Take Damage to player here!
+        if (col.attachedRigidbody.TryGetComponent<Player>(out Player player))
         {
-            // TakeDamage to player
+            player.TakeDamage(EnemyStr);
         }
     }
     #endregion

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class DealDamageOnContact : MonoBehaviour
 {
-    [SerializeField] private int damage = 20;
-
     private ulong ownerClientId;
 
     public void SetOwner(ulong ownerClientId)
@@ -24,9 +22,10 @@ public class DealDamageOnContact : MonoBehaviour
             }
         }
 
-        if (col.attachedRigidbody.TryGetComponent<Player>(out Player hp))
+        // Take Damage to player here!
+        if (col.attachedRigidbody.TryGetComponent<Player>(out Player player))
         {
-            hp.TakeDamage(damage);
+            player.TakeDamage(player.PlayerStr);
         }
     }
 }

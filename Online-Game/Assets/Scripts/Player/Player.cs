@@ -13,8 +13,8 @@ public class Player : NetworkBehaviour
     [Header("Player Stats")]
     [SerializeField] private NetworkVariable<int> maxHp = new();
     [SerializeField] private NetworkVariable<int> hp = new();
-    [SerializeField] private int playerStr = 10;
-    [SerializeField] private int playerVit = 10;
+    public int PlayerStr { get; private set; } = 10;
+    public int PlayerVit { get; private set; } = 10;
 
     [Header("Reference")]
     [SerializeField] private Image hpBar;
@@ -30,7 +30,7 @@ public class Player : NetworkBehaviour
     {
         if (IsServer)
         {
-            maxHp.Value = playerVit * statsConvert;
+            maxHp.Value = PlayerVit * statsConvert;
             hp.Value = maxHp.Value;
         }
     }
