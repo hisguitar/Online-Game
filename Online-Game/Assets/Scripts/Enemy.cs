@@ -149,13 +149,18 @@ public class Enemy : MonoBehaviour
     // If found target
     private void ChasePlayer(GameObject player)
     {
-        if (player == null) return;
+        if (player != null)
+        {
+            // Play 'Walk' animation
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
 
-        // Play 'Walk' animation
-        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
-
-        // If target distance > 5f
-        if (Vector2.Distance(transform.position, player.transform.position) > 5f)
+            // If target distance > 5f
+            if (Vector2.Distance(transform.position, player.transform.position) > 5f)
+            {
+                state = EnemyState.Idle;
+            }
+        }
+        else
         {
             state = EnemyState.Idle;
         }
