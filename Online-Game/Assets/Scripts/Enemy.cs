@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum EnemyState
+{
+    Idle,
+    Patrol,
+    Chase
+}
+
 public class Enemies : MonoBehaviour
 {
     [Header("Patrol")]
@@ -13,14 +20,16 @@ public class Enemies : MonoBehaviour
 
     private float countIdleTime = 0f;
     private float distance;
-    private GameObject player;
+    private EnemyState state;
     private Vector2 randomDirection;
     private Vector2 startPosition;
+    private GameObject player;
 
     private void Start()
     {
         startPosition = transform.position;
         randomDirection = GetRandomDirection();
+        state = EnemyState.Idle;
     }
 
     private void Update()
@@ -30,31 +39,45 @@ public class Enemies : MonoBehaviour
 
     private void EnemyLogic()
     {
-        // Find every GameObject with the tag "Player"
-        GameObject[] playerGameObject = GameObject.FindGameObjectsWithTag("Player");
-
-        // Select the closest Player.
-        player = GetClosestPlayer(playerGameObject);
-        if (player != null)
+        switch (state)
         {
-            // Store origin and destination position in 'distance'
-            distance = Vector2.Distance(transform.position, player.transform.position);
-            if (distance < chaseDistance)
-            {
-                ChasePlayer(player);
-            }
-            else
-            {
+            case EnemyState.Idle:
+                Idle();
+                break;
+            case EnemyState.Patrol:
                 Patrol();
-            }
+                break;
+            case EnemyState.Chase:
+                ChasePlayer(player);
+                break;
+            default:
+                break;
         }
-        else
+
+        // Search for targets during Idle / Patrol
+        if (state == EnemyState.Idle || state == EnemyState.Patrol)
         {
-            Patrol();
+            FindTarget();
         }
     }
 
-    // Patrol
+    #region Idle
+    private void Idle()
+    {
+        if (countIdleTime >= idleTime)
+        {
+            randomDirection = GetRandomDirection();
+            state = EnemyState.Patrol;
+            countIdleTime = 0;
+        }
+        else
+        {
+            countIdleTime += Time.deltaTime;
+        }
+    }
+    #endregion
+
+    #region Patrol
     private void Patrol()
     {
         if (Vector2.Distance(transform.position, randomDirection) > 0.1f)
@@ -63,50 +86,8 @@ public class Enemies : MonoBehaviour
         }
         else
         {
-            if (countIdleTime >= idleTime)
-            {
-                randomDirection = GetRandomDirection();
-                countIdleTime = 0;
-            }
-            else
-            {
-                countIdleTime += Time.deltaTime;
-            }
+            state = EnemyState.Idle;
         }
-    }
-
-    // Chase player
-    private void ChasePlayer(GameObject player)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
-        if (Vector2.Distance(transform.position, player.transform.position) < 0.1f)
-        {
-            randomDirection = GetRandomDirection();
-        }
-    }
-
-    // Get closest player position
-    private GameObject GetClosestPlayer(GameObject[] players)
-    {
-        // Check players game object != null.
-        GameObject closestPlayer = null;
-
-        // Collects distance from enemy to the nearest player.
-        float closestPlayerDistance = Mathf.Infinity;
-
-        // loop through all GameObjects in the players array
-        foreach (GameObject player in players)
-        {
-            // Calculates distance between the enemy's current position and the player's position.
-            float distance = Vector2.Distance(transform.position, player.transform.position);
-            // Check distance is less than the closest distance previously found. If yes, then continue.
-            if (distance < closestPlayerDistance)
-            {
-                closestPlayerDistance = distance;
-                closestPlayer = player;
-            }
-        }   
-        return closestPlayer;
     }
 
     private Vector2 GetRandomDirection()
@@ -114,7 +95,62 @@ public class Enemies : MonoBehaviour
         Vector2 direction = new Vector2(Random.Range(-patrolDistance, patrolDistance), Random.Range(-patrolDistance, patrolDistance)).normalized;
         return startPosition + direction * 3;
     }
+    #endregion
 
+    #region Find Target
+    private void FindTarget()
+    {
+        // Find every GameObject with the tag "Player"
+        GameObject[] playerGameObject = GameObject.FindGameObjectsWithTag("Player");
+
+        if (playerGameObject == null) return;
+
+        // Select the closest Player
+        player = GetClosestPlayer(playerGameObject);
+
+        // Calculate distance
+        distance = Vector2.Distance(transform.position, player.transform.position);
+        if (distance < chaseDistance)
+        {
+            state = EnemyState.Chase;
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    private GameObject GetClosestPlayer(GameObject[] players)
+    {
+        GameObject closestPlayer = null;
+
+        float closestPlayerDistance = Mathf.Infinity;
+        foreach (GameObject player in players)
+        {
+            float distance = Vector2.Distance(transform.position, player.transform.position);
+            if (distance < closestPlayerDistance)
+            {
+                closestPlayerDistance = distance;
+                closestPlayer = player;
+            }
+        }
+        return closestPlayer;
+    }
+    #endregion
+
+    #region Chase
+    // If found target
+    private void ChasePlayer(GameObject player)
+    {
+        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
+        if (Vector2.Distance(transform.position, player.transform.position) > 5f)
+        {
+            state = EnemyState.Idle;
+        }
+    }
+    #endregion
+
+    #region Take Damage
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
@@ -122,4 +158,5 @@ public class Enemies : MonoBehaviour
             // TakeDamage to player
         }
     }
+    #endregion
 }
