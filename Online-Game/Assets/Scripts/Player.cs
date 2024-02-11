@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
 using System;
+using TMPro;
 
 public class Player : NetworkBehaviour
 {
@@ -17,6 +18,8 @@ public class Player : NetworkBehaviour
 
     [Header("Reference")]
     [SerializeField] private Image hpBar;
+    [SerializeField] private TMP_Text hpText;
+    [SerializeField] private TMP_Text nameText;
 
     private bool isDead;
     private readonly int statsConvert = 10;
@@ -50,6 +53,9 @@ public class Player : NetworkBehaviour
         float targetFillAmount = (float)hp.Value / maxHp.Value;
         hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
         hpBar.fillAmount = Mathf.Clamp01(hpBar.fillAmount);
+
+        // Update UI Text
+        hpText.text = hp.Value + "/" + maxHp.Value;
     }
 
     #region Take Damage
