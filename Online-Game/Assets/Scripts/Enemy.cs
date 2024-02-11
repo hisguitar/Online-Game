@@ -5,13 +5,15 @@ public class Enemies : MonoBehaviour
     [Header("Patrol")]
     [SerializeField] private float patrolSpeed = 1f;
     [SerializeField] private float patrolDistance = 1f;
+    [SerializeField] private float idleTime = 2f;
 
     [Header("Chase")]
-    [SerializeField] private float chaseSpeed = 3f;
+    [SerializeField] private float chaseSpeed = 2f;
     [SerializeField] private float chaseDistance = 5f;
 
-    private GameObject player;
+    private float countIdleTime = 0f;
     private float distance;
+    private GameObject player;
     private Vector2 randomDirection;
     private Vector2 startPosition;
 
@@ -55,10 +57,21 @@ public class Enemies : MonoBehaviour
     // Patrol
     private void Patrol()
     {
-        transform.position = Vector2.MoveTowards(transform.position, randomDirection, patrolSpeed * Time.deltaTime);
-        if (Vector2.Distance(transform.position, randomDirection) < 0.1f)
+        if (Vector2.Distance(transform.position, randomDirection) > 0.1f)
         {
-            randomDirection = GetRandomDirection();
+            transform.position = Vector2.MoveTowards(transform.position, randomDirection, patrolSpeed * Time.deltaTime);
+        }
+        else
+        {
+            if (countIdleTime >= idleTime)
+            {
+                randomDirection = GetRandomDirection();
+                countIdleTime = 0;
+            }
+            else
+            {
+                countIdleTime += Time.deltaTime;
+            }
         }
     }
 
