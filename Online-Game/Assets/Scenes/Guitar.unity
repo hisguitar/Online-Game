@@ -1498,6 +1498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9582d17957c287a4b94ca867c84cb395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp:
+    m_InternalValue: 100
   patrolSpeed: 1
   patrolDistance: 1
   idleTime: 2
