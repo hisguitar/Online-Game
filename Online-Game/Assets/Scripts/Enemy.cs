@@ -187,7 +187,10 @@ public class Enemy : NetworkBehaviour
         hp.Value -= amount;
         if (hp.Value <= 0)
         {
-            Destroy(gameObject);
+            if (IsServer)
+            {
+                NetworkObject.Despawn();
+            }
         }
     }
 }

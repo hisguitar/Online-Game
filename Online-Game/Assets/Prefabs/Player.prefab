@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2973629209
+  GlobalObjectIdHash: 4048931861
   InScenePlacedSourceGlobalObjectIdHash: 4048931861
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -617,6 +617,7 @@ MonoBehaviour:
   serverProjectilePrefab: {fileID: 3811696718406717514, guid: f3f3ae450a642a94e85de95db7453420, type: 3}
   clientProjectilePrefab: {fileID: 151569949056747313, guid: 0d281e7cd30a4db4a97b93558d3166cf, type: 3}
   playerCollider: {fileID: 18049942847462137}
+  player: {fileID: 1521881494307771043}
 --- !u!114 &1521881494307771043
 MonoBehaviour:
   m_ObjectHideFlags: 0
