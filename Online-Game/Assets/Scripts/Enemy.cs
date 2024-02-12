@@ -8,8 +8,10 @@ public enum EnemyState
     Chase
 }
 
-public class Enemy : MonoBehaviour
+public class Enemy : NetworkBehaviour
 {
+    [SerializeField] private NetworkVariable<int> hp = new();
+
     [Header("Patrol")]
     [SerializeField] private float patrolSpeed = 1f;
     [SerializeField] private float patrolDistance = 1f;
@@ -179,4 +181,13 @@ public class Enemy : MonoBehaviour
         }
     }
     #endregion
+
+    public void TakeDamage(int amount)
+    {
+        hp.Value -= amount;
+        if (hp.Value <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }

@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 2123449417
   m_SortingLayer: 1
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 7673dd7e6e0e2ff4ebc081ddea63d230, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 522ed651186748d478585a5a15487bbb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -635,8 +635,6 @@ MonoBehaviour:
     m_InternalValue: 0
   hp:
     m_InternalValue: 0
-  playerStr: 10
-  playerVit: 10
   hpBar: {fileID: 610460649838397910}
   hpText: {fileID: 1667885097521568175}
   nameText: {fileID: 1218768580983334570}

@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
-using System;
 using TMPro;
 
 public class Player : NetworkBehaviour
