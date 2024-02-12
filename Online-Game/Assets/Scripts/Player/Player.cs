@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour
     [Header("Player Stats")]
     [SerializeField] private NetworkVariable<int> maxHp = new();
     [SerializeField] private NetworkVariable<int> hp = new();
-    public int PlayerStr { get; private set; } = 50;
+    public int PlayerStr { get; private set; } = 20;
     public int PlayerVit { get; private set; } = 10;
 
     [Header("Reference")]
