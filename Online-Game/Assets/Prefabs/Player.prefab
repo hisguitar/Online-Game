@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 4117292230970473511}
   - component: {fileID: 1667885097521568175}
   m_Layer: 5
-  m_Name: HpText
+  m_Name: CurrentHpText_OverHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4048931861
+  GlobalObjectIdHash: 2973629209
   InScenePlacedSourceGlobalObjectIdHash: 4048931861
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -636,9 +636,11 @@ MonoBehaviour:
     m_InternalValue: 100
   hp:
     m_InternalValue: 100
-  hpBar: {fileID: 610460649838397910}
-  hpText: {fileID: 1667885097521568175}
-  nameText: {fileID: 1218768580983334570}
+  hpBarOverHead: {fileID: 610460649838397910}
+  currentHpTextOverHead: {fileID: 1667885097521568175}
+  nameTextOverHead: {fileID: 1218768580983334570}
+  hpBar: {fileID: 0}
+  currentHpText: {fileID: 0}
 --- !u!1 &4922571504014082235
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +653,7 @@ GameObject:
   - component: {fileID: 5757737320118631241}
   - component: {fileID: 4271849014405979006}
   m_Layer: 5
-  m_Name: Max_HpBar
+  m_Name: MaxHpBar_OverHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -757,7 +759,7 @@ GameObject:
   - component: {fileID: 7278630124475728896}
   - component: {fileID: 1218768580983334570}
   m_Layer: 5
-  m_Name: NameText
+  m_Name: NameText_OverHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -891,7 +893,7 @@ GameObject:
   - component: {fileID: 4123709706826738101}
   - component: {fileID: 610460649838397910}
   m_Layer: 5
-  m_Name: HpBar
+  m_Name: HpBar_OverHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

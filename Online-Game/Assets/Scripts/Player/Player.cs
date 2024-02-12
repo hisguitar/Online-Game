@@ -15,10 +15,14 @@ public class Player : NetworkBehaviour
     public int PlayerStr { get; private set; } = 20;
     public int PlayerVit { get; private set; } = 10;
 
-    [Header("Reference")]
-    [SerializeField] private Image hpBar;
-    [SerializeField] private TMP_Text hpText;
-    [SerializeField] private TMP_Text nameText;
+    [Header("Overhead UI Reference")]
+    [SerializeField] private Image hpBarOverHead;
+    [SerializeField] private TMP_Text currentHpTextOverHead;
+    [SerializeField] private TMP_Text nameTextOverHead;
+
+    [Header("UI Reference")]
+    [SerializeField] private Image hpBar; // The problem is hpBar becomes owned by the last player join
+    [SerializeField] private TMP_Text currentHpText; // The problem is hpBar becomes owned by the last player join
 
     private bool isDead;
     private readonly int statsConvert = 10;
@@ -31,6 +35,7 @@ public class Player : NetworkBehaviour
         {
             maxHp.Value = PlayerVit * statsConvert;
             hp.Value = maxHp.Value;
+            TryReference();
         }
     }
 
@@ -44,17 +49,22 @@ public class Player : NetworkBehaviour
 
     private void UIUpdate()
     {
-        // Change color hp bar
+        // Update HpBar Color
         Color hpBarColor = Color.Lerp(redFF5858, greenCFFF57, (float)hp.Value / maxHp.Value);
+        hpBarOverHead.color = hpBarColor;
         hpBar.color = hpBarColor;
 
-        // Fill hp bar
+        #region OverHead & Screen UI
+        // Update UI Bar
         float targetFillAmount = (float)hp.Value / maxHp.Value;
-        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
-        hpBar.fillAmount = Mathf.Clamp01(hpBar.fillAmount);
+        hpBarOverHead.fillAmount = Mathf.Lerp(hpBarOverHead.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
+        hpBarOverHead.fillAmount = Mathf.Clamp01(hpBarOverHead.fillAmount);
+        hpBar.fillAmount = hpBarOverHead.fillAmount;
 
         // Update UI Text
-        hpText.text = hp.Value + "/" + maxHp.Value;
+        currentHpTextOverHead.text = hp.Value + "/" + maxHp.Value;
+        currentHpText.text = currentHpTextOverHead.text;
+        #endregion
     }
 
     #region Take Damage
@@ -79,6 +89,27 @@ public class Player : NetworkBehaviour
         {
             hp.Value = 0;
             isDead = true;
+        }
+    }
+    #endregion
+
+    #region Try to reference game object
+    private void TryReference()
+    {
+        // Find the GameObject named "HpBar" under the current GameObject
+        GameObject hpBarGameObject = GameObject.Find("HpBar");
+        GameObject currentHpTextGameObject = GameObject.Find("CurrentHpText");
+
+        // Check if GameObject is found.
+        if (hpBarGameObject && currentHpTextGameObject != null)
+        {
+            // Get the Image component from the found GameObject
+            hpBar = hpBarGameObject.GetComponent<Image>();
+            currentHpText = currentHpTextGameObject.GetComponent<TMP_Text>();
+        }
+        else
+        {
+            Debug.LogWarning("The GameObject was not found.");
         }
     }
     #endregion
