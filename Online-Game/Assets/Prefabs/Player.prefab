@@ -585,6 +585,7 @@ MonoBehaviour:
   playerSprite: {fileID: 2696886675185723843}
   rb: {fileID: 2626146947429637677}
   inputReader: {fileID: 11400000, guid: 975d0298b6bcfe94f8fc8780b167da5d, type: 2}
+  animator: {fileID: 153815281652961869}
 --- !u!114 &-3841804132802907506
 MonoBehaviour:
   m_ObjectHideFlags: 0
