@@ -21,6 +21,8 @@ public class Enemy : NetworkBehaviour
     [SerializeField] private float chaseSpeed = 2f;
     [SerializeField] private float chaseDistance = 5f;
 
+    [SerializeField] private Animator animator;
+
     public int EnemyStr { get; private set; } = 10;
 
     private float countIdleTime = 0f;
@@ -29,6 +31,8 @@ public class Enemy : NetworkBehaviour
     private Vector2 randomDirection;
     private Vector2 startPosition;
     private GameObject player;
+
+    private static readonly int OnMove = Animator.StringToHash("OnMove"); // Speed parameter in animator
 
     private void Start()
     {
@@ -64,6 +68,17 @@ public class Enemy : NetworkBehaviour
         {
             FindTarget();
         }
+
+        if (state == EnemyState.Patrol || state == EnemyState.Chase)
+        {
+            // Set the animator parameter based on whether the enemy is moving or not
+            animator.SetBool(OnMove, true);
+        }
+        else if (state == EnemyState.Idle)
+        {
+            // Set the animator parameter based on whether the enemy is moving or not
+            animator.SetBool(OnMove, false);
+        }
     }
 
     #region Idle
@@ -77,7 +92,6 @@ public class Enemy : NetworkBehaviour
         }
         else
         {
-            // Play 'Idle' animation
             countIdleTime += Time.deltaTime;
         }
     }
@@ -153,7 +167,6 @@ public class Enemy : NetworkBehaviour
     {
         if (player != null)
         {
-            // Play 'Walk' animation
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
 
             // If target distance > 5f
