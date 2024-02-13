@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 846675902
+  GlobalObjectIdHash: 619209297
   InScenePlacedSourceGlobalObjectIdHash: 619209297
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -233,6 +233,7 @@ MonoBehaviour:
   idleTime: 2
   chaseSpeed: 2
   chaseDistance: 5
+  enemySprite: {fileID: 8527015014373749013}
   animator: {fileID: 8476784640650272714}
 --- !u!95 &8476784640650272714
 Animator:
