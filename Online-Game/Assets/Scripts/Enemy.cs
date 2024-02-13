@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ public class Enemy : NetworkBehaviour
     [Header("Reference")]
     [SerializeField] private SpriteRenderer enemySprite;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject floatingTextPrefab;
 
     private float countIdleTime = 0f;
     private float distance;
@@ -242,9 +244,15 @@ public class Enemy : NetworkBehaviour
     }
     #endregion
 
+    #region Take damage
     public void TakeDamage(int amount)
     {
         hp.Value -= amount;
+        if (floatingTextPrefab != null)
+        {
+            ShowFloatingText($"-{amount}");
+        }
+
         if (hp.Value <= 0)
         {
             if (IsServer)
@@ -253,4 +261,14 @@ public class Enemy : NetworkBehaviour
             }
         }
     }
+    #endregion
+
+    #region Show Floating Text
+    private void ShowFloatingText(string text)
+    {
+        GameObject go = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+        go.transform.SetParent(transform);
+        go.GetComponent<TMP_Text>().text = text;
+    }
+    #endregion
 }

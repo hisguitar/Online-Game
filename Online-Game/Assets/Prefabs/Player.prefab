@@ -635,6 +635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redFF5858: {r: 1, g: 0.345, b: 0.345, a: 1}
   greenCFFF57: {r: 0.78, g: 1, b: 0.341, a: 1}
+  floatingTextYPosition: 1000
   maxHp:
     m_InternalValue: 100
   hp:
@@ -642,6 +643,7 @@ MonoBehaviour:
   hpBarOverHead: {fileID: 610460649838397910}
   currentHpTextOverHead: {fileID: 1667885097521568175}
   nameTextOverHead: {fileID: 1218768580983334570}
+  floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
 --- !u!95 &153815281652961869
 Animator:
   serializedVersion: 5

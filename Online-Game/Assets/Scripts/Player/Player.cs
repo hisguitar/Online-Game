@@ -19,6 +19,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private Image hpBarOverHead;
     [SerializeField] private TMP_Text currentHpTextOverHead;
     [SerializeField] private TMP_Text nameTextOverHead;
+    [SerializeField] private GameObject floatingTextPrefab;
 
     private bool isDead;
     private readonly int statsConvert = 10;
@@ -76,12 +77,25 @@ public class Player : NetworkBehaviour
 
         int newHealth = hp.Value + amount;
         hp.Value = Mathf.Clamp(newHealth, 0, maxHp.Value);
+        if (floatingTextPrefab != null)
+        {
+            ShowFloatingText($"-{amount}");
+        }
 
         if (hp.Value <= 0)
         {
             hp.Value = 0;
             isDead = true;
         }
+    }
+    #endregion
+
+    #region Show Floating Text
+    private void ShowFloatingText(string text)
+    {
+        GameObject go = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+        go.transform.SetParent(transform);
+        go.GetComponent<TMP_Text>().text = text;
     }
     #endregion
 }
