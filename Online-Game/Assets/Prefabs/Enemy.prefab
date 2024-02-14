@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp:
-    m_InternalValue: 100
+    m_InternalValue: 50
   patrolSpeed: 1
   patrolDistance: 1
   idleTime: 2

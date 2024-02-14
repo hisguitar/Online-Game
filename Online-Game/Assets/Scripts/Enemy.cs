@@ -11,7 +11,7 @@ public enum EnemyState
 
 public class Enemy : NetworkBehaviour
 {
-    public int EnemyStr { get; private set; } = 10;
+    public int EnemyStr { get; private set; } = 5;
     [SerializeField] private NetworkVariable<int> hp = new();
 
     [Header("Patrol")]

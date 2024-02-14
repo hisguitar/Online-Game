@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f; // Adjust the player's movement speed
     [SerializeField] private float smoothTime = 0.1f;  // Adjust the smooth time
 
     [Header("References")]
+    [SerializeField] private Player player;
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private InputReader inputReader;
@@ -67,7 +67,7 @@ public class PlayerMovement : NetworkBehaviour
         movementInput.Normalize();
 
         // Calculate the target velocity
-        Vector2 targetVelocity = movementInput * moveSpeed;
+        Vector2 targetVelocity = movementInput * player.PlayerAgi;
 
         // Smoothly interpolate between the current velocity and the target velocity
         rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, smoothTime);

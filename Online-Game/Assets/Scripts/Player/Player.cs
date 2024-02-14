@@ -12,8 +12,9 @@ public class Player : NetworkBehaviour
     [Header("Player Stats")]
     [SerializeField] private NetworkVariable<int> maxHp = new();
     [SerializeField] private NetworkVariable<int> hp = new();
-    public int PlayerStr { get; private set; } = 20;
-    public int PlayerVit { get; private set; } = 10;
+    public int PlayerStr { get; private set; } = 9;
+    public int PlayerVit { get; private set; } = 6;
+    public int PlayerAgi { get; private set; } = 3;
 
     [Header("Overhead UI Reference")]
     [SerializeField] private Image hpBarOverHead;
