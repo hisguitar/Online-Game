@@ -635,7 +635,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redFF5858: {r: 1, g: 0.345, b: 0.345, a: 1}
   greenCFFF57: {r: 0.78, g: 1, b: 0.341, a: 1}
-  floatingTextYPosition: 1000
   maxHp:
     m_InternalValue: 100
   hp:
