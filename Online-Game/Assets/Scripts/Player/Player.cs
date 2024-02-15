@@ -17,6 +17,7 @@ public class Player : NetworkBehaviour
     public int PlayerAgi { get; private set; } = 3;
 
     [Header("Overhead UI Reference")]
+    [SerializeField] private NetworkObject player;
     [SerializeField] private Image hpBarOverHead;
     [SerializeField] private TMP_Text currentHpTextOverHead;
     [SerializeField] private TMP_Text nameTextOverHead;
@@ -33,6 +34,9 @@ public class Player : NetworkBehaviour
         {
             maxHp.Value = PlayerVit * statsConvert;
             hp.Value = maxHp.Value;
+
+            // player.OwnerClientId start with 0
+            nameTextOverHead.text = "Player." + player.OwnerClientId.ToString();
         }
     }
 
