@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public enum EnemyState
 
 public class Enemy : NetworkBehaviour
 {
+    public int EnemyStr { get; private set; } = 5;
     [SerializeField] private NetworkVariable<int> hp = new();
 
     [Header("Patrol")]
@@ -21,7 +23,10 @@ public class Enemy : NetworkBehaviour
     [SerializeField] private float chaseSpeed = 2f;
     [SerializeField] private float chaseDistance = 5f;
 
-    public int EnemyStr { get; private set; } = 10;
+    [Header("Reference")]
+    [SerializeField] private SpriteRenderer enemySprite;
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject floatingTextPrefab;
 
     private float countIdleTime = 0f;
     private float distance;
@@ -29,6 +34,8 @@ public class Enemy : NetworkBehaviour
     private Vector2 randomDirection;
     private Vector2 startPosition;
     private GameObject player;
+
+    private static readonly int OnMove = Animator.StringToHash("OnMove"); // Speed parameter in animator
 
     private void Start()
     {
@@ -64,6 +71,17 @@ public class Enemy : NetworkBehaviour
         {
             FindTarget();
         }
+
+        if (state == EnemyState.Patrol || state == EnemyState.Chase)
+        {
+            // Set the animator parameter based on whether the enemy is moving or not
+            animator.SetBool(OnMove, true);
+        }
+        else if (state == EnemyState.Idle)
+        {
+            // Set the animator parameter based on whether the enemy is moving or not
+            animator.SetBool(OnMove, false);
+        }
     }
 
     #region Idle
@@ -77,7 +95,6 @@ public class Enemy : NetworkBehaviour
         }
         else
         {
-            // Play 'Idle' animation
             countIdleTime += Time.deltaTime;
         }
     }
@@ -88,7 +105,21 @@ public class Enemy : NetworkBehaviour
     {
         if (Vector2.Distance(transform.position, randomDirection) > 0.1f)
         {
-            // Play 'Walk' animation
+            #region Flip
+            Vector2 direction = randomDirection - (Vector2)transform.position;
+
+            // Walk to the left
+            if (direction.x < 0)
+            {
+                Flip(true); // Flip x-axis
+            }
+            // Walk to the right
+            else if (direction.x > 0)
+            {
+                Flip(false); // No flipping
+            }
+            #endregion
+
             transform.position = Vector2.MoveTowards(transform.position, randomDirection, patrolSpeed * Time.deltaTime);
         }
         else
@@ -153,7 +184,21 @@ public class Enemy : NetworkBehaviour
     {
         if (player != null)
         {
-            // Play 'Walk' animation
+            #region Flip
+            Vector2 direction = player.transform.position - transform.position;
+
+            // Walk to the left
+            if (direction.x < 0)
+            {
+                Flip(true); // Flip x-axis
+            }
+            // Walk to the right
+            else if (direction.x > 0)
+            {
+                Flip(false); // No flipping
+            }
+            #endregion
+            #region Chase
             transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
 
             // If target distance > 5f
@@ -161,10 +206,27 @@ public class Enemy : NetworkBehaviour
             {
                 state = EnemyState.Idle;
             }
+            #endregion
         }
         else
         {
             state = EnemyState.Idle;
+        }
+    }
+    #endregion
+
+    #region Flip
+    private void Flip(bool flip)
+    {
+        // Walk to the right
+        if (!flip)
+        {
+            enemySprite.flipX = false; // No flipping
+        }
+        // Walk to the left
+        else if (flip)
+        {
+            enemySprite.flipX = true; // Flip x-axis
         }
     }
     #endregion
@@ -182,9 +244,15 @@ public class Enemy : NetworkBehaviour
     }
     #endregion
 
+    #region Take damage
     public void TakeDamage(int amount)
     {
         hp.Value -= amount;
+        if (floatingTextPrefab != null)
+        {
+            ShowFloatingText($"-{amount}");
+        }
+
         if (hp.Value <= 0)
         {
             if (IsServer)
@@ -193,4 +261,14 @@ public class Enemy : NetworkBehaviour
             }
         }
     }
+    #endregion
+
+    #region Show Floating Text
+    private void ShowFloatingText(string text)
+    {
+        GameObject go = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+        go.transform.SetParent(transform);
+        go.GetComponent<TMP_Text>().text = text;
+    }
+    #endregion
 }

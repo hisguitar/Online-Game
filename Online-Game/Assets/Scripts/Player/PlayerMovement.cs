@@ -5,16 +5,16 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f; // Adjust the player's movement speed
     [SerializeField] private float smoothTime = 0.1f;  // Adjust the smooth time
 
     [Header("References")]
+    [SerializeField] private Player player;
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Animator animator;
 
-    private static readonly int Speed = Animator.StringToHash("Speed"); // Speed parameter in animator
+    private static readonly int OnMove = Animator.StringToHash("OnMove"); // Speed parameter in animator
 
     private Vector2 movementInput;
 
@@ -55,6 +55,9 @@ public class PlayerMovement : NetworkBehaviour
         if (IsOwner)
         {
             Move();
+
+            // Set the animator parameter based on whether the player is moving or not
+            animator.SetBool(OnMove, IsMoving());
         }
     }
 
@@ -64,17 +67,15 @@ public class PlayerMovement : NetworkBehaviour
         movementInput.Normalize();
 
         // Calculate the target velocity
-        Vector2 targetVelocity = movementInput * moveSpeed;
+        Vector2 targetVelocity = movementInput * player.PlayerAgi;
 
         // Smoothly interpolate between the current velocity and the target velocity
         rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, smoothTime);
+    }
 
-        // Animator!
-        // Get the current speed (magnitude of velocity)
-        float currentSpeed = rb.velocity.magnitude;
-
-        // Setting float to show walking animation
-        animator.SetFloat(Speed, Mathf.Abs(currentSpeed));
+    private bool IsMoving()
+    {
+        return movementInput != Vector2.zero;
     }
 
     private void Flip()

@@ -10,12 +10,11 @@ public class ConnectionsButtons : NetworkBehaviour
 
     public void StartHost()
     {
-        NetworkManager.Singleton.StartHost();
+        NetworkManager.Singleton.StartHost(); // Starts the NetworkManager as both a server and a client (that is, has local client)
     }
-
     public void StartClient()
     {
-        NetworkManager.Singleton.StartClient();
+        NetworkManager.Singleton.StartClient(); // Starts the NetworkManager as just a client.
     }
 
     // Players count update

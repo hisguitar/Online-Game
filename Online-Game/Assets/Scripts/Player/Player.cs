@@ -5,20 +5,19 @@ using TMPro;
 
 public class Player : NetworkBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private Color redFF5858 = new(1f, 0.345f, 0.345f);
-    [SerializeField] private Color greenCFFF57 = new(0.78f, 1f, 0.341f);
-
     [Header("Player Stats")]
     [SerializeField] private NetworkVariable<int> maxHp = new();
     [SerializeField] private NetworkVariable<int> hp = new();
-    public int PlayerStr { get; private set; } = 20;
+    public int PlayerStr { get; private set; } = 10;
     public int PlayerVit { get; private set; } = 10;
+    public int PlayerAgi { get; private set; } = 3;
 
     [Header("Overhead UI Reference")]
+    [SerializeField] private NetworkObject player;
     [SerializeField] private Image hpBarOverHead;
     [SerializeField] private TMP_Text currentHpTextOverHead;
     [SerializeField] private TMP_Text nameTextOverHead;
+    [SerializeField] private GameObject floatingTextPrefab;
 
     private bool isDead;
     private readonly int statsConvert = 10;
@@ -31,6 +30,9 @@ public class Player : NetworkBehaviour
         {
             maxHp.Value = PlayerVit * statsConvert;
             hp.Value = maxHp.Value;
+
+            // player.OwnerClientId start with 0
+            nameTextOverHead.text = "Player." + player.OwnerClientId.ToString();
         }
     }
 
@@ -45,7 +47,9 @@ public class Player : NetworkBehaviour
     private void UIUpdate()
     {
         // Update HpBar Color
-        Color hpBarColor = Color.Lerp(redFF5858, greenCFFF57, (float)hp.Value / maxHp.Value);
+        Color red = new(1f, 0.4f, 0.4f);
+        Color green = new(0.6f, 1.0f, 0.4f);
+        Color hpBarColor = Color.Lerp(red, green, (float)hp.Value / maxHp.Value);
         hpBarOverHead.color = hpBarColor;
 
         #region OverHead & Screen UI
@@ -76,12 +80,25 @@ public class Player : NetworkBehaviour
 
         int newHealth = hp.Value + amount;
         hp.Value = Mathf.Clamp(newHealth, 0, maxHp.Value);
+        if (floatingTextPrefab != null)
+        {
+            ShowFloatingText($"-{amount}");
+        }
 
         if (hp.Value <= 0)
         {
             hp.Value = 0;
             isDead = true;
         }
+    }
+    #endregion
+
+    #region Show Floating Text
+    private void ShowFloatingText(string text)
+    {
+        GameObject go = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+        go.transform.SetParent(transform);
+        go.GetComponent<TMP_Text>().text = text;
     }
     #endregion
 }
