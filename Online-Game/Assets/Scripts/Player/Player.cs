@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
+using Cinemachine;
+using Unity.Collections;
 
 public class Player : NetworkBehaviour
 {
@@ -17,6 +19,14 @@ public class Player : NetworkBehaviour
     [SerializeField] private Image hpBarOverHead;
     [SerializeField] private TMP_Text currentHpTextOverHead;
     [SerializeField] private GameObject floatingTextPrefab;
+    public NetworkVariable<FixedString32Bytes> PlayerName = new();
+    public NetworkVariable<int> PlayerColorIndex = new();
+
+    [Header("References")]
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+
+    [Header("Settings")]
+    [SerializeField] private int ownerPriority = 15;
 
     private bool isDead;
     private readonly int statsConvert = 10;
@@ -27,8 +37,20 @@ public class Player : NetworkBehaviour
     {
         if (IsServer)
         {
+            UserData userData =
+                HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+
+            PlayerName.Value = userData.userName;
+            PlayerColorIndex.Value = userData.userColorIndex;
+
+            // Need to fix
             maxHp.Value = PlayerVit * statsConvert;
             hp.Value = maxHp.Value;
+        }
+
+        if (IsOwner)
+        {
+            virtualCamera.Priority = ownerPriority;
         }
     }
 
