@@ -250,7 +250,6 @@ public class Enemy : NetworkBehaviour
         hp.Value -= amount;
         if (floatingTextPrefab != null)
         {
-            ShowFloatingText($"-{amount}");
             ShowFloatingTextClientRpc($"-{amount}");
         }
 

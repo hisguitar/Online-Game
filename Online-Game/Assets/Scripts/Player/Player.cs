@@ -92,6 +92,7 @@ public class Player : NetworkBehaviour
         ModifyHealth(amount);
     }
 
+    // This method can be used for both increasing and decreasing HP
     private void ModifyHealth(int amount)
     {
         if (isDead) { return; }
@@ -100,8 +101,7 @@ public class Player : NetworkBehaviour
         hp.Value = Mathf.Clamp(newHealth, 0, maxHp.Value);
         if (floatingTextPrefab != null)
         {
-            ShowFloatingText($"-{amount}");
-            ShowFloatingTextClientRpc($"-{amount}");
+            ShowFloatingTextClientRpc(amount.ToString());
         }
 
         if (hp.Value <= 0)

@@ -65,7 +65,6 @@ public class PlayerMovement : NetworkBehaviour
     [ServerRpc]
     private void UpdateAnimationServerRpc(bool isMoving)
     {
-        animator.SetBool(OnMove, isMoving);
         UpdateAnimationClientRpc(isMoving);
     }
 
