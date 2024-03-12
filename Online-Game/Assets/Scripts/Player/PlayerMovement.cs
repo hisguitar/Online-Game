@@ -57,8 +57,22 @@ public class PlayerMovement : NetworkBehaviour
             Move();
 
             // Set the animator parameter based on whether the player is moving or not
-            animator.SetBool(OnMove, IsMoving());
+            bool isMoving = IsMoving();
+            animator.SetBool(OnMove, isMoving);
+            UpdateAnimationServerRpc(isMoving);
         }
+    }
+    [ServerRpc]
+    private void UpdateAnimationServerRpc(bool isMoving)
+    {
+        animator.SetBool(OnMove, isMoving);
+        UpdateAnimationClientRpc(isMoving);
+    }
+
+    [ClientRpc]
+    private void UpdateAnimationClientRpc(bool isMoving)
+    {
+        animator.SetBool(OnMove, isMoving);
     }
 
     private void Move()
@@ -84,11 +98,25 @@ public class PlayerMovement : NetworkBehaviour
         if (movementInput.x > 0)
         {
             playerSprite.flipX = false; // No flipping
+            FlipServerRpc(false);
         }
         // Walk to the left
         else if (movementInput.x < 0)
         {
             playerSprite.flipX = true; // Flip x-axis
+            FlipServerRpc(true);
         }
+    }
+    [ServerRpc]
+    private void FlipServerRpc(bool flipX)
+    {
+        playerSprite.flipX = flipX;
+        FlipClientRpc(flipX);
+    }
+
+    [ClientRpc]
+    private void FlipClientRpc(bool flipX)
+    {
+        playerSprite.flipX = flipX;
     }
 }
