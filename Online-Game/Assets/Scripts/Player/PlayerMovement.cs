@@ -98,19 +98,18 @@ public class PlayerMovement : NetworkBehaviour
         if (movementInput.x > 0)
         {
             playerSprite.flipX = false; // No flipping
-            FlipServerRpc(false);
+            FlipServerRpc(playerSprite.flipX);
         }
         // Walk to the left
         else if (movementInput.x < 0)
         {
             playerSprite.flipX = true; // Flip x-axis
-            FlipServerRpc(true);
+            FlipServerRpc(playerSprite.flipX);
         }
     }
     [ServerRpc]
     private void FlipServerRpc(bool flipX)
     {
-        playerSprite.flipX = flipX;
         FlipClientRpc(flipX);
     }
 
