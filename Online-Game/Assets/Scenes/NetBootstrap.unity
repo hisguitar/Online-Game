@@ -306,7 +306,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.050980393, g: 0.050980393, b: 0.050980393, a: 0}
+  m_BackGroundColor: {r: 0.21176471, g: 0.24313726, b: 0.3019608, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -610,7 +610,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: f3f710dd427242d4395e7539377ee350, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -645,7 +645,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 519420032}
   - {fileID: 2093397863}
   - {fileID: 1547881471}
+  - {fileID: 519420032}
   - {fileID: 507043424}
