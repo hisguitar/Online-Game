@@ -25,6 +25,11 @@ public class ClientSingleton : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnDestroy()
+    {
+        GameManager?.Dispose();
+    }
+
     public async Task<bool> CreateClient()
     {
         GameManager = new ClientGameManager();

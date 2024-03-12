@@ -11,16 +11,19 @@ using UnityEngine.SceneManagement;
 using System.Text;
 using Unity.Services.Authentication;
 
-public class ClientGameManager
+public class ClientGameManager : IDisposable
 {
     private JoinAllocation allocation;
+    private NetworkClient networkClient;
+
     private const string MenuSceneName = "Menu";
     public async Task<bool> InitAsync()
     {
         await UnityServices.InitializeAsync();
 
-        AuthState authState = await AuthenticationWrapper.DoAuth();
+        networkClient = new NetworkClient(NetworkManager.Singleton);
 
+        AuthState authState = await AuthenticationWrapper.DoAuth();
         if (authState == AuthState.Authenticated)
         {
             return true;
@@ -62,5 +65,10 @@ public class ClientGameManager
             Debug.Log(e);
             return;
         }
+    }
+
+    public void Dispose()
+    {
+        networkClient?.Dispose();
     }
 }
