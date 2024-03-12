@@ -16,7 +16,6 @@ public class Player : NetworkBehaviour
     [SerializeField] private NetworkObject player;
     [SerializeField] private Image hpBarOverHead;
     [SerializeField] private TMP_Text currentHpTextOverHead;
-    [SerializeField] private TMP_Text nameTextOverHead;
     [SerializeField] private GameObject floatingTextPrefab;
 
     private bool isDead;
@@ -30,9 +29,6 @@ public class Player : NetworkBehaviour
         {
             maxHp.Value = PlayerVit * statsConvert;
             hp.Value = maxHp.Value;
-
-            // player.OwnerClientId start with 0
-            nameTextOverHead.text = "Player." + player.OwnerClientId.ToString();
         }
     }
 
