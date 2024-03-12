@@ -251,6 +251,7 @@ public class Enemy : NetworkBehaviour
         if (floatingTextPrefab != null)
         {
             ShowFloatingText($"-{amount}");
+            ShowFloatingTextClientRpc($"-{amount}");
         }
 
         if (hp.Value <= 0)
@@ -260,6 +261,11 @@ public class Enemy : NetworkBehaviour
                 NetworkObject.Despawn();
             }
         }
+    }
+    [ClientRpc]
+    private void ShowFloatingTextClientRpc(string text)
+    {
+        ShowFloatingText(text);
     }
     #endregion
 

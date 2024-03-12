@@ -101,6 +101,7 @@ public class Player : NetworkBehaviour
         if (floatingTextPrefab != null)
         {
             ShowFloatingText($"-{amount}");
+            ShowFloatingTextClientRpc($"-{amount}");
         }
 
         if (hp.Value <= 0)
@@ -109,6 +110,12 @@ public class Player : NetworkBehaviour
             isDead = true;
         }
     }
+    [ClientRpc]
+    private void ShowFloatingTextClientRpc(string text)
+    {
+        ShowFloatingText(text);
+    }
+
     #endregion
 
     #region Show Floating Text
