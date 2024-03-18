@@ -14,12 +14,15 @@ public class Player : NetworkBehaviour
     public int PlayerVit { get; private set; } = 10;
     public int PlayerAgi { get; private set; } = 3;
 
-    [Header("Overhead UI Reference")]
+    public int level { get; private set; } = 1;
+    public int Exp { get; private set; } = 0;
+    public int ExpToLevelUp { get; private set; } = 100;
+
+    [Header("Reference")]
     [SerializeField] private Image hpBar;
     [SerializeField] private TMP_Text currentHpText;
+    [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject floatingTextPrefab;
-
-    [Header("References")]
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     [Header("Settings")]
@@ -28,7 +31,6 @@ public class Player : NetworkBehaviour
     public NetworkVariable<int> PlayerColorIndex = new();
 
     private bool isDead;
-    private readonly int statsConvert = 10;
     private readonly float lerpSpeed = 3f;
 
     // OnNetworkSpawn is used when an object begins network connection.
@@ -43,7 +45,7 @@ public class Player : NetworkBehaviour
             PlayerColorIndex.Value = userData.userColorIndex;
 
             // Need to fix
-            maxHp.Value = PlayerVit * statsConvert;
+            maxHp.Value = PlayerVit * 10;
             hp.Value = maxHp.Value;
         }
 
@@ -78,8 +80,31 @@ public class Player : NetworkBehaviour
 
         // Update UI Text
         currentHpText.text = hp.Value + "/" + maxHp.Value;
+        levelText.text = "Lv." + level.ToString();
         #endregion
     }
+
+    #region Exp & Level
+    public void GainExp(int amount)
+    {
+        // Gain Exp
+        Exp += amount;
+
+        // Level Up
+        while (Exp >= ExpToLevelUp)
+        {
+            // Why use while instead if: The use of while is intended to make it possible to level up multiple levels in a single move if the player has enough Exp to skip multiple levels. Use while to check conditions. And so on until it is false.
+            level++;
+            Exp -= ExpToLevelUp;
+            ExpToLevelUp = CalculateExpToLevelUp();
+        }
+    }
+
+    private int CalculateExpToLevelUp()
+    {
+        return 100 * level;
+    }
+    #endregion
 
     #region Take Damage
     public void TakeDamage(int amount)
