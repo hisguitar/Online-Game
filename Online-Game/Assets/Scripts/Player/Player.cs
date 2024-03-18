@@ -65,8 +65,8 @@ public class Player : NetworkBehaviour
     private void UIUpdate()
     {
         // Update HpBar Color
-        Color red = new(1f, 0.4f, 0.4f);
-        Color green = new(0.6f, 1.0f, 0.4f);
+        Color red = new(1f, 0.4f, 0.4f); //FF6666
+        Color green = new(0.6f, 1.0f, 0.4f); //99FF66
         Color hpBarColor = Color.Lerp(red, green, (float)hp.Value / maxHp.Value);
         hpBarOverHead.color = hpBarColor;
 
