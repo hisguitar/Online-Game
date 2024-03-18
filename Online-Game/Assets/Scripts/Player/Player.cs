@@ -80,6 +80,7 @@ public class Player : NetworkBehaviour
 
         // Update UI Text
         currentHpText.text = hp.Value + "/" + maxHp.Value;
+        levelText.text = "Lv." + level.Value.ToString();
         #endregion
     }
 
@@ -94,8 +95,6 @@ public class Player : NetworkBehaviour
         /// if the player has enough Exp to skip multiple levels.
         while (Exp >= ExpToLevelUp)
         {
-            levelText.text = "Lv." + level.Value.ToString();
-
             level.Value++;
             Exp -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
