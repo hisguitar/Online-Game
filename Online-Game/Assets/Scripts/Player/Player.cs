@@ -4,6 +4,7 @@ using Unity.Netcode;
 using TMPro;
 using Cinemachine;
 using Unity.Collections;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class Player : NetworkBehaviour
 {
@@ -30,7 +31,12 @@ public class Player : NetworkBehaviour
     public NetworkVariable<FixedString32Bytes> PlayerName = new();
     public NetworkVariable<int> PlayerColorIndex = new();
 
-    private int StatsConverter = 10;
+    public Color RedFF6666 { get; private set; } = new(1f, 0.4f, 0.4f);
+    public Color RedFF0D0D { get; private set; } = new(1f, 0.051f, 0.051f);
+    public Color Green99FF66 { get; private set; } = new(0.6f, 1.0f, 0.4f);
+    public Color YellowFFFF0D { get; private set; } = new Color(1f, 1f, 0.051f);
+
+    private readonly int statsConverter = 10;
     private bool isDead;
     private readonly float lerpSpeed = 3f;
 
@@ -65,9 +71,7 @@ public class Player : NetworkBehaviour
     private void UIUpdate()
     {
         // Update HpBar Color
-        Color red = new(1f, 0.4f, 0.4f); //FF6666
-        Color green = new(0.6f, 1.0f, 0.4f); //99FF66
-        Color hpBarColor = Color.Lerp(red, green, (float)hp.Value / maxHp.Value);
+        Color hpBarColor = Color.Lerp(RedFF6666, Green99FF66, (float)hp.Value / maxHp.Value);
         hpBar.color = hpBarColor;
         currentHpText.color = hpBarColor;
 
@@ -89,6 +93,12 @@ public class Player : NetworkBehaviour
         // Gain Exp
         Exp += amount;
 
+        // Show FloatingText
+        if (floatingTextPrefab != null)
+        {
+            ShowFloatingTextClientRpc($"+{amount} Exp", YellowFFFF0D);
+        }
+
         // Level Up
         /// Why use while instead if: To make it possible to level up multiple levels in a single move,
         /// if the player has enough Exp to skip multiple levels.
@@ -98,6 +108,12 @@ public class Player : NetworkBehaviour
             Exp -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
             LevelUpRewards();
+
+            // Show FloatingText
+            if (floatingTextPrefab != null)
+            {
+                ShowFloatingTextClientRpc($"Level up to {level.Value}!", YellowFFFF0D);
+            }
         }
     }
 
@@ -111,7 +127,7 @@ public class Player : NetworkBehaviour
         PlayerStr += 1;
         PlayerVit += 1;
         PlayerAgi += 0.1f;
-        
+
         CheckAndResetsPlayerStats();
     }
     #endregion
@@ -119,7 +135,7 @@ public class Player : NetworkBehaviour
     #region Check & Reset player stats
     private void CheckAndResetsPlayerStats()
     {
-        maxHp.Value = PlayerVit * StatsConverter;
+        maxHp.Value = PlayerVit * statsConverter;
         hp.Value = maxHp.Value;
     }
     #endregion
@@ -128,11 +144,19 @@ public class Player : NetworkBehaviour
     public void TakeDamage(int amount)
     {
         ModifyHealth(-amount);
+
+        // Show FloatingText
+        if (floatingTextPrefab != null)
+        {
+            ShowFloatingTextClientRpc(amount.ToString(), RedFF0D0D);
+        }
     }
 
     public void RestoreHealth(int amount)
     {
         ModifyHealth(amount);
+
+        // Show FloatingText
     }
 
     // This method can be used for both increasing and decreasing HP
@@ -142,10 +166,6 @@ public class Player : NetworkBehaviour
 
         int newHealth = hp.Value + amount;
         hp.Value = Mathf.Clamp(newHealth, 0, maxHp.Value);
-        if (floatingTextPrefab != null)
-        {
-            ShowFloatingTextClientRpc(amount.ToString());
-        }
 
         if (hp.Value <= 0)
         {
@@ -153,19 +173,20 @@ public class Player : NetworkBehaviour
             isDead = true;
         }
     }
-    [ClientRpc]
-    private void ShowFloatingTextClientRpc(string text)
-    {
-        ShowFloatingText(text);
-    }
-
     #endregion
 
     #region Show Floating Text
-    private void ShowFloatingText(string text)
+    [ClientRpc]
+    private void ShowFloatingTextClientRpc(string text, Color textColor)
+    {
+        ShowFloatingText(text, textColor);
+    }
+
+    private void ShowFloatingText(string text, Color textColor)
     {
         GameObject go = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
         go.transform.SetParent(transform);
+        go.GetComponent<TMP_Text>().color = textColor;
         go.GetComponent<TMP_Text>().text = text;
     }
     #endregion
