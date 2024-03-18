@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 4117292230970473511}
   - component: {fileID: 1667885097521568175}
   m_Layer: 5
-  m_Name: CurrentHpText_OverHead
+  m_Name: CurrentHpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -791,10 +791,11 @@ MonoBehaviour:
     m_InternalValue: 100
   hp:
     m_InternalValue: 100
-  player: {fileID: 1743679616909641616}
-  hpBarOverHead: {fileID: 610460649838397910}
-  currentHpTextOverHead: {fileID: 1667885097521568175}
+  hpBar: {fileID: 610460649838397910}
+  currentHpText: {fileID: 1667885097521568175}
   floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
+  virtualCamera: {fileID: 5546714074399449705}
+  ownerPriority: 15
   PlayerName:
     m_InternalValue:
       utf8LengthInBytes: 0
@@ -832,8 +833,6 @@ MonoBehaviour:
         byte0029: 0
   PlayerColorIndex:
     m_InternalValue: 0
-  virtualCamera: {fileID: 5546714074399449705}
-  ownerPriority: 15
 --- !u!114 &-2814797437765652837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,7 +915,7 @@ GameObject:
   - component: {fileID: 5757737320118631241}
   - component: {fileID: 4271849014405979006}
   m_Layer: 5
-  m_Name: MaxHpBar_OverHead
+  m_Name: MaxHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1252,7 +1251,7 @@ GameObject:
   - component: {fileID: 4123709706826738101}
   - component: {fileID: 610460649838397910}
   m_Layer: 5
-  m_Name: HpBar_OverHead
+  m_Name: HpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

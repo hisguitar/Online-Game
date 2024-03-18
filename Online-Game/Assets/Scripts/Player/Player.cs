@@ -15,18 +15,17 @@ public class Player : NetworkBehaviour
     public int PlayerAgi { get; private set; } = 3;
 
     [Header("Overhead UI Reference")]
-    [SerializeField] private NetworkObject player;
-    [SerializeField] private Image hpBarOverHead;
-    [SerializeField] private TMP_Text currentHpTextOverHead;
+    [SerializeField] private Image hpBar;
+    [SerializeField] private TMP_Text currentHpText;
     [SerializeField] private GameObject floatingTextPrefab;
-    public NetworkVariable<FixedString32Bytes> PlayerName = new();
-    public NetworkVariable<int> PlayerColorIndex = new();
 
     [Header("References")]
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     [Header("Settings")]
     [SerializeField] private int ownerPriority = 15;
+    public NetworkVariable<FixedString32Bytes> PlayerName = new();
+    public NetworkVariable<int> PlayerColorIndex = new();
 
     private bool isDead;
     private readonly int statsConvert = 10;
@@ -68,16 +67,17 @@ public class Player : NetworkBehaviour
         Color red = new(1f, 0.4f, 0.4f); //FF6666
         Color green = new(0.6f, 1.0f, 0.4f); //99FF66
         Color hpBarColor = Color.Lerp(red, green, (float)hp.Value / maxHp.Value);
-        hpBarOverHead.color = hpBarColor;
+        hpBar.color = hpBarColor;
+        currentHpText.color = hpBarColor;
 
         #region OverHead & Screen UI
         // Update UI Bar
         float targetFillAmount = (float)hp.Value / maxHp.Value;
-        hpBarOverHead.fillAmount = Mathf.Lerp(hpBarOverHead.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
-        hpBarOverHead.fillAmount = Mathf.Clamp01(hpBarOverHead.fillAmount);
+        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
+        hpBar.fillAmount = Mathf.Clamp01(hpBar.fillAmount);
 
         // Update UI Text
-        currentHpTextOverHead.text = hp.Value + "/" + maxHp.Value;
+        currentHpText.text = hp.Value + "/" + maxHp.Value;
         #endregion
     }
 
