@@ -34,7 +34,7 @@ public class Player : NetworkBehaviour
     public Color RedFF6666 { get; private set; } = new(1f, 0.4f, 0.4f);
     public Color RedFF0D0D { get; private set; } = new(1f, 0.051f, 0.051f);
     public Color Green99FF66 { get; private set; } = new(0.6f, 1.0f, 0.4f);
-    public Color YellowFFFF0D { get; private set; } = new Color(1f, 1f, 0.051f);
+    public Color YellowFFFF0D { get; private set; } = new(1f, 1f, 0.051f);
 
     private readonly int statsConverter = 10;
     private bool isDead;
