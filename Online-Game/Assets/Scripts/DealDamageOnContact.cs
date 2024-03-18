@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DealDamageOnContact : MonoBehaviour
 {
-    private ulong ownerClientId;
+    public ulong ownerClientId { get; private set; }
     private int PlayerStr;
 
     public void SetOwner(ulong ownerClientId, int playerPlayerStr)

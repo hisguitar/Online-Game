@@ -14,7 +14,7 @@ public class Player : NetworkBehaviour
     public int PlayerVit { get; private set; } = 10;
     public int PlayerAgi { get; private set; } = 3;
 
-    public int level { get; private set; } = 1;
+    [SerializeField] private NetworkVariable<int> level = new(1);
     public int Exp { get; private set; } = 0;
     public int ExpToLevelUp { get; private set; } = 100;
 
@@ -80,7 +80,7 @@ public class Player : NetworkBehaviour
 
         // Update UI Text
         currentHpText.text = hp.Value + "/" + maxHp.Value;
-        levelText.text = "Lv." + level.ToString();
+        levelText.text = "Lv." + level.Value.ToString();
         #endregion
     }
 
@@ -94,7 +94,7 @@ public class Player : NetworkBehaviour
         while (Exp >= ExpToLevelUp)
         {
             // Why use while instead if: The use of while is intended to make it possible to level up multiple levels in a single move if the player has enough Exp to skip multiple levels. Use while to check conditions. And so on until it is false.
-            level++;
+            level.Value++;
             Exp -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
         }
@@ -102,7 +102,7 @@ public class Player : NetworkBehaviour
 
     private int CalculateExpToLevelUp()
     {
-        return 100 * level;
+        return 100 * level.Value;
     }
     #endregion
 

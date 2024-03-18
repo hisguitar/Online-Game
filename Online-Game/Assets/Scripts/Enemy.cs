@@ -13,6 +13,7 @@ public class Enemy : NetworkBehaviour
 {
     public int EnemyStr { get; private set; } = 5;
     [SerializeField] private NetworkVariable<int> hp = new();
+    [SerializeField] private int exp = 20;
 
     [Header("Patrol")]
     [SerializeField] private float patrolSpeed = 1f;
@@ -28,6 +29,7 @@ public class Enemy : NetworkBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject floatingTextPrefab;
 
+    private ulong playerId;
     private float countIdleTime = 0f;
     private float distance;
     private EnemyState state;
@@ -231,7 +233,7 @@ public class Enemy : NetworkBehaviour
     }
     #endregion
 
-    #region Deal damage to player
+    #region Deal damage to player & Check owner of bullet
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.attachedRigidbody == null) return;
@@ -240,6 +242,11 @@ public class Enemy : NetworkBehaviour
         if (col.attachedRigidbody.TryGetComponent<Player>(out Player player))
         {
             player.TakeDamage(EnemyStr);
+        }
+
+        if (col.attachedRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
+        {
+            playerId = bullet.ownerClientId;
         }
     }
     #endregion
@@ -257,10 +264,16 @@ public class Enemy : NetworkBehaviour
         {
             if (IsServer)
             {
+                Player player = NetworkManager.Singleton.ConnectedClients[playerId].PlayerObject.GetComponent<Player>();
+                if (player != null)
+                {
+                    player.GainExp(exp);
+                }
                 NetworkObject.Despawn();
             }
         }
     }
+
     [ClientRpc]
     private void ShowFloatingTextClientRpc(string text)
     {
