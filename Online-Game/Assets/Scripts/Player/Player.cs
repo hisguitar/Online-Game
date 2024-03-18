@@ -80,7 +80,6 @@ public class Player : NetworkBehaviour
 
         // Update UI Text
         currentHpText.text = hp.Value + "/" + maxHp.Value;
-        levelText.text = "Lv." + level.Value.ToString();
         #endregion
     }
 
@@ -91,9 +90,12 @@ public class Player : NetworkBehaviour
         Exp += amount;
 
         // Level Up
+        /// Why use while instead if: To make it possible to level up multiple levels in a single move,
+        /// if the player has enough Exp to skip multiple levels.
         while (Exp >= ExpToLevelUp)
         {
-            // Why use while instead if: The use of while is intended to make it possible to level up multiple levels in a single move if the player has enough Exp to skip multiple levels. Use while to check conditions. And so on until it is false.
+            levelText.text = "Lv." + level.Value.ToString();
+
             level.Value++;
             Exp -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
