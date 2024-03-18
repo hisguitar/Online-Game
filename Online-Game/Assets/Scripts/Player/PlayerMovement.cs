@@ -36,44 +36,24 @@ public class PlayerMovement : NetworkBehaviour
         this.movementInput = movementInput;
     }
 
-    private void Start()
-    {
-        // Auto reference to Rigidbody2D component.
-        rb = GetComponent<Rigidbody2D>();
-    }
-
     private void Update()
     {
-        if (IsOwner)
-        {
-            Flip();
-        }
+        if (!IsOwner) return;
+        Flip();
     }
 
     private void FixedUpdate()
     {
-        if (IsOwner)
-        {
-            Move();
+        if (!IsOwner) return;
+        Move();
 
-            // Set the animator parameter based on whether the player is moving or not
-            bool isMoving = IsMoving();
-            animator.SetBool(OnMove, isMoving);
-            UpdateAnimationServerRpc(isMoving);
-        }
-    }
-    [ServerRpc]
-    private void UpdateAnimationServerRpc(bool isMoving)
-    {
-        UpdateAnimationClientRpc(isMoving);
-    }
-
-    [ClientRpc]
-    private void UpdateAnimationClientRpc(bool isMoving)
-    {
+        // Set the animator parameter based on whether the player is moving or not
+        bool isMoving = IsMoving();
         animator.SetBool(OnMove, isMoving);
+        UpdateAnimationServerRpc(isMoving);
     }
 
+    #region Move
     private void Move()
     {
         // Normalize the movement vector to ensure constant speed in all directions
@@ -91,6 +71,20 @@ public class PlayerMovement : NetworkBehaviour
         return movementInput != Vector2.zero;
     }
 
+    [ServerRpc]
+    private void UpdateAnimationServerRpc(bool isMoving)
+    {
+        UpdateAnimationClientRpc(isMoving);
+    }
+
+    [ClientRpc]
+    private void UpdateAnimationClientRpc(bool isMoving)
+    {
+        animator.SetBool(OnMove, isMoving);
+    }
+    #endregion
+
+    #region Flip
     private void Flip()
     {
         // Walk to the right
@@ -106,6 +100,7 @@ public class PlayerMovement : NetworkBehaviour
             FlipServerRpc(playerSprite.flipX);
         }
     }
+
     [ServerRpc]
     private void FlipServerRpc(bool flipX)
     {
@@ -117,4 +112,5 @@ public class PlayerMovement : NetworkBehaviour
     {
         playerSprite.flipX = flipX;
     }
+    #endregion
 }

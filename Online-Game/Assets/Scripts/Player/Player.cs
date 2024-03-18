@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private NetworkVariable<int> hp = new();
     public int PlayerStr { get; private set; } = 10;
     public int PlayerVit { get; private set; } = 10;
-    public int PlayerAgi { get; private set; } = 3;
+    public float PlayerAgi { get; private set; } = 3f;
 
     [SerializeField] private NetworkVariable<int> level = new(1);
     public int Exp { get; private set; } = 0;
@@ -30,6 +30,7 @@ public class Player : NetworkBehaviour
     public NetworkVariable<FixedString32Bytes> PlayerName = new();
     public NetworkVariable<int> PlayerColorIndex = new();
 
+    private int StatsConverter = 10;
     private bool isDead;
     private readonly float lerpSpeed = 3f;
 
@@ -44,9 +45,7 @@ public class Player : NetworkBehaviour
             PlayerName.Value = userData.userName;
             PlayerColorIndex.Value = userData.userColorIndex;
 
-            // Need to fix
-            maxHp.Value = PlayerVit * 10;
-            hp.Value = maxHp.Value;
+            CheckAndResetsPlayerStats();
         }
 
         if (IsOwner)
@@ -98,12 +97,30 @@ public class Player : NetworkBehaviour
             level.Value++;
             Exp -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
+            LevelUpRewards();
         }
     }
 
     private int CalculateExpToLevelUp()
     {
         return 100 * level.Value;
+    }
+
+    private void LevelUpRewards()
+    {
+        PlayerStr += 1;
+        PlayerVit += 1;
+        PlayerAgi += 0.1f;
+        
+        CheckAndResetsPlayerStats();
+    }
+    #endregion
+
+    #region Check & Reset player stats
+    private void CheckAndResetsPlayerStats()
+    {
+        maxHp.Value = PlayerVit * StatsConverter;
+        hp.Value = maxHp.Value;
     }
     #endregion
 
