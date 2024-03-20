@@ -14,6 +14,11 @@ public class DealDamageOnContact : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        if (col.attachedRigidbody == null)
+        {
+            return;
+        }
+
         #region TakeDamage to Enemy
         if (col.attachedRigidbody.TryGetComponent<Enemy>(out Enemy enemy))
         {

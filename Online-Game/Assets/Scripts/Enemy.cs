@@ -234,21 +234,23 @@ public class Enemy : NetworkBehaviour
     #endregion
 
     #region Deal damage to player & Check owner of bullet
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (col.attachedRigidbody == null) return;
+        Rigidbody2D otherRigidbody = collision.collider.attachedRigidbody;
+        if (otherRigidbody == null) return;
 
         // Take Damage to player here!
-        if (col.attachedRigidbody.TryGetComponent<Player>(out Player player))
+        if (otherRigidbody.TryGetComponent<Player>(out Player player))
         {
             player.TakeDamage(EnemyStr);
         }
 
-        if (col.attachedRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
+        if (otherRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
         {
             playerId = bullet.ownerClientId;
         }
     }
+
     #endregion
 
     #region Take damage
