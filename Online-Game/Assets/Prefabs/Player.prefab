@@ -787,18 +787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1d16742eb3c114b81e539933c9d1b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp:
-    m_InternalValue: 100
-  hp:
-    m_InternalValue: 100
-  level:
-    m_InternalValue: 1
-  hpBar: {fileID: 610460649838397910}
-  currentHpText: {fileID: 1667885097521568175}
-  levelText: {fileID: 8420980905488778256}
-  floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
-  virtualCamera: {fileID: 5546714074399449705}
-  ownerPriority: 15
   PlayerName:
     m_InternalValue:
       utf8LengthInBytes: 0
@@ -836,6 +824,18 @@ MonoBehaviour:
         byte0029: 0
   PlayerColorIndex:
     m_InternalValue: 0
+  level:
+    m_InternalValue: 1
+  maxHp:
+    m_InternalValue: 100
+  hp:
+    m_InternalValue: 100
+  ownerPriority: 15
+  virtualCamera: {fileID: 5546714074399449705}
+  hpBar: {fileID: 610460649838397910}
+  currentHpText: {fileID: 1667885097521568175}
+  levelText: {fileID: 8420980905488778256}
+  floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
 --- !u!114 &-2814797437765652837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,12 +898,12 @@ MonoBehaviour:
   - {fileID: 2696886675185723843}
   playerColor:
   - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0.93333334, b: 0.8, a: 1}
-  - {r: 0.9019608, g: 0.7493213, b: 0.5411765, a: 1}
-  - {r: 0.9019608, g: 0.6745098, b: 0.36078432, a: 1}
-  - {r: 0.69803923, g: 0.5568628, b: 0.4156863, a: 1}
-  - {r: 0.5019608, g: 0.42352945, b: 0.34509805, a: 1}
-  - {r: 0.40000004, g: 0.27058825, b: 0.2392157, a: 1}
+  - {r: 1, g: 1, b: 0.5019608, a: 1}
+  - {r: 1, g: 0.83921576, b: 0.5019608, a: 1}
+  - {r: 1, g: 0.42352945, b: 0.3019608, a: 1}
+  - {r: 0.85098046, g: 0.6784314, b: 0.85098046, a: 1}
+  - {r: 0.854902, g: 0.6784314, b: 0.6784314, a: 1}
+  - {r: 0.5019608, g: 0.40000004, b: 0.40000004, a: 1}
   - {r: 0.19607845, g: 0.14901961, b: 0.14901961, a: 1}
   colorIndex: 0
 --- !u!1 &4922571504014082235

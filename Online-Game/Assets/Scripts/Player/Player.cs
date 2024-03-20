@@ -4,40 +4,42 @@ using Unity.Netcode;
 using TMPro;
 using Cinemachine;
 using Unity.Collections;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class Player : NetworkBehaviour
 {
-    [Header("Player Stats")]
-    [SerializeField] private NetworkVariable<int> maxHp = new();
-    [SerializeField] private NetworkVariable<int> hp = new();
-    public int PlayerStr { get; private set; } = 10;
-    public int PlayerVit { get; private set; } = 10;
-    public float PlayerAgi { get; private set; } = 3f;
+    [Header("Settings")]
+    // Character Creation
+    public NetworkVariable<FixedString32Bytes> PlayerName = new();
+    public NetworkVariable<int> PlayerColorIndex = new();
 
+    // Exp and Level
     [SerializeField] private NetworkVariable<int> level = new(1);
     public int Exp { get; private set; } = 0;
     public int ExpToLevelUp { get; private set; } = 100;
 
+    // Player Stats
+    [SerializeField] private NetworkVariable<int> maxHp = new();
+    [SerializeField] private NetworkVariable<int> hp = new();
+    public int PlayerStr { get; private set; } = 11;
+    public int PlayerVit { get; private set; } = 11;
+    public float PlayerAgi { get; private set; } = 3f;
+
     [Header("Reference")]
+    [SerializeField] private int ownerPriority = 15;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private Image hpBar;
     [SerializeField] private TMP_Text currentHpText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject floatingTextPrefab;
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    [Header("Settings")]
-    [SerializeField] private int ownerPriority = 15;
-    public NetworkVariable<FixedString32Bytes> PlayerName = new();
-    public NetworkVariable<int> PlayerColorIndex = new();
-
+    // New Color
     public Color RedFF6666 { get; private set; } = new(1f, 0.4f, 0.4f);
     public Color RedFF0D0D { get; private set; } = new(1f, 0.051f, 0.051f);
     public Color Green99FF66 { get; private set; } = new(0.6f, 1.0f, 0.4f);
     public Color YellowFFFF0D { get; private set; } = new(1f, 1f, 0.051f);
 
-    private readonly int statsConverter = 10;
     private bool isDead;
+    private readonly int statsConverter = 10;
     private readonly float lerpSpeed = 3f;
 
     // OnNetworkSpawn is used when an object begins network connection.
