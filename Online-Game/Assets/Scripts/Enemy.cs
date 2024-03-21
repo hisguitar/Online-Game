@@ -22,7 +22,7 @@ public class Enemy : NetworkBehaviour
 
     [Header("Chase")]
     [SerializeField] private float chaseSpeed = 2f;
-    [SerializeField] private float chaseDistance = 5f;
+    [SerializeField] private float chaseDistance = 3f;
 
     [Header("Reference")]
     [SerializeField] private SpriteRenderer enemySprite;
@@ -186,8 +186,11 @@ public class Enemy : NetworkBehaviour
     {
         if (player != null)
         {
+            Vector3 playerPosition = player.transform.position;
+            playerPosition.y -= 0.2f; // -0.2 offset in y-axis
+
             #region Flip
-            Vector2 direction = player.transform.position - transform.position;
+            Vector2 direction = playerPosition - transform.position;
 
             // Walk to the left
             if (direction.x < 0)
@@ -201,9 +204,10 @@ public class Enemy : NetworkBehaviour
             }
             #endregion
             #region Chase
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, playerPosition, chaseSpeed * Time.deltaTime);
 
             // If target distance > 5f
+
             if (Vector2.Distance(transform.position, player.transform.position) > 5f)
             {
                 state = EnemyState.Idle;

@@ -13,7 +13,7 @@ public struct SelectionButton
 
 public class ColorSelector : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer[] playerSprites;
+    [SerializeField] private Image[] playerSprites;
     [SerializeField] private SelectionButton[] selectionButton;
     [SerializeField] private int colorIndex = 0;
 
