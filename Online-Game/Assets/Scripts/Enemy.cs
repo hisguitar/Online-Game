@@ -234,9 +234,9 @@ public class Enemy : NetworkBehaviour
     #endregion
 
     #region Deal damage to player & Check owner of bullet
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Rigidbody2D otherRigidbody = collision.collider.attachedRigidbody;
+        Rigidbody2D otherRigidbody = collision.attachedRigidbody;
         if (otherRigidbody == null) return;
 
         // Take Damage to player here!
