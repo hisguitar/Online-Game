@@ -150,7 +150,7 @@ public class Player : NetworkBehaviour
         // Show FloatingText
         if (floatingTextPrefab != null)
         {
-            ShowFloatingTextClientRpc(amount.ToString(), RedFF0D0D);
+            ShowFloatingTextClientRpc("-" + amount.ToString(), RedFF0D0D);
         }
     }
 
