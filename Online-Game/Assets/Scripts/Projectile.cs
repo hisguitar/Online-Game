@@ -13,6 +13,12 @@ public class Projectile : MonoBehaviour
     // Do something when colliding with another GameObject
     private void OnTriggerEnter2D(Collider2D col)
     {
-        Destroy(gameObject);
+        if (col.attachedRigidbody == null)
+        {
+            return;
+        }
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DealDamageOnContact : MonoBehaviour
 {
-    private ulong ownerClientId;
+    public ulong ownerClientId { get; private set; }
     private int PlayerStr;
 
     public void SetOwner(ulong ownerClientId, int playerPlayerStr)
@@ -14,6 +14,11 @@ public class DealDamageOnContact : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        if (col.attachedRigidbody == null)
+        {
+            return;
+        }
+
         #region TakeDamage to Enemy
         if (col.attachedRigidbody.TryGetComponent<Enemy>(out Enemy enemy))
         {

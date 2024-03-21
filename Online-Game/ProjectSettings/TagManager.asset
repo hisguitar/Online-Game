@@ -8,12 +8,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Environment
   - Water
   - UI
   - Projectile
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
@@ -46,9 +46,6 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2123449417
-    locked: 0
-  - name: Monster
-    uniqueID: 3439445987
     locked: 0
   - name: UI
     uniqueID: 840948665
