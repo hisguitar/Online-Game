@@ -36,6 +36,7 @@ public class Enemy : NetworkBehaviour
     private Vector2 randomDirection;
     private Vector2 startPosition;
     private GameObject player;
+    private EnemySpawner enemySpawner;
 
     private static readonly int OnMove = Animator.StringToHash("OnMove"); // Speed parameter in animator
 
@@ -49,6 +50,11 @@ public class Enemy : NetworkBehaviour
     private void Update()
     {
         EnemyLogic();
+    }
+
+    public void Initialize(EnemySpawner spawner)
+    {
+        enemySpawner = spawner;
     }
 
     private void EnemyLogic()
@@ -275,6 +281,7 @@ public class Enemy : NetworkBehaviour
                 {
                     player.GainExp(exp);
                 }
+                enemySpawner.EnemyDestroyed(gameObject);
                 NetworkObject.Despawn();
             }
         }
