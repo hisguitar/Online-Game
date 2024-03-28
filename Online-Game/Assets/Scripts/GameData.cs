@@ -1,12 +1,13 @@
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
-    [SerializeField] private TMP_Text joinCode;
+    [SerializeField] private TMP_Text joinCodeText;
 
     private void Start()
     {
-        joinCode.text = "Code\n" + PlayerPrefs.GetString("JoinCode");
+        joinCodeText.text = "Code\n" + PlayerPrefs.GetString("JoinCode");
     }
 }

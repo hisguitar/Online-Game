@@ -48900,7 +48900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f441b8ac49d077d4ab8bc16834a29bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joinCode: {fileID: 937083502}
+  joinCodeText: {fileID: 937083502}
 --- !u!4 &1613051126
 Transform:
   m_ObjectHideFlags: 0
