@@ -4,6 +4,7 @@ using Unity.Netcode;
 using TMPro;
 using Cinemachine;
 using Unity.Collections;
+using System;
 
 public class Player : NetworkBehaviour
 {
@@ -32,6 +33,9 @@ public class Player : NetworkBehaviour
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject floatingTextPrefab;
 
+    public static event Action<Player> OnPlayerSpawned;
+    public static event Action<Player> OnPlayerDespawned;
+
     // New Color
     public Color RedFF6666 { get; private set; } = new(1f, 0.4f, 0.4f);
     public Color RedFF0D0D { get; private set; } = new(1f, 0.051f, 0.051f);
@@ -59,6 +63,14 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             virtualCamera.Priority = ownerPriority;
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+        {
+            OnPlayerDespawned?.Invoke(this);
         }
     }
 
