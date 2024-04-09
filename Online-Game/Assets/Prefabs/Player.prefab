@@ -583,6 +583,7 @@ GameObject:
   - component: {fileID: -2814797437765652837}
   - component: {fileID: 6547508417981183928}
   - component: {fileID: 4407677531755147240}
+  - component: {fileID: 3771422862578337774}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -814,7 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothTime: 0.2
-  player: {fileID: 1521881494307771043}
+  player: {fileID: 3771422862578337774}
   playerSprite: {fileID: 2696886675185723843}
   rb: {fileID: 2626146947429637677}
   inputReader: {fileID: 11400000, guid: 975d0298b6bcfe94f8fc8780b167da5d, type: 2}
@@ -852,7 +853,7 @@ MonoBehaviour:
   serverProjectilePrefab: {fileID: 3811696718406717514, guid: f3f3ae450a642a94e85de95db7453420, type: 3}
   clientProjectilePrefab: {fileID: 151569949056747313, guid: 0d281e7cd30a4db4a97b93558d3166cf, type: 3}
   playerCollider: {fileID: 18049942847462137}
-  player: {fileID: 1521881494307771043}
+  player: {fileID: 3771422862578337774}
 --- !u!114 &1521881494307771043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,18 +903,9 @@ MonoBehaviour:
         byte0029: 0
   PlayerColorIndex:
     m_InternalValue: 0
-  level:
-    m_InternalValue: 1
-  maxHp:
-    m_InternalValue: 100
-  hp:
-    m_InternalValue: 100
+  <Health>k__BackingField: {fileID: 3771422862578337774}
   ownerPriority: 15
   virtualCamera: {fileID: 5546714074399449705}
-  hpBar: {fileID: 610460649838397910}
-  currentHpText: {fileID: 1667885097521568175}
-  levelText: {fileID: 8420980905488778256}
-  floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
 --- !u!114 &-2814797437765652837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,6 +976,32 @@ MonoBehaviour:
   - {r: 0.14901961, g: 0.13333334, b: 0.10980393, a: 1}
   - {r: 0.14901961, g: 0.14901961, b: 0.10980393, a: 1}
   colorIndex: 0
+--- !u!114 &3771422862578337774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4196852208844264871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38f0604b37222ff40978fbd3992c10b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBar: {fileID: 610460649838397910}
+  currentHpText: {fileID: 1667885097521568175}
+  levelText: {fileID: 8420980905488778256}
+  floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
+  level:
+    m_InternalValue: 1
+  MaxHp:
+    m_InternalValue: 0
+  CurrentHp:
+    m_InternalValue: 0
+  RedFF6666: {r: 1, g: 0.4, b: 0.4, a: 1}
+  RedFF0D0D: {r: 1, g: 0.051, b: 0.051, a: 1}
+  Green99FF66: {r: 0.6, g: 1, b: 0.4, a: 1}
+  YellowFFFF0D: {r: 1, g: 1, b: 0.051, a: 1}
 --- !u!1 &4922571504014082235
 GameObject:
   m_ObjectHideFlags: 0

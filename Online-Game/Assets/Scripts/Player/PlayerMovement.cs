@@ -8,7 +8,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float smoothTime = 0.1f;  // Adjust the smooth time
 
     [Header("References")]
-    [SerializeField] private Player player;
+    [SerializeField] private Health player;
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private InputReader inputReader;

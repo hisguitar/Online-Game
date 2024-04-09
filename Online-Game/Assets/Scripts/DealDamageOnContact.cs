@@ -36,7 +36,7 @@ public class DealDamageOnContact : MonoBehaviour
             }
         }
 
-        if (col.TryGetComponent<Player>(out Player player))
+        if (col.TryGetComponent<Health>(out Health player))
         {
             player.TakeDamage(player.PlayerStr);
             Destroy(gameObject);

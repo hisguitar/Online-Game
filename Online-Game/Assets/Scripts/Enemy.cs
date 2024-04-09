@@ -250,7 +250,7 @@ public class Enemy : NetworkBehaviour
         if (otherRigidbody == null) return;
 
         // Take Damage to player here!
-        if (otherRigidbody.TryGetComponent<Player>(out Player player))
+        if (otherRigidbody.TryGetComponent<Health>(out Health player))
         {
             player.TakeDamage(EnemyStr);
         }
@@ -276,7 +276,7 @@ public class Enemy : NetworkBehaviour
         {
             if (IsServer)
             {
-                Player player = NetworkManager.Singleton.ConnectedClients[playerId].PlayerObject.GetComponent<Player>();
+                Health player = NetworkManager.Singleton.ConnectedClients[playerId].PlayerObject.GetComponent<Health>();
                 if (player != null)
                 {
                     player.GainExp(exp);

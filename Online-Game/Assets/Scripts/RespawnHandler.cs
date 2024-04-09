@@ -28,11 +28,28 @@ public class RespawnHandler : NetworkBehaviour
 
     private void HandlePlayerSpawned(Player player)
     {
-
+        player.Health.Ondie += (health) => HandlePlayerDie(player);
     }
 
     private void HandlePlayerDespawned(Player player)
     {
+        player.Health.Ondie -= (health) => HandlePlayerDie(player);
+    }
 
+    private void HandlePlayerDie(Player player)
+    {
+        Destroy(player.gameObject);
+
+        StartCoroutine(RespawnPlayer(player.OwnerClientId));
+    }
+
+    private IEnumerator RespawnPlayer(ulong ownerClientId)
+    {
+        yield return null;
+
+        NetworkObject playerInstance = Instantiate(
+            playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
+
+        playerInstance.SpawnAsPlayerObject(ownerClientId);
     }
 }
