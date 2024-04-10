@@ -13,7 +13,7 @@ public class Health : NetworkBehaviour
 
     // Exp and Level
     [SerializeField] private NetworkVariable<int> level = new(1);
-    public int Exp { get; private set; } = 0;
+    public int Exp { get; private set; } = 0; // Maybe need to be NetworkVariable
     public int ExpToLevelUp { get; private set; } = 100;
     
     // Status
