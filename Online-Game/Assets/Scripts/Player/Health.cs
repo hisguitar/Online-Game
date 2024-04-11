@@ -12,10 +12,10 @@ public class Health : NetworkBehaviour
     [SerializeField] private GameObject floatingTextPrefab;
 
     // Exp and Level
-    [SerializeField] private NetworkVariable<int> level = new(1);
-    public int Exp { get; private set; } = 0; // Maybe need to be NetworkVariable
+    public NetworkVariable<int> Exp = new(0);
     public int ExpToLevelUp { get; private set; } = 100;
-    
+    private NetworkVariable<int> level = new(1);
+
     // Status
     public NetworkVariable<int> MaxHp = new();
     public NetworkVariable<int> CurrentHp = new();
@@ -82,7 +82,7 @@ public class Health : NetworkBehaviour
     public void GainExp(int amount)
     {
         // Gain Exp
-        Exp += amount;
+        Exp.Value += amount;
 
         // Show FloatingText
         if (floatingTextPrefab != null)
@@ -93,10 +93,10 @@ public class Health : NetworkBehaviour
         // Level Up
         /// Why use while instead if: To make it possible to level up multiple levels in a single move,
         /// if the player has enough Exp to skip multiple levels.
-        while (Exp >= ExpToLevelUp)
+        while (Exp.Value >= ExpToLevelUp)
         {
             level.Value++;
-            Exp -= ExpToLevelUp;
+            Exp.Value -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
             LevelUpRewards();
 

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class RespawnHandler : NetworkBehaviour
 {
-    [SerializeField] private NetworkObject playerPrefab;
+    [SerializeField] private Player playerPrefab;
+    [SerializeField] private float keptExpPercentage;
 
     public override void OnNetworkSpawn()
     {
@@ -38,18 +39,22 @@ public class RespawnHandler : NetworkBehaviour
 
     private void HandlePlayerDie(Player player)
     {
+        int keptExp = (int)(player.Health.Exp.Value * (keptExpPercentage / 100));
+
         Destroy(player.gameObject);
 
-        StartCoroutine(RespawnPlayer(player.OwnerClientId));
+        StartCoroutine(RespawnPlayer(player.OwnerClientId, keptExp));
     }
 
-    private IEnumerator RespawnPlayer(ulong ownerClientId)
+    private IEnumerator RespawnPlayer(ulong ownerClientId, int keptExp)
     {
         yield return null;
 
-        NetworkObject playerInstance = Instantiate(
+        Player playerInstance = Instantiate(
             playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
-
-        playerInstance.SpawnAsPlayerObject(ownerClientId);
+        // Spawn object
+        playerInstance.NetworkObject.SpawnAsPlayerObject(ownerClientId);
+        // Modify Exp.Value
+        playerInstance.Health.Exp.Value += keptExp;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,8 +8,10 @@ public class Leaderboard : NetworkBehaviour
 {
     [SerializeField] private Transform leaderboardEntityHolder;
     [SerializeField] private LeaderboardEntityDisplay leaderboardEntityPrefab;
+    [SerializeField] private int entitiesToDisplay = 8;
 
-    NetworkList<LeaderboardEntityState> leaderboardEntities;
+    private NetworkList<LeaderboardEntityState> leaderboardEntities;
+    private List<LeaderboardEntityDisplay> entityDisplays = new();
 
     private void Awake()
     {
@@ -62,8 +65,11 @@ public class Leaderboard : NetworkBehaviour
         {
             ClientId = player.OwnerClientId,
             PlayerName = player.PlayerName.Value,
-            Exp = player.Health.Exp
+            Exp = player.Health.Exp.Value
         });
+
+        player.Health.Exp.OnValueChanged += (oldExp, newExp) =>
+            HandleExpChanged(player.OwnerClientId, newExp);
     }
 
     private void HandlePlayerDespawned(Player player)
@@ -74,6 +80,9 @@ public class Leaderboard : NetworkBehaviour
             leaderboardEntities.Remove(entity);
             break;
         }
+
+        player.Health.Exp.OnValueChanged -= (oldExp, newExp) =>
+            HandleExpChanged(player.OwnerClientId, newExp);
     }
 
     private void HandleLeaderboardEntitiesChanged(NetworkListEvent<LeaderboardEntityState> changeEvent)
@@ -81,10 +90,73 @@ public class Leaderboard : NetworkBehaviour
         switch (changeEvent.Type)
         {
             case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
-                Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+                if(!entityDisplays.Any(x=>x.ClientId == changeEvent.Value.ClientId))
+                {
+                    LeaderboardEntityDisplay leaderboardEntity =
+                        Instantiate(leaderboardEntityPrefab, leaderboardEntityHolder);
+                    leaderboardEntity.Initialise(
+                        changeEvent.Value.ClientId,
+                        changeEvent.Value.PlayerName,
+                        changeEvent.Value.Exp);
+                    entityDisplays.Add(leaderboardEntity);
+                }
                 break;
             case NetworkListEvent<LeaderboardEntityState>.EventType.Remove:
+                LeaderboardEntityDisplay displayToRemove =
+                    entityDisplays.FirstOrDefault(x => x.ClientId == changeEvent.Value.ClientId);
+                if (displayToRemove != null)
+                {
+                    displayToRemove.transform.SetParent(null);
+                    Destroy(displayToRemove.gameObject);
+                    entityDisplays.Remove(displayToRemove);
+                }
                 break;
+            case NetworkListEvent<LeaderboardEntityState>.EventType.Value:
+                LeaderboardEntityDisplay displayToUpdate =
+                    entityDisplays.FirstOrDefault(x => x.ClientId == changeEvent.Value.ClientId);
+                if (displayToUpdate != null)
+                {
+                    displayToUpdate.UpdateExp(changeEvent.Value.Exp);
+                }
+                break;
+        }
+
+        entityDisplays.Sort((x, y) => y.Exp.CompareTo(x.Exp));
+
+        for(int i = 0; i < entityDisplays.Count; i++)
+        {
+            entityDisplays[i].transform.SetSiblingIndex(i);
+            entityDisplays[i].UpdateText();
+            entityDisplays[i].gameObject.SetActive(i <= entitiesToDisplay - 1);
+        }
+
+        LeaderboardEntityDisplay myDisplay =
+            entityDisplays.FirstOrDefault(x => x.ClientId == NetworkManager.Singleton.LocalClientId);
+
+        if(myDisplay != null)
+        {
+            if(myDisplay.transform.GetSiblingIndex() >= entitiesToDisplay)
+            {
+                leaderboardEntityHolder.GetChild(entitiesToDisplay - 1).gameObject.SetActive(false);
+                myDisplay.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void HandleExpChanged(ulong clientId, int newExp)
+    {
+        for (int i = 0; i < leaderboardEntities.Count; i++)
+        {
+            if (leaderboardEntities[i].ClientId != clientId) { continue; }
+
+            leaderboardEntities[i] = new LeaderboardEntityState
+            {
+                ClientId = leaderboardEntities[i].ClientId,
+                PlayerName = leaderboardEntities[i].PlayerName,
+                Exp = newExp
+            };
+
+            return;
         }
     }
 }
