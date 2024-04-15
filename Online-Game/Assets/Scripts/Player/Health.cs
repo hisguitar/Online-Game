@@ -33,7 +33,7 @@ public class Health : NetworkBehaviour
     private readonly int statsConverter = 10;
     private readonly float lerpSpeed = 3f;
     
-    public Action<Health> Ondie;
+    public Action<Health> OnDie;
 
     public override void OnNetworkSpawn()
     {
@@ -153,6 +153,7 @@ public class Health : NetworkBehaviour
         if (CurrentHp.Value <= 0)
         {
             CurrentHp.Value = 0;
+            OnDie?.Invoke(this);
             isDead = true;
         }
     }
