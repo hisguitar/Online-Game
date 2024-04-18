@@ -37,10 +37,9 @@ public class Health : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            CheckAndResetsPlayerStats();
-        }
+        if (!IsServer) { return; }
+
+        CheckAndResetsPlayerStats();
     }
 
     private void Update()
@@ -73,7 +72,10 @@ public class Health : NetworkBehaviour
     #region Check & Reset player stats
     private void CheckAndResetsPlayerStats()
     {
+        // Convert stats to use in game
         MaxHp.Value = PlayerVit * statsConverter;
+
+        // Set to maximum value at first
         CurrentHp.Value = MaxHp.Value;
     }
     #endregion
@@ -150,9 +152,8 @@ public class Health : NetworkBehaviour
         int newHealth = CurrentHp.Value + amount;
         CurrentHp.Value = Mathf.Clamp(newHealth, 0, MaxHp.Value);
 
-        if (CurrentHp.Value <= 0)
+        if (CurrentHp.Value == 0)
         {
-            CurrentHp.Value = 0;
             OnDie?.Invoke(this);
             isDead = true;
         }
