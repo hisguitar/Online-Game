@@ -74,6 +74,7 @@ public class Leaderboard : NetworkBehaviour
 
     private void HandlePlayerDespawned(Player player)
     {
+        if(NetworkManager.ShutdownInProgress) { return; }
         foreach (LeaderboardEntityState entity in leaderboardEntities)
         {
             if(entity.ClientId != player.OwnerClientId) { continue; }
@@ -87,6 +88,8 @@ public class Leaderboard : NetworkBehaviour
 
     private void HandleLeaderboardEntitiesChanged(NetworkListEvent<LeaderboardEntityState> changeEvent)
     {
+        if (!gameObject.scene.isLoaded) { return; }
+
         switch (changeEvent.Type)
         {
             case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
