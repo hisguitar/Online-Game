@@ -11,14 +11,14 @@ public class StartupSceneLoader
 
     private static void LoadStartupScene(PlayModeStateChange state)
     {
-        if(state == PlayModeStateChange.ExitingEditMode)
+        if (state == PlayModeStateChange.ExitingEditMode)
         {
             EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
         }
 
-        if(state == PlayModeStateChange.EnteredPlayMode)
+        if (state == PlayModeStateChange.EnteredPlayMode)
         {
-            if(EditorSceneManager.GetActiveScene().buildIndex != 0)
+            if (EditorSceneManager.GetActiveScene().buildIndex != 0)
             {
                 EditorSceneManager.LoadScene(0);
             }
