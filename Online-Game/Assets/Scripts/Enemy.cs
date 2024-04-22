@@ -1,6 +1,8 @@
+using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum EnemyState
 {
@@ -36,6 +38,7 @@ public class Enemy : NetworkBehaviour
     private Vector2 randomDirection;
     private Vector2 startPosition;
     private GameObject player;
+
 
     private static readonly int OnMove = Animator.StringToHash("OnMove"); // Speed parameter in animator
 
@@ -234,9 +237,10 @@ public class Enemy : NetworkBehaviour
     #endregion
 
     #region Deal damage to player & Check owner of bullet
-    private void OnCollisionEnter2D(Collision2D collision)
+    //private void OnCollisionEnter2D(Collision2D collision)
+    /*private void OnTriggerEnter2D(Collider collision)
     {
-        Rigidbody2D otherRigidbody = collision.collider.attachedRigidbody;
+        Rigidbody2D otherRigidbody = collision.GetComponent<Collider>().attachedRigidbody;
         if (otherRigidbody == null) return;
 
         // Take Damage to player here!
@@ -249,6 +253,28 @@ public class Enemy : NetworkBehaviour
         {
             playerId = bullet.ownerClientId;
         }
+    }*/
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Rigidbody2D otherRigidbody = collision.attachedRigidbody;
+        if (otherRigidbody == null) return;
+
+        // Take Damage to player here!
+        if (otherRigidbody.TryGetComponent<Player>(out Player player))
+        {
+            player.TakeDamage(EnemyStr);
+        }
+
+        if (otherRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
+        {
+            playerId = bullet.ownerClientId;
+        }
+    }
+    
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion
