@@ -93,6 +93,7 @@ public class Leaderboard : NetworkBehaviour
         switch (changeEvent.Type)
         {
             case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
+                Debug.Log("Add new player to leaderboard");
                 if(!entityDisplays.Any(x=>x.ClientId == changeEvent.Value.ClientId))
                 {
                     LeaderboardEntityDisplay leaderboardEntity =

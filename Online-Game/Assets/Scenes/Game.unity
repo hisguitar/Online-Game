@@ -50316,8 +50316,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1613051126}
-  - component: {fileID: 1613051125}
   - component: {fileID: 1613051128}
+  - component: {fileID: 1613051125}
   - component: {fileID: 1613051127}
   m_Layer: 0
   m_Name: GameHUD
