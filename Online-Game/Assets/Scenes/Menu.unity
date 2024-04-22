@@ -536,7 +536,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: Join Code...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46d5534393ac6d44cb97b61ed626d4a2, type: 2}
   m_sharedMaterial: {fileID: -6225459929814480895, guid: 46d5534393ac6d44cb97b61ed626d4a2, type: 2}
@@ -2799,6 +2799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joinCodeField: {fileID: 1863060825}
+  clientButton: {fileID: 1892788650}
 --- !u!1 &2117256423
 GameObject:
   m_ObjectHideFlags: 0
