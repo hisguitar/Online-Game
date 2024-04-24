@@ -50158,7 +50158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1521881494307771043, guid: 7655168aa1349d74083d6a5bd054f935, type: 3}
-  keptExpPercentage: 90
+  keptExpPercentage: 50
 --- !u!4 &1512173957
 Transform:
   m_ObjectHideFlags: 0

@@ -50,10 +50,11 @@ public class RespawnHandler : NetworkBehaviour
     {
         yield return null;
 
+        // Spawn Player
         Player playerInstance = Instantiate(
             playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
-        // Spawn object
         playerInstance.NetworkObject.SpawnAsPlayerObject(ownerClientId);
+
         // Modify Exp.Value
         playerInstance.Health.Exp.Value += keptExp;
     }

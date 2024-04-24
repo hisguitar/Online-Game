@@ -12,9 +12,9 @@ public class Health : NetworkBehaviour
     [SerializeField] private GameObject floatingTextPrefab;
 
     // Exp and Level
-    public NetworkVariable<int> Exp = new(0);
+    public NetworkVariable<int> Exp = new();
     public int ExpToLevelUp { get; private set; } = 100;
-    private NetworkVariable<int> level = new(1);
+    private readonly NetworkVariable<int> level = new(1);
 
     // Status
     public NetworkVariable<int> MaxHp = new();

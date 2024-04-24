@@ -114,7 +114,6 @@ public class HostGameManager : IDisposable
     public async void Shutdown()
     {
         HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
-
         if (!string.IsNullOrEmpty(lobbyId))
         {
             try

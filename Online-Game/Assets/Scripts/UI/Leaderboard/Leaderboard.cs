@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -65,7 +64,7 @@ public class Leaderboard : NetworkBehaviour
         {
             ClientId = player.OwnerClientId,
             PlayerName = player.PlayerName.Value,
-            Exp = player.Health.Exp.Value
+            Exp = 0
         });
 
         player.Health.Exp.OnValueChanged += (oldExp, newExp) =>
@@ -93,7 +92,6 @@ public class Leaderboard : NetworkBehaviour
         switch (changeEvent.Type)
         {
             case NetworkListEvent<LeaderboardEntityState>.EventType.Add:
-                Debug.Log("Add new player to leaderboard");
                 if(!entityDisplays.Any(x=>x.ClientId == changeEvent.Value.ClientId))
                 {
                     LeaderboardEntityDisplay leaderboardEntity =
