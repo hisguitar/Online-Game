@@ -29,7 +29,7 @@ public class Enemy : NetworkBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject floatingTextPrefab;
 
-    private ulong playerId;
+    private ulong playerID;
     private float countIdleTime = 0f;
     private float distance;
     private EnemyState state;
@@ -246,21 +246,22 @@ public class Enemy : NetworkBehaviour
     #region Deal damage to player & Check owner of bullet
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // If rigidbody == null, the code below will not working
         Rigidbody2D otherRigidbody = collision.attachedRigidbody;
         if (otherRigidbody == null) return;
 
-        // Take Damage to player here!
+        // Take Damage to player
         if (otherRigidbody.TryGetComponent<Health>(out Health player))
         {
             player.TakeDamage(EnemyStr);
         }
 
+        // Check owner of bullet
         if (otherRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
         {
-            playerId = bullet.ownerClientId;
+            playerID = bullet.ownerClientId;
         }
     }
-
     #endregion
 
     #region Take damage
@@ -276,7 +277,7 @@ public class Enemy : NetworkBehaviour
         {
             if (IsServer)
             {
-                Health player = NetworkManager.Singleton.ConnectedClients[playerId].PlayerObject.GetComponent<Health>();
+                Health player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<Health>();
                 if (player != null)
                 {
                     player.GainExp(exp);

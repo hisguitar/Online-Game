@@ -6,12 +6,22 @@ using UnityEngine.UI;
 
 public class Health : NetworkBehaviour
 {
+    #region Reference to object
     [SerializeField] private Image hpBar;
-    [SerializeField] private TMP_Text currentHpText;
     [SerializeField] private TMP_Text levelText;
+    [SerializeField] private TMP_Text currentHpText;
     [SerializeField] private GameObject floatingTextPrefab;
+    #endregion
 
-    // Exp and Level
+    #region Create color
+    [HideInInspector] public Color RedFF6666 = new(1f, 0.4f, 0.4f);
+    [HideInInspector] public Color RedFF0D0D = new(1f, 0.051f, 0.051f);
+    [HideInInspector] public Color Green99FF66 = new(0.6f, 1.0f, 0.4f);
+    [HideInInspector] public Color YellowFFFF0D = new(1f, 1f, 0.051f);
+    #endregion
+
+    #region Level system & Player status
+    // Level & Exp
     public NetworkVariable<int> Exp = new();
     public int ExpToLevelUp { get; private set; } = 100;
     private readonly NetworkVariable<int> level = new(1);
@@ -23,17 +33,13 @@ public class Health : NetworkBehaviour
     public int PlayerVit { get; private set; } = 11;
     public float PlayerAgi { get; private set; } = 3f;
 
-    // New Color
-    [HideInInspector] public Color RedFF6666 = new(1f, 0.4f, 0.4f);
-    [HideInInspector] public Color RedFF0D0D = new(1f, 0.051f, 0.051f);
-    [HideInInspector] public Color Green99FF66 = new(0.6f, 1.0f, 0.4f);
-    [HideInInspector] public Color YellowFFFF0D = new(1f, 1f, 0.051f);
-
+    public Action<Health> OnDie;
+    private ulong playerID;
     private bool isDead;
+    private readonly int exp = 75;
     private readonly int statsConverter = 10;
     private readonly float lerpSpeed = 3f;
-    
-    public Action<Health> OnDie;
+    #endregion
 
     public override void OnNetworkSpawn()
     {
@@ -125,6 +131,22 @@ public class Health : NetworkBehaviour
     }
     #endregion
 
+    #region Check owner of bullet
+    // Check owner of bullet to give exp to player who killed this player.
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // If rigidbody == null, the code below will not working
+        Rigidbody2D otherRigidbody = collision.attachedRigidbody;
+        if (otherRigidbody == null) return;
+
+        // Check owner of bullet
+        if (otherRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
+        {
+            playerID = bullet.ownerClientId;
+        }
+    }
+    #endregion
+
     #region Take Damage
     public void TakeDamage(int amount)
     {
@@ -154,6 +176,14 @@ public class Health : NetworkBehaviour
 
         if (CurrentHp.Value == 0)
         {
+            // Gain exp when killing other players.
+            Health player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<Health>();
+            if (player != null)
+            {
+                player.GainExp(exp);
+            }
+
+            // Player die process
             OnDie?.Invoke(this);
             isDead = true;
         }
