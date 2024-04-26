@@ -38,7 +38,7 @@ public class DealDamageOnContact : MonoBehaviour
 
         if (col.TryGetComponent<Health>(out Health player))
         {
-            player.TakeDamage(player.PlayerStr);
+            player.TakeDamage(PlayerStr);
             Destroy(gameObject);
         }
         #endregion
