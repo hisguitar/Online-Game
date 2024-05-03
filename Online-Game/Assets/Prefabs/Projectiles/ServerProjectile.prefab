@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2541282704238984852, guid: 258f884f778b2cb4eb4c989f72862971, type: 3}
+      propertyPath: lifetime
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 6465125154837488804, guid: 258f884f778b2cb4eb4c989f72862971, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -77,4 +81,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87f3f5dd201ffe499c461924d40fd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20

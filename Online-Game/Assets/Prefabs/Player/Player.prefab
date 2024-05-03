@@ -846,8 +846,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7767cedebcd424aac56e5d91ac51ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 12
-  fireRate: 4
+  projectileSpeed: 8
+  fireRate: 2
   inputReader: {fileID: 11400000, guid: 975d0298b6bcfe94f8fc8780b167da5d, type: 2}
   shootingPoint: {fileID: 981043017998373650}
   serverProjectilePrefab: {fileID: 3811696718406717514, guid: f3f3ae450a642a94e85de95db7453420, type: 3}
@@ -989,19 +989,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 610460649838397910}
-  currentHpText: {fileID: 1667885097521568175}
   levelText: {fileID: 8420980905488778256}
+  currentHpText: {fileID: 1667885097521568175}
   floatingTextPrefab: {fileID: 1775429853925093715, guid: 52a237434926e5e46856900c15072934, type: 3}
-  level:
-    m_InternalValue: 1
-  MaxHp:
-    m_InternalValue: 0
-  CurrentHp:
-    m_InternalValue: 0
   RedFF6666: {r: 1, g: 0.4, b: 0.4, a: 1}
   RedFF0D0D: {r: 1, g: 0.051, b: 0.051, a: 1}
   Green99FF66: {r: 0.6, g: 1, b: 0.4, a: 1}
   YellowFFFF0D: {r: 1, g: 1, b: 0.051, a: 1}
+  Exp:
+    m_InternalValue: 0
+  MaxHp:
+    m_InternalValue: 0
+  CurrentHp:
+    m_InternalValue: 0
 --- !u!1 &4922571504014082235
 GameObject:
   m_ObjectHideFlags: 0
