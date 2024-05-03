@@ -187,8 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 20
-    m_Right: 20
+    m_Left: 0
+    m_Right: 0
     m_Top: 0
     m_Bottom: 10
   m_ChildAlignment: 1
@@ -499,6 +499,7 @@ GameObject:
   - component: {fileID: 112046293}
   - component: {fileID: 112046292}
   - component: {fileID: 112046295}
+  - component: {fileID: 112046296}
   m_Layer: 0
   m_Name: LeaderboardToggle
   m_TagString: Untagged
@@ -523,8 +524,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -115, y: -10}
-  m_SizeDelta: {x: 80, y: 35}
+  m_AnchoredPosition: {x: -170, y: -10}
+  m_SizeDelta: {x: 120, y: 35}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &112046292
 MonoBehaviour:
@@ -570,7 +571,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1104173149}
+      - m_Target: {fileID: 112046296}
         m_TargetAssemblyTypeName: ToggleWindow, Assembly-CSharp
         m_MethodName: OnOpenOrClose
         m_Mode: 1
@@ -641,6 +642,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &112046296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112046290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 482c8e333c7af8044891ad4df68d9b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shortcut: 114
+  window: {fileID: 1104173145}
 --- !u!1 &129366383
 GameObject:
   m_ObjectHideFlags: 0
@@ -34801,6 +34816,7 @@ GameObject:
   - component: {fileID: 375650262}
   - component: {fileID: 375650261}
   - component: {fileID: 375650264}
+  - component: {fileID: 375650265}
   m_Layer: 0
   m_Name: SettingsToggle
   m_TagString: Untagged
@@ -34826,7 +34842,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -10, y: -10}
-  m_SizeDelta: {x: 95, y: 35}
+  m_SizeDelta: {x: 150, y: 35}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &375650261
 MonoBehaviour:
@@ -34872,7 +34888,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 848913928}
+      - m_Target: {fileID: 375650265}
         m_TargetAssemblyTypeName: ToggleWindow, Assembly-CSharp
         m_MethodName: OnOpenOrClose
         m_Mode: 1
@@ -34943,6 +34959,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &375650265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375650259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 482c8e333c7af8044891ad4df68d9b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shortcut: 27
+  window: {fileID: 848913925}
 --- !u!4 &381345850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7103490195088615801, guid: 9742154a68f00f34eb39d16ff979efca, type: 3}
@@ -48076,7 +48106,6 @@ GameObject:
   - component: {fileID: 848913930}
   - component: {fileID: 848913929}
   - component: {fileID: 848913927}
-  - component: {fileID: 848913928}
   m_Layer: 0
   m_Name: SettingsBackground
   m_TagString: Untagged
@@ -48119,18 +48148,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 2917469365226297338}
---- !u!114 &848913928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 848913925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 482c8e333c7af8044891ad4df68d9b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &848913929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48201,10 +48218,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 937083501}
-  - {fileID: 1104173146}
-  - {fileID: 112046291}
   - {fileID: 848913926}
   - {fileID: 375650260}
+  - {fileID: 1104173146}
+  - {fileID: 112046291}
   m_Father: {fileID: 1613051126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -49413,7 +49430,6 @@ GameObject:
   - component: {fileID: 1104173146}
   - component: {fileID: 1104173148}
   - component: {fileID: 1104173147}
-  - component: {fileID: 1104173149}
   m_Layer: 0
   m_Name: LeaderboardBackground
   m_TagString: Untagged
@@ -49480,18 +49496,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104173145}
   m_CullTransparentMesh: 1
---- !u!114 &1104173149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104173145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 482c8e333c7af8044891ad4df68d9b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1112771374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4192274842627498877, guid: 289fee8edb40fe64aa61a756ffd199e9, type: 3}
@@ -54335,7 +54339,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Setting
+  m_text: Setting (Esc)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3c41712e02a6a9b479c510080d7faa9a, type: 2}
   m_sharedMaterial: {fileID: -6225459929814480895, guid: 3c41712e02a6a9b479c510080d7faa9a, type: 2}
@@ -54618,7 +54622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rank
+  m_text: Rank (R)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3c41712e02a6a9b479c510080d7faa9a, type: 2}
   m_sharedMaterial: {fileID: -6225459929814480895, guid: 3c41712e02a6a9b479c510080d7faa9a, type: 2}
