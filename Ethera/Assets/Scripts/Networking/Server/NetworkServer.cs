@@ -27,7 +27,7 @@ public class NetworkServer : IDisposable
 
         clientIdToAuth[request.ClientNetworkId] = userData.userAuthId;
         authIdToUserData[userData.userAuthId] = userData;
-        //Debug.Log(userData.userName);
+        // Debug.Log(userData.userName);
 
         response.Approved = true;
         response.Position = SpawnPoint.GetRandomSpawnPos(); // Spawn player

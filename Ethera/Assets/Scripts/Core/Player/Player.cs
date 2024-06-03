@@ -6,14 +6,14 @@ using System;
 
 public class Player : NetworkBehaviour
 {
-    [Header("Settings")]
+    [Header("Player settings")]
     // Character Creation
     public NetworkVariable<FixedString32Bytes> PlayerName = new();
     public NetworkVariable<int> PlayerColorIndex = new();
 
     [field: SerializeField] public Health Health { get; private set; }
 
-    [Header("Reference")]
+    [Header("Camera Settings")]
     [SerializeField] private int ownerPriority = 15;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
@@ -28,6 +28,10 @@ public class Player : NetworkBehaviour
             UserData userData =
                 HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
 
+            /// If userData is null,
+            /// it is possible that ApprovalCheck() in NetworkServer Not activated,
+            /// the solution is to go to NetBootstrap scene
+            /// and tick Connection Approval of NetworkManager to True.
             PlayerName.Value = userData.userName;
             PlayerColorIndex.Value = userData.userColorIndex;
 

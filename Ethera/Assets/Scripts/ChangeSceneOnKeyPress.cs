@@ -1,25 +1,28 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Animator))]
 public class ChangeSceneOnKeyPress : MonoBehaviour
 {
-    public string sceneName; // Name of the scene to load
-    public Animator animator; // Animator that you want to control by this script
+    [SerializeField] private string sceneName;
+    [SerializeField] private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
-        // Check if any key is pressed
         if (Input.anyKeyDown)
         {
-            // Play animation
             animator.SetTrigger("ChangeScene");
         }
     }
 
-    // Change scene method is used in 'Press any key to start' animation
+    // Change scene method is used in 'Animation'
     private void ChangeScene()
     {
-        // Change scene
         SceneManager.LoadScene(sceneName);
     }
 }

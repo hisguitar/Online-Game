@@ -1,21 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NetworkChat : NetworkBehaviour
 {
-    private string playerName;
-
-    public int maxMessages = 25;
-    public GameObject messageTextPrefab, chatPanel;
+    [SerializeField] private int maxMessages = 25;
+    [SerializeField] private GameObject messageTextPrefab, chatPanel;
     [SerializeField] private TMP_InputField textInput;
-    public Color playerMessage, info;
-
-    [SerializeField] List<Message> messageList = new();
+    [SerializeField] private Color playerMessage, info;
+    private readonly List<Message> messageList = new();
+    private string playerName;
 
     private void Start()
     {
@@ -24,6 +19,12 @@ public class NetworkChat : NetworkBehaviour
 
     private void Update()
     {
+        DetectTyping();
+    }
+
+    private void DetectTyping()
+    {
+        // Typing
         if (textInput.text != "")
         {
             if (Input.GetKeyDown(KeyCode.Return))
@@ -110,7 +111,7 @@ public class Message
     public string text;
     public TMP_Text messageTextPrefab;
     public MessageType messageType;
-    
+
     public enum MessageType
     {
         playerMessage,
