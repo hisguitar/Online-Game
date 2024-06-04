@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
+/// <summary>
+/// This script forces you to start playback at Scene 0, no matter what scene you are in.
+/// </summary>
 [InitializeOnLoad]
 public class StartupSceneLoader
 {

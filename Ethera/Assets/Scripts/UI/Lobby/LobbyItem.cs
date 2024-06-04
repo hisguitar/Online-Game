@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LobbyItem : MonoBehaviour
 {
-    [SerializeField] private TMP_Text lobbyNameText;
-    [SerializeField] private TMP_Text lobbyPlayersText;
+    [SerializeField] [Tooltip("Host's name")] private TMP_Text lobbyNameText;
+    [SerializeField] [Tooltip("Number of player in that room")] private TMP_Text lobbyPlayersText;
 
     private LobbiesList lobbiesList;
     private Lobby lobby;

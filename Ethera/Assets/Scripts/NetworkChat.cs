@@ -5,16 +5,17 @@ using UnityEngine;
 
 public class NetworkChat : NetworkBehaviour
 {
-    [SerializeField] private int maxMessages = 25;
+    [SerializeField] [Range(0, 100)] private int maxMessages = 25;
     [SerializeField] private GameObject messageTextPrefab, chatPanel;
     [SerializeField] private TMP_InputField textInput;
-    [SerializeField] private Color playerMessage, info;
+    [SerializeField] [Tooltip("Different types of text colors")] private Color playerMessage, info;
     private readonly List<Message> messageList = new();
     private string playerName;
 
     private void Start()
     {
         playerName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Player");
+        SendMessageServerRpc("[System] Your join code is '" + PlayerPrefs.GetString("JoinCode") + "', You can use this code to invite friends.", Message.MessageType.info);
     }
 
     private void Update()

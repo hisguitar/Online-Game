@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ToggleWindow : MonoBehaviour
 {
-    public GameObject window;
-    public KeyCode shortcut; // Key to open/close window
+    [SerializeField] [Tooltip("Window that you want to toggle")] private GameObject window;
+    [SerializeField] [Tooltip("Shortcut to toggle window")] private KeyCode shortcut;
 
     private void Update()
     {

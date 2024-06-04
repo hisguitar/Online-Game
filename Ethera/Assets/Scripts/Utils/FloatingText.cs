@@ -3,7 +3,7 @@ using UnityEngine;
 public class FloatingText : MonoBehaviour
 {
     [SerializeField] private float destroyTime = 0.4f;
-    [SerializeField] private float randomX = 0.5f;
+    [SerializeField] [Tooltip("Range of random x position when FloatingText is created")] private float randomX = 0.5f;
 
     private void Start()
     {

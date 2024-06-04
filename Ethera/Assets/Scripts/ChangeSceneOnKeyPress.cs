@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class ChangeSceneOnKeyPress : MonoBehaviour
 {
     [SerializeField] private string sceneName;
-    [SerializeField] private Animator animator;
+    [SerializeField] [Tooltip("Animator that you want to do something before changing scenes.")] private Animator animator;
 
     private void Start()
     {

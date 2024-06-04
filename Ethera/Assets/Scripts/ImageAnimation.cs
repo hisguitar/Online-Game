@@ -9,10 +9,10 @@ public class ImageAnimation : MonoBehaviour
     public float animationSpeed;
 
     private int indexSprite;
-    Coroutine coroutineAnimation;
+    private Coroutine coroutineAnimation;
     bool IsDone;
 
-    public void Start()
+    private void Start()
     {
         PlayAnimation();
     }
@@ -31,7 +31,7 @@ public class ImageAnimation : MonoBehaviour
     }
 
     // This below is how animation works
-    IEnumerator Animation()
+    private IEnumerator Animation()
     {
         yield return new WaitForSeconds(animationSpeed);
         if (indexSprite >= animationSprite.Length)

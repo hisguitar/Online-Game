@@ -4,7 +4,7 @@ using TMPro;
 
 public class LoadingAnimation : MonoBehaviour
 {
-    public TMP_Text loadingText;
+    [SerializeField] private TMP_Text loadingText;
 
     private void Start()
     {

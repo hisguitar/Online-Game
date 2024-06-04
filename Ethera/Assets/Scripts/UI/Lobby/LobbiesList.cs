@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class LobbiesList : MonoBehaviour
 {
-    [SerializeField] private Transform lobbyItemParent;
+    [SerializeField] [Tooltip("It's content game object in scroll view")] private Transform lobbyItemParent;
     [SerializeField] private LobbyItem lobbyItemPrefab;
     private bool isJoining;
     private bool isRefreshing;
