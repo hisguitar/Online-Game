@@ -8,7 +8,7 @@ public class GameHUD : MonoBehaviour
 
     private void Start()
     {
-        joinCodeText.text = "Code\n" + PlayerPrefs.GetString("JoinCode");
+        joinCodeText.text = HostSingleton.Instance.GameManager.JoinCode;
     }
 
     public void LeaveGame()
