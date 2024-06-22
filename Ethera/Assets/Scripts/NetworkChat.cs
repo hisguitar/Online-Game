@@ -9,6 +9,7 @@ public class NetworkChat : NetworkBehaviour
     [SerializeField] private GameObject messageTextPrefab, chatPanel;
     [SerializeField] private TMP_InputField textInput;
     [SerializeField] [Tooltip("Different types of text colors")] private Color playerMessage, info;
+
     private readonly List<Message> messageList = new();
     private string playerName;
 
@@ -39,16 +40,6 @@ public class NetworkChat : NetworkBehaviour
             if (!textInput.isFocused && Input.GetKeyDown(KeyCode.Return))
             {
                 textInput.ActivateInputField();
-            }
-        }
-
-        // Press 'Spacebar' to test info message
-        if (!textInput.isFocused)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SendMessageServerRpc("You pressed the space key!", Message.MessageType.info);
-                Debug.Log("Space");
             }
         }
     }
