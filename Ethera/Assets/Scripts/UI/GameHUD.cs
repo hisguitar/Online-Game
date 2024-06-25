@@ -9,15 +9,19 @@ public class GameHUD : MonoBehaviour
 
     [Header("Panel")]
     [SerializeField] private GameObject _gameHUDPanel;
+    [SerializeField] private GameObject _rankPanel;
     [SerializeField] private GameObject _menuPanel;
+    [SerializeField] private GameObject _insideMenuPanel;
     [SerializeField] private GameObject _optionsPanel;
 
     [Header("Button")]
+    [SerializeField] private Button _rankButton;
     [SerializeField] private Button _menuButton;
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _optionsButton;
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _backToMenuButton;
 
     private void Start()
     {
@@ -27,24 +31,40 @@ public class GameHUD : MonoBehaviour
     #region Register & Unregister button click event
     private void OnEnable()
     {
+        _rankButton.onClick.AddListener(OnClick_Rank);
         _menuButton.onClick.AddListener(OnClick_Menu);
         _resumeButton.onClick.AddListener(OnClick_Resume);
         _optionsButton.onClick.AddListener(OnClick_Options);
         _mainMenuButton.onClick.AddListener(OnClick_MainMenu);
         _quitButton.onClick.AddListener(OnClick_QuitGame);
+        _backToMenuButton.onClick.AddListener(OnClick_BackToMenu);
     }
 
     private void OnDisable()
     {
+        _rankButton.onClick.RemoveListener(OnClick_Rank);
         _menuButton.onClick.RemoveListener(OnClick_Menu);
         _resumeButton.onClick.RemoveListener(OnClick_Resume);
         _optionsButton.onClick.RemoveListener(OnClick_Options);
         _mainMenuButton.onClick.RemoveListener(OnClick_MainMenu);
         _quitButton.onClick.RemoveListener(OnClick_QuitGame);
+        _backToMenuButton.onClick.RemoveListener(OnClick_BackToMenu);
     }
     #endregion
 
     #region Button
+    private void OnClick_Rank()
+    {
+        if (_rankPanel.activeSelf == false)
+        {
+            _rankPanel.SetActive(true);
+        }
+        else if (_rankPanel.activeSelf == true)
+        {
+            _rankPanel.SetActive(false);
+        }
+    }
+
     private void OnClick_Menu()
     {
         _gameHUDPanel.SetActive(false);
@@ -59,8 +79,14 @@ public class GameHUD : MonoBehaviour
 
     private void OnClick_Options()
     {
-        _menuPanel.SetActive(false);
+        _insideMenuPanel.SetActive(false);
         _optionsPanel.SetActive(true);
+    }
+
+    private void OnClick_BackToMenu()
+    {
+        _insideMenuPanel.SetActive(true);
+        _optionsPanel.SetActive(false);
     }
 
     private void OnClick_MainMenu()
