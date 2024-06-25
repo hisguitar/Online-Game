@@ -17,6 +17,8 @@ public class NetworkChat : NetworkBehaviour
     [SerializeField] private Button _generalButton;
     [SerializeField] private Button _messageButton;
     [SerializeField] private Button _infoButton;
+    [SerializeField] private Color activeButtonColor;
+    [SerializeField] private Color inactiveButtonColor;
 
     private readonly List<Message> messageList = new();
     private string playerName;
@@ -45,7 +47,7 @@ public class NetworkChat : NetworkBehaviour
         SendMessageServerRpc("[System] Your join code is '" + PlayerPrefs.GetString("JoinCode") + "', You can use this code to invite friends.", Message.MessageType.info);
     }
 
-    #region Register & Unregister button click event
+    #region Register & Unregister button click event, Update Button States
     private void OnEnable()
     {
         _generalButton.onClick.AddListener(OnClick_General);
@@ -59,7 +61,19 @@ public class NetworkChat : NetworkBehaviour
         _messageButton.onClick.RemoveListener(OnClick_PlayerMessage);
         _infoButton.onClick.RemoveListener(OnClick_Info);
     }
+
+    private void UpdateButtonStates()
+    {
+        _generalButton.image.color = currentFilter == MessageTypeFilter.General ? activeButtonColor : inactiveButtonColor;
+        _messageButton.image.color = currentFilter == MessageTypeFilter.PlayerMessage ? activeButtonColor : inactiveButtonColor;
+        _infoButton.image.color = currentFilter == MessageTypeFilter.Info ? activeButtonColor : inactiveButtonColor;
+    }
     #endregion
+
+    private void Start()
+    {
+        UpdateButtonStates();
+    }
 
     private void Update()
     {
@@ -141,6 +155,7 @@ public class NetworkChat : NetworkBehaviour
     {
         currentFilter = (MessageTypeFilter)filter;
         UpdateChatDisplay();
+        UpdateButtonStates();
     }
 
     private void UpdateChatDisplay()
