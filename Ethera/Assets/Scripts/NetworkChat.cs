@@ -13,9 +13,20 @@ public class NetworkChat : NetworkBehaviour
     private readonly List<Message> messageList = new();
     private string playerName;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        playerName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Player");
+        if (IsServer)
+        {
+            UserData userData =
+                HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+
+            /// If userData is null,
+            /// it is possible that ApprovalCheck() in NetworkServer Not activated,
+            /// the solution is to go to NetBootstrap scene
+            /// and tick Connection Approval of NetworkManager to True.
+            playerName = userData.userName;
+        }
+
         SendMessageServerRpc("[System] Your join code is '" + PlayerPrefs.GetString("JoinCode") + "', You can use this code to invite friends.", Message.MessageType.info);
     }
 
@@ -89,11 +100,6 @@ public class NetworkChat : NetworkBehaviour
         }
 
         return color;
-    }
-
-    public override void OnNetworkDespawn()
-    {
-        base.OnNetworkDespawn();
     }
 }
 
