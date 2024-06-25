@@ -44,7 +44,7 @@ public class NetworkChat : NetworkBehaviour
             playerName = userData.userName;
         }
 
-        SendMessageServerRpc("[System] Your join code is '" + PlayerPrefs.GetString("JoinCode") + "', You can use this code to invite friends.", Message.MessageType.info);
+        SendMessageServerRpc("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
     }
 
     #region Register & Unregister button click event, Update Button States
