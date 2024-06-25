@@ -24,6 +24,7 @@ public class GameHUD : MonoBehaviour
         joinCodeText.text = "Code\n" + HostSingleton.Instance.GameManager.JoinCode;
     }
 
+    #region Register & Unregister button click event
     private void OnEnable()
     {
         _menuButton.onClick.AddListener(OnClick_Menu);
@@ -41,6 +42,7 @@ public class GameHUD : MonoBehaviour
         _mainMenuButton.onClick.RemoveListener(OnClick_MainMenu);
         _quitButton.onClick.RemoveListener(OnClick_QuitGame);
     }
+    #endregion
 
     #region Button
     private void OnClick_Menu()
