@@ -40,7 +40,7 @@ public class HostGameManager : IDisposable
         try
         {
             JoinCode = await Relay.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            Debug.Log(JoinCode);
+            Debug.Log("Host receives join code :" + JoinCode);
         }
         catch (Exception e)
         {

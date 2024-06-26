@@ -25,7 +25,14 @@ public class GameHUD : MonoBehaviour
 
     private void Start()
     {
-        joinCodeText.text = "Code\n" + HostSingleton.Instance.GameManager.JoinCode;
+        if (NetworkManager.Singleton.IsHost)
+        {
+            joinCodeText.text = "Code\n" + HostSingleton.Instance.GameManager.JoinCode;
+        }
+        else
+        {
+            joinCodeText.text = "Code\n" + ClientSingleton.Instance.GameManager.JoinCode;
+        }
     }
 
     #region Register & Unregister button click event

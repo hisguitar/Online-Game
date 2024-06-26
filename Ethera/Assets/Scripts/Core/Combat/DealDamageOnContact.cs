@@ -20,15 +20,15 @@ public class DealDamageOnContact : MonoBehaviour
         }
 
         #region TakeDamage to Enemy
-        if (col.TryGetComponent<Enemy>(out Enemy enemy))
+        if (col.TryGetComponent(out Enemy enemy))
         {
             enemy.TakeDamage(PlayerStr);
             Destroy(gameObject);
         }
         #endregion
-        #region TakeDamage to Player
 
-        if (col.TryGetComponent<NetworkObject>(out NetworkObject netObj))
+        #region TakeDamage to Player
+        if (col.TryGetComponent(out NetworkObject netObj))
         {
             if (ownerClientId == netObj.OwnerClientId)
             {
@@ -36,7 +36,7 @@ public class DealDamageOnContact : MonoBehaviour
             }
         }
 
-        if (col.TryGetComponent<Health>(out Health player))
+        if (col.TryGetComponent(out Health player))
         {
             player.TakeDamage(PlayerStr);
             Destroy(gameObject);

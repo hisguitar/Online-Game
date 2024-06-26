@@ -2,31 +2,15 @@ using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine; 
-using UnityEngine.UI;
 
 public class Health : NetworkBehaviour
 {
-    #region Reference to object
-    [SerializeField] private Image hpBar;
-    [SerializeField] private TMP_Text levelText;
-    [SerializeField] private TMP_Text currentHpText;
-    [SerializeField] private GameObject floatingTextPrefab;
-    #endregion
-
-    #region Create color
-    [HideInInspector] public Color RedFF6666 = new(1f, 0.4f, 0.4f);
-    [HideInInspector] public Color RedFF0D0D = new(1f, 0.051f, 0.051f);
-    [HideInInspector] public Color Green99FF66 = new(0.6f, 1.0f, 0.4f);
-    [HideInInspector] public Color YellowFFFF0D = new(1f, 1f, 0.051f);
-    #endregion
-
-    #region Level system & Player status
-    // Level & Exp
+    // Player Level & Exp
+    public NetworkVariable<int> Level { get; private set; } = new(1);
     public NetworkVariable<int> Exp = new();
     public int ExpToLevelUp { get; private set; } = 100;
-    private readonly NetworkVariable<int> level = new(1);
 
-    // Status
+    // Player Status
     public NetworkVariable<int> MaxHp = new();
     public NetworkVariable<int> CurrentHp = new();
     public int PlayerStr { get; private set; } = 11;
@@ -36,50 +20,28 @@ public class Health : NetworkBehaviour
     public Action<Health> OnDie;
     private ulong playerID;
     private bool isDead;
-    private readonly int exp = 75;
-    private readonly int statsConverter = 10;
-    private readonly float lerpSpeed = 3f;
-    #endregion
+    private readonly int EXPBounty = 75;
+    private readonly int statusConverter = 10;
+
+    [SerializeField] private GameObject floatingTextPrefab;
+
+    [Header("New Color")]
+    public Color RedFF6666 = new(1f, 0.4f, 0.4f);
+    public Color RedFF0D0D = new(1f, 0.051f, 0.051f);
+    public Color Green99FF66 = new(0.6f, 1.0f, 0.4f);
+    public Color YellowFFFF0D = new(1f, 1f, 0.051f);
 
     public override void OnNetworkSpawn()
     {
-        if (!IsServer) { return; }
-
+        if (!IsServer) return;
         CheckAndResetsPlayerStats();
-    }
-
-    private void Update()
-    {
-        if (IsClient)
-        {
-            UIUpdate();
-        }
-    }
-
-    private void UIUpdate()
-    {
-        // Update HpBar Color
-        Color hpBarColor = Color.Lerp(RedFF6666, Green99FF66, (float)CurrentHp.Value / MaxHp.Value);
-        hpBar.color = hpBarColor;
-        currentHpText.color = hpBarColor;
-
-        #region OverHead & Screen UI
-        // Update UI Bar
-        float targetFillAmount = (float)CurrentHp.Value / MaxHp.Value;
-        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, lerpSpeed * Time.deltaTime);
-        hpBar.fillAmount = Mathf.Clamp01(hpBar.fillAmount);
-
-        // Update UI Text
-        currentHpText.text = CurrentHp.Value + "/" + MaxHp.Value;
-        levelText.text = "Lv." + level.Value.ToString();
-        #endregion
     }
 
     #region Check & Reset player stats
     private void CheckAndResetsPlayerStats()
     {
         // Convert stats to use in game
-        MaxHp.Value = PlayerVit * statsConverter;
+        MaxHp.Value = PlayerVit * statusConverter;
 
         // Set to maximum value at first
         CurrentHp.Value = MaxHp.Value;
@@ -103,7 +65,7 @@ public class Health : NetworkBehaviour
         /// if the player has enough Exp to skip multiple levels.
         while (Exp.Value >= ExpToLevelUp)
         {
-            level.Value++;
+            Level.Value++;
             Exp.Value -= ExpToLevelUp;
             ExpToLevelUp = CalculateExpToLevelUp();
             LevelUpRewards();
@@ -111,14 +73,14 @@ public class Health : NetworkBehaviour
             // Show FloatingText
             if (floatingTextPrefab != null)
             {
-                ShowFloatingTextClientRpc($"Level up to {level.Value}!", YellowFFFF0D);
+                ShowFloatingTextClientRpc($"Level up to {Level.Value}!", YellowFFFF0D);
             }
         }
     }
 
     private int CalculateExpToLevelUp()
     {
-        return 100 * level.Value;
+        return 100 * Level.Value;
     }
 
     private void LevelUpRewards()
@@ -128,22 +90,6 @@ public class Health : NetworkBehaviour
         PlayerAgi += 0.1f;
 
         CheckAndResetsPlayerStats();
-    }
-    #endregion
-
-    #region Check owner of bullet
-    // Check owner of bullet to give exp to player who killed this player.
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // If rigidbody == null, the code below will not working
-        Rigidbody2D otherRigidbody = collision.attachedRigidbody;
-        if (otherRigidbody == null) return;
-
-        // Check owner of bullet
-        if (otherRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
-        {
-            playerID = bullet.ownerClientId;
-        }
     }
     #endregion
 
@@ -169,7 +115,8 @@ public class Health : NetworkBehaviour
     // This method can be used for both increasing and decreasing HP
     private void ModifyHealth(int amount)
     {
-        if (isDead) { return; }
+        if (!IsServer) return;
+        if (isDead) return;
 
         int newHealth = CurrentHp.Value + amount;
         CurrentHp.Value = Mathf.Clamp(newHealth, 0, MaxHp.Value);
@@ -180,12 +127,28 @@ public class Health : NetworkBehaviour
             Health player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<Health>();
             if (player != null)
             {
-                player.GainExp(exp);
+                player.GainExp(EXPBounty);
             }
 
             // Player die process
             OnDie?.Invoke(this);
             isDead = true;
+        }
+    }
+    #endregion
+
+    #region Check owner of bullet
+    // Check owner of bullet to give exp to player who killed this player.
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // If rigidbody == null, the code below will not working
+        Rigidbody2D otherRigidbody = collision.attachedRigidbody;
+        if (otherRigidbody == null) return;
+
+        // Check owner of bullet
+        if (otherRigidbody.TryGetComponent(out DealDamageOnContact bullet))
+        {
+            playerID = bullet.ownerClientId;
         }
     }
     #endregion

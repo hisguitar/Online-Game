@@ -4,6 +4,9 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEditor.PackageManager;
+using WebSocketSharp;
+using Unity.Collections;
 
 public class NetworkChat : NetworkBehaviour
 {
@@ -43,8 +46,6 @@ public class NetworkChat : NetworkBehaviour
             /// and tick Connection Approval of NetworkManager to True.
             playerName = userData.userName;
         }
-
-        SendMessageServerRpc("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
     }
 
     #region Register & Unregister button click event, Update Button States
@@ -73,6 +74,15 @@ public class NetworkChat : NetworkBehaviour
     private void Start()
     {
         UpdateButtonStates();
+
+        if (IsServer)
+        {
+            SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
+        }
+        else
+        {
+            SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
+        }
     }
 
     private void Update()

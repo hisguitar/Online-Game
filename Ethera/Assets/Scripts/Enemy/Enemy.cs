@@ -11,7 +11,7 @@ public enum EnemyState
 
 public class Enemy : NetworkBehaviour
 {
-    public int EnemyStr { get; private set; } = 5;
+    private readonly int enemyStr = 5;
     [SerializeField] private NetworkVariable<int> hp = new();
     [SerializeField] private int exp = 20;
 
@@ -244,20 +244,21 @@ public class Enemy : NetworkBehaviour
     #endregion
 
     #region Deal damage to player & Check owner of bullet
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        // If rigidbody == null, the code below will not working
-        Rigidbody2D otherRigidbody = collision.attachedRigidbody;
-        if (otherRigidbody == null) return;
-
-        // Take Damage to player
-        if (otherRigidbody.TryGetComponent<Health>(out Health player))
+        if (col.attachedRigidbody == null)
         {
-            player.TakeDamage(EnemyStr);
+            return;
         }
 
-        // Check owner of bullet
-        if (otherRigidbody.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact bullet))
+        // Deal damage to player
+        if (col.TryGetComponent(out Health player))
+        {
+            player.TakeDamage(enemyStr);
+        }
+
+        // Check owner of bullet when enemy TakeDamage()
+        if (col.TryGetComponent(out DealDamageOnContact bullet))
         {
             playerID = bullet.ownerClientId;
         }
