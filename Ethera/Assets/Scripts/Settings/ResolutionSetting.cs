@@ -25,18 +25,31 @@ public class ResolutionSetting : MonoBehaviour
         // Clear existing options in dropdown
         resolutionDropdown.ClearOptions();
 
-        List<string> options = new List<string>();
+        List<string> options = new();
         int currentResolutionIndex = 0;
 
-        // Populate dropdown with resolution options
-        for (int i = 0; i < resolutions.Length; i++)
+        // Filter resolutions to include only those that match the aspect ratio of the current screen
+        List<Resolution> filteredResolutions = new List<Resolution>();
+        float currentAspectRatio = (float)Screen.width / Screen.height;
+
+        foreach (Resolution resolution in resolutions)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
+            float aspectRadio = (float)resolution.width / resolution.height;
+            if (Mathf.Approximately(aspectRadio, currentAspectRatio))
+            {
+                filteredResolutions.Add(resolution);
+            }
+        }
+
+        // Populate dropdown with resolution options
+        for (int i = 0; i < filteredResolutions.Count; i++)
+        {
+            string option = filteredResolutions[i].width + " x " + filteredResolutions[i].height;
             options.Add(option);
 
             // Check if the resolution matches the game screen resolution
-            if (resolutions[i].width == Screen.width &&
-                resolutions[i].height == Screen.height)
+            if (filteredResolutions[i].width == Screen.width &&
+                filteredResolutions[i].height == Screen.height)
             {
                 currentResolutionIndex = i;
             }
