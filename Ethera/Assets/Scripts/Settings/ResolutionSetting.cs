@@ -39,11 +39,14 @@ public class ResolutionSetting : MonoBehaviour
         // Clear existing options in dropdown
         resolutionDropdown.ClearOptions();
 
-        List<string> options = new List<string>();
+        List<string> options = new();
         int currentResolutionIndex = 0;
 
         // Calculate current aspect ratio
         float currentAspectRatio = (float)Screen.width / Screen.height;
+
+        // Use a HashSet to track unique resolutions based on width and height
+        HashSet<string> uniqueResolutions = new HashSet<string>();
 
         // Populate dropdown with resolution options
         for (int i = 0; i < resolutions.Length; i++)
@@ -55,12 +58,17 @@ public class ResolutionSetting : MonoBehaviour
             if (Mathf.Approximately(aspectRatio, currentAspectRatio))
             {
                 string option = resolutions[i].width + " x " + resolutions[i].height;
-                options.Add(option);
 
-                // Check if the resolution matches the game screen resolution
-                if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                // Add the resolution to the options only if it's not already added
+                if (uniqueResolutions.Add(option))
                 {
-                    currentResolutionIndex = i;
+                    options.Add(option);
+
+                    // Check if the resolution matches the game screen resolution
+                    if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                    {
+                        currentResolutionIndex = options.Count - 1;
+                    }
                 }
             }
         }
@@ -86,8 +94,15 @@ public class ResolutionSetting : MonoBehaviour
             return;
         }
 
-        /// Change resolution
-        Resolution resolution = resolutions[resolutionDropdown.value];
+        // Get the selected resolution index
+        int selectedResolutionIndex = resolutionDropdown.value;
+
+        // Get the actual resolution from the uniqueResolutions dictionary
+        string selectedOption = resolutionDropdown.options[selectedResolutionIndex].text;
+        int resolutionIndex = Array.FindIndex(resolutions, r => $"{r.width} x {r.height}" == selectedOption);
+
+        // Change resolution
+        Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 
         confirmSetting.Confirmation(10, "resolution", ConfirmResolution, RevertResolution);
