@@ -9,7 +9,6 @@ public class ImageAnimation : MonoBehaviour
     public float animationSpeed;
 
     private int indexSprite;
-    private Coroutine coroutineAnimation;
     bool IsDone;
 
     private void Start()
@@ -42,7 +41,7 @@ public class ImageAnimation : MonoBehaviour
         indexSprite += 1;
         if (IsDone == false)
         {
-            coroutineAnimation = StartCoroutine(Animation());
+            StartCoroutine(Animation());
         }
     }
 }
