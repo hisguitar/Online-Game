@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,23 +12,25 @@ public enum EnemyState
 
 public class Enemy : NetworkBehaviour
 {
-    private readonly int enemyStr = 5;
-    [SerializeField] private NetworkVariable<int> hp = new();
-    [SerializeField] private int exp = 20;
-
-    [Header("Patrol")]
-    [SerializeField] private float patrolSpeed = 1f;
-    [SerializeField] private float patrolDistance = 1f;
-    [SerializeField] private float idleTime = 2f;
-
-    [Header("Chase")]
-    [SerializeField] private float chaseSpeed = 2f;
-    [SerializeField] private float chaseDistance = 3f;
-
     [Header("Reference")]
+    [SerializeField] private EnemyData enemyData;
     [SerializeField] private SpriteRenderer enemySprite;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject floatingTextPrefab;
+
+    [Header("Enemy Stats")]
+    private NetworkVariable<int> hp = new();
+    private int EXPBounty;
+    private int enemyStr;
+
+    [Header("Enemy Patrol Stats")]
+    private float patrolSpeed;
+    private float patrolDistance;
+    private float idleTime;
+
+    [Header("Enemy Chase Stats")]
+    private float chaseSpeed;
+    private float chaseDistance;
 
     private ulong playerID;
     private float countIdleTime = 0f;
@@ -42,6 +45,17 @@ public class Enemy : NetworkBehaviour
 
     private void Start()
     {
+        /// Get enemy stats from enemyData
+        hp.Value = enemyData.hp;
+        EXPBounty = enemyData.EXPBounty;
+        enemyStr = enemyData.enemyStr;
+        patrolSpeed = enemyData.patrolSpeed;
+        patrolDistance = enemyData.patrolDistance;
+        idleTime = enemyData.idleTime;
+        chaseSpeed = enemyData.chaseSpeed;
+        chaseDistance = enemyData.chaseDistance;
+        ///
+
         startPosition = transform.position;
         randomDirection = GetRandomDirection();
         state = EnemyState.Idle;
@@ -281,7 +295,7 @@ public class Enemy : NetworkBehaviour
                 Health player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<Health>();
                 if (player != null)
                 {
-                    player.GainExp(exp);
+                    player.GainExp(EXPBounty);
                 }
                 enemySpawner.EnemyDestroyed(gameObject);
                 NetworkObject.Despawn();

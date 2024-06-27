@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7233625760430650986}
   - component: {fileID: 8476784640650272714}
   m_Layer: 8
-  m_Name: Rat
+  m_Name: EnemyRat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 619209297
+  GlobalObjectIdHash: 2199518402
   InScenePlacedSourceGlobalObjectIdHash: 619209297
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -272,9 +272,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9582d17957c287a4b94ca867c84cb395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: 6a9348237e3435a4382d2fd4835359d4, type: 2}
   hp:
     m_InternalValue: 50
-  exp: 20
+  EXPBounty: 0
+  enemyStr: 0
   patrolSpeed: 1
   patrolDistance: 1
   idleTime: 2
