@@ -14,10 +14,12 @@ public class DealDamageOnContact : MonoBehaviour
         Destroy(gameObject, lifetime);
     }
 
+    /// To give Exp to the person who shoots last shot.
+    /// Use SetOwner() to check owner of bullet.
     public void SetOwner(ulong ownerClientId, int playerPlayerStr)
     {
         this.OwnerClientId = ownerClientId;
-        this.PlayerStr = playerPlayerStr; // Change this line
+        this.PlayerStr = playerPlayerStr;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -38,8 +40,10 @@ public class DealDamageOnContact : MonoBehaviour
         #region TakeDamage to Player
         if (col.TryGetComponent(out NetworkObject netObj))
         {
+            // If 'ClientId of bullet' = 'this player ClientId'
             if (OwnerClientId == netObj.OwnerClientId)
             {
+                // then do nothing.
                 return;
             }
         }

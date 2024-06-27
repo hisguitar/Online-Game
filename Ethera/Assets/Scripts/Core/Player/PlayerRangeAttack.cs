@@ -20,13 +20,13 @@ public class PlayerRangeAttack : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) { return; }
+        if (!IsOwner) return;
         inputReader.PrimaryFireEvent += HandlePrimaryFire;
     }
 
     public override void OnNetworkDespawn()
     {
-        if (!IsOwner) { return; }
+        if (!IsOwner) return;
         inputReader.PrimaryFireEvent -= HandlePrimaryFire;
     }
 
@@ -37,34 +37,32 @@ public class PlayerRangeAttack : NetworkBehaviour
 
     private void Update()
     {
-        // Check is owner?
-        if (!IsOwner) { return; } // If not owner, return.
-        // Check is player shooting?
-        if (!shouldFire) { return; } // If player is not shooting, return.
-        // Check if fireRate is due?
-        if (Time.time < previousFireTime + (1/fireRate)) { return; } // If not due, return.
+        // Check is owner?, if not owner then do nothing.
+        if (!IsOwner) return;
+        // Check is player shooting?, if not then do nothing.
+        if (!shouldFire) return;
+        // Check if fireRate is due?, if not then do nothing.
+        if (Time.time < previousFireTime + (1/fireRate)) return;
 
-        // If passed every condition
-        // This client shooting!
+        // If passed every condition above
+        // This client shooting! (other client can't see this bullet) but..
         SpawnDummyProjectile(shootingPoint.position, shootingPoint.up);
-        // Others client shooting!
+        // Others client see this bullet instead!
         PrimaryFireServerRpc(shootingPoint.position, shootingPoint.up);
 
         // After shooting, set 'previousFireTime' to be 'shooting time'
         previousFireTime = Time.time;
-
     }
 
+    #region Spawn Projectile
     // Dummy projectile shooting (Single player case)
     private void SpawnDummyProjectile(Vector3 shootingPos, Vector3 direction)
     {
         GameObject projectile = Instantiate(clientProjectilePrefab, shootingPos, Quaternion.identity);
-
         projectile.transform.up = direction;
 
-        // Ignore player collision
+        // Ignore player(owner of bullet) collision
         Physics2D.IgnoreCollision(playerCollider, projectile.GetComponent<Collider2D>());
-
         if(projectile.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
         {
             rb.velocity = rb.transform.up * projectileSpeed;
@@ -76,18 +74,17 @@ public class PlayerRangeAttack : NetworkBehaviour
     private void PrimaryFireServerRpc(Vector3 shootingPos, Vector3 direction)
     {
         GameObject projectile = Instantiate(serverProjectilePrefab, shootingPos, Quaternion.identity);
-
         projectile.transform.up = direction;
 
         // Ignore player collision
         Physics2D.IgnoreCollision(playerCollider, projectile.GetComponent<Collider2D>());
-
-        if (projectile.TryGetComponent<DealDamageOnContact>(out DealDamageOnContact dealDamage))
+        if (projectile.TryGetComponent(out DealDamageOnContact dealDamage))
         {
-            dealDamage.SetOwner(OwnerClientId, player.PlayerStr); // Change this line
+            // Send 'ClientId of bullet' to 'DealDamageOnContact.cs'
+            dealDamage.SetOwner(OwnerClientId, player.PlayerStr);
         }
 
-        if (projectile.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb))
+        if (projectile.TryGetComponent(out Rigidbody2D rb))
         {
             rb.velocity = rb.transform.up * projectileSpeed;
         }
@@ -101,7 +98,8 @@ public class PlayerRangeAttack : NetworkBehaviour
     private void SpawnDummyProjectileClientRpc(Vector3 shootingPos, Vector3 direction)
     {
         // The code below affects Client[Client] only.
-        if (IsOwner) { return; }
+        if (IsOwner) return;
         SpawnDummyProjectile(shootingPos, direction);
     }
+    #endregion
 }
