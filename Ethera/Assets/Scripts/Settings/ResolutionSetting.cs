@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 [RequireComponent(typeof(ConfirmSetting))]
 public class ResolutionSetting : MonoBehaviour
@@ -22,36 +23,45 @@ public class ResolutionSetting : MonoBehaviour
         // Initialize resolutions array with available screen resolutions
         resolutions = Screen.resolutions;
 
+        // Sort resolutions from highest to lowest
+        Array.Sort(resolutions, (r1, r2) =>
+        {
+            if (r1.width != r2.width)
+            {
+                return r2.width.CompareTo(r1.width); // Sort by width descending
+            }
+            else
+            {
+                return r2.height.CompareTo(r1.height); // If widths are equal, sort by height descending
+            }
+        });
+
         // Clear existing options in dropdown
         resolutionDropdown.ClearOptions();
 
-        List<string> options = new();
+        List<string> options = new List<string>();
         int currentResolutionIndex = 0;
 
-        // Filter resolutions to include only those that match the aspect ratio of the current screen
-        List<Resolution> filteredResolutions = new List<Resolution>();
+        // Calculate current aspect ratio
         float currentAspectRatio = (float)Screen.width / Screen.height;
 
-        foreach (Resolution resolution in resolutions)
-        {
-            float aspectRadio = (float)resolution.width / resolution.height;
-            if (Mathf.Approximately(aspectRadio, currentAspectRatio))
-            {
-                filteredResolutions.Add(resolution);
-            }
-        }
-
         // Populate dropdown with resolution options
-        for (int i = 0; i < filteredResolutions.Count; i++)
+        for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = filteredResolutions[i].width + " x " + filteredResolutions[i].height;
-            options.Add(option);
+            // Calculate aspect ratio of the resolution
+            float aspectRatio = (float)resolutions[i].width / resolutions[i].height;
 
-            // Check if the resolution matches the game screen resolution
-            if (filteredResolutions[i].width == Screen.width &&
-                filteredResolutions[i].height == Screen.height)
+            // Check if the aspect ratios are approximately equal
+            if (Mathf.Approximately(aspectRatio, currentAspectRatio))
             {
-                currentResolutionIndex = i;
+                string option = resolutions[i].width + " x " + resolutions[i].height;
+                options.Add(option);
+
+                // Check if the resolution matches the game screen resolution
+                if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                {
+                    currentResolutionIndex = i;
+                }
             }
         }
 
