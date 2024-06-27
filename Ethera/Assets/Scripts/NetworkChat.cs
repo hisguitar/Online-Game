@@ -4,9 +4,6 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
-using UnityEditor.PackageManager;
-using WebSocketSharp;
-using Unity.Collections;
 
 public class NetworkChat : NetworkBehaviour
 {
