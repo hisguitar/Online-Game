@@ -148,7 +148,7 @@ public class Health : NetworkBehaviour
         // Check owner of bullet
         if (otherRigidbody.TryGetComponent(out DealDamageOnContact bullet))
         {
-            playerID = bullet.ownerClientId;
+            playerID = bullet.OwnerClientId;
         }
     }
     #endregion

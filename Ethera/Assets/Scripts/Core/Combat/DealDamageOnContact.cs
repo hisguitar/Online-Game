@@ -3,12 +3,20 @@ using UnityEngine;
 
 public class DealDamageOnContact : MonoBehaviour
 {
-    public ulong ownerClientId { get; private set; }
+    [SerializeField] private float lifetime = 0.8f;
+
+    public ulong OwnerClientId { get; private set; }
     private int PlayerStr;
+
+    // Destroys itself when time runs out
+    private void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
 
     public void SetOwner(ulong ownerClientId, int playerPlayerStr)
     {
-        this.ownerClientId = ownerClientId;
+        this.OwnerClientId = ownerClientId;
         this.PlayerStr = playerPlayerStr; // Change this line
     }
 
@@ -30,7 +38,7 @@ public class DealDamageOnContact : MonoBehaviour
         #region TakeDamage to Player
         if (col.TryGetComponent(out NetworkObject netObj))
         {
-            if (ownerClientId == netObj.OwnerClientId)
+            if (OwnerClientId == netObj.OwnerClientId)
             {
                 return;
             }

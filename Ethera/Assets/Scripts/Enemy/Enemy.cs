@@ -260,7 +260,7 @@ public class Enemy : NetworkBehaviour
         // Check owner of bullet when enemy TakeDamage()
         if (col.TryGetComponent(out DealDamageOnContact bullet))
         {
-            playerID = bullet.ownerClientId;
+            playerID = bullet.OwnerClientId;
         }
     }
     #endregion

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float lifetime = 3f;
+    [SerializeField] private float lifetime = 0.8f;
+    [SerializeField] private GameObject explosionPrefab;
 
     // Destroys itself when time runs out
     private void Start()
@@ -17,7 +18,9 @@ public class Projectile : MonoBehaviour
         {
             return;
         }
+        else
         {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
