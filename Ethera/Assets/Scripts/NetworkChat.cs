@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using System.Text;
 
 public class NetworkChat : NetworkBehaviour
 {
@@ -41,6 +42,13 @@ public class NetworkChat : NetworkBehaviour
             /// it is possible that ApprovalCheck() in NetworkServer Not activated,
             /// the solution is to go to NetBootstrap scene
             /// and tick Connection Approval of NetworkManager to True.
+            playerName = userData.userName;
+        }
+
+        if (!IsServer)
+        {
+            string payload = Encoding.UTF8.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
+            UserData userData = JsonUtility.FromJson<UserData>(payload);
             playerName = userData.userName;
         }
     }
