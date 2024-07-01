@@ -17,7 +17,10 @@ public class DisplaySetting : MonoBehaviour
     private void Start()
     {
         confirmSetting = GetComponent<ConfirmSetting>();
+    }
 
+    private void OnEnable()
+    {
         /// Display Setting at Start()
         displayModeDropdown.ClearOptions();
 
