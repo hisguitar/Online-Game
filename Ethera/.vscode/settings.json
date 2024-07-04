@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Online-Game.sln"
+    "dotnet.defaultSolution": "Ethera.sln"
 }

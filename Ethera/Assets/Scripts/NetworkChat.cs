@@ -33,24 +33,7 @@ public class NetworkChat : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            UserData userData =
-                HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
-
-            /// If userData is null,
-            /// it is possible that ApprovalCheck() in NetworkServer Not activated,
-            /// the solution is to go to NetBootstrap scene
-            /// and tick Connection Approval of NetworkManager to True.
-            playerName = userData.userName;
-        }
-
-        if (!IsServer)
-        {
-            string payload = Encoding.UTF8.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
-            UserData userData = JsonUtility.FromJson<UserData>(payload);
-            playerName = userData.userName;
-        }
+        SetPlayerName();
     }
 
     #region Register & Unregister button click event, Update Button States
@@ -115,6 +98,60 @@ public class NetworkChat : NetworkBehaviour
         }
     }
 
+    #region Set PlayerName & MessageTypeColor
+    private void SetPlayerName()
+{
+    if (IsServer)
+    {
+        UserData userData =
+            HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+
+        // Check userData isn't null
+        if (userData != null)
+        {
+            playerName = userData.userName;
+        }
+        else
+        {
+            Debug.LogError("UserData is null. Ensure Connection Approval is enabled in the NetworkManager.");
+        }
+    }
+    else
+    {
+        string payload = Encoding.UTF8.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
+        UserData userData = JsonUtility.FromJson<UserData>(payload);
+
+        // Check userData isn't null
+        if (userData != null)
+        {
+            playerName = userData.userName;
+        }
+        else
+        {
+            Debug.LogError("Failed to deserialize UserData from payload.");
+        }
+    }
+}
+
+    private Color MessageTypeColor(Message.MessageType messageType)
+    {
+        Color color = info;
+
+        switch (messageType)
+        {
+            case Message.MessageType.playerMessage:
+                color = playerMessage;
+                break;
+
+            case Message.MessageType.info:
+                color = info;
+                break;
+        }
+
+        return color;
+    }
+    #endregion
+
     #region Send Message
     [ServerRpc(RequireOwnership = false)]
     private void SendMessageServerRpc(string text, Message.MessageType messageType)
@@ -146,24 +183,6 @@ public class NetworkChat : NetworkBehaviour
         UpdateChatDisplay();
     }
     #endregion
-
-    Color MessageTypeColor(Message.MessageType messageType)
-    {
-        Color color = info;
-
-        switch (messageType)
-        {
-            case Message.MessageType.playerMessage:
-                color = playerMessage;
-                break;
-
-            case Message.MessageType.info:
-                color = info;
-                break;
-        }
-
-        return color;
-    }
 
     #region Chat Filter
     public void ChangeFilter(int filter)
@@ -203,7 +222,6 @@ public class NetworkChat : NetworkBehaviour
             textComponent.color = MessageTypeColor(message.messageType);
         }
     }
-
     // Chat filter button
     // If you confuse thid code, This is a short version of how to write the method.
     public void OnClick_General() => ChangeFilter(0);
