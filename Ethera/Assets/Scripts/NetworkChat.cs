@@ -36,19 +36,19 @@ public class NetworkChat : NetworkBehaviour
         SetPlayerName();
         if (IsServer)
         {
-            SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.Info);
+            SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
         }
         else
         {
-            SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.Info);
+            SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
         }
 
-        SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.Info);
+        SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.info);
     }
 
     public override void OnNetworkDespawn()
     {
-        SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.Info);
+        SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.info);
     }
 
     #region Register & Unregister button click event, Update Button States
@@ -149,7 +149,7 @@ public class NetworkChat : NetworkBehaviour
                 color = playerMessage;
                 break;
 
-            case Message.MessageType.Info:
+            case Message.MessageType.info:
                 color = info;
                 break;
         }
@@ -216,7 +216,7 @@ public class NetworkChat : NetworkBehaviour
                 filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.playerMessage);
                 break;
             case MessageTypeFilter.Info:
-                filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.Info);
+                filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.info);
                 break;
         }
 
@@ -246,6 +246,6 @@ public class Message
     public enum MessageType
     {
         playerMessage,
-        Info,
+        info,
     }
 }
