@@ -27,13 +27,28 @@ public class NetworkChat : NetworkBehaviour
     {
         General,
         PlayerMessage,
-        Info
+        Info,
     }
     private MessageTypeFilter currentFilter = MessageTypeFilter.General;
 
     public override void OnNetworkSpawn()
     {
         SetPlayerName();
+        if (IsServer)
+        {
+            SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.Info);
+        }
+        else
+        {
+            SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.Info);
+        }
+
+        SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.Info);
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.Info);
     }
 
     #region Register & Unregister button click event, Update Button States
@@ -62,15 +77,6 @@ public class NetworkChat : NetworkBehaviour
     private void Start()
     {
         UpdateButtonStates();
-
-        if (IsServer)
-        {
-            SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
-        }
-        else
-        {
-            SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
-        }
     }
 
     private void Update()
@@ -143,7 +149,7 @@ public class NetworkChat : NetworkBehaviour
                 color = playerMessage;
                 break;
 
-            case Message.MessageType.info:
+            case Message.MessageType.Info:
                 color = info;
                 break;
         }
@@ -210,7 +216,7 @@ public class NetworkChat : NetworkBehaviour
                 filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.playerMessage);
                 break;
             case MessageTypeFilter.Info:
-                filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.info);
+                filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.Info);
                 break;
         }
 
@@ -240,6 +246,6 @@ public class Message
     public enum MessageType
     {
         playerMessage,
-        info
+        Info,
     }
 }
