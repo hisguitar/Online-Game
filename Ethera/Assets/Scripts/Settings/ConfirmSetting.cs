@@ -53,7 +53,7 @@ public class ConfirmSetting : MonoBehaviour
         int seconds = countdownTime;
         while (seconds > 0)
         {
-            countdownText.text = $"Would you like to keep these {whatIsSetting} settings?\nReverting to previous settings in {seconds} seconds.";
+            countdownText.text = $"Would you like to keep these {whatIsSetting} settings?\nReverting to previous settings in <color=red>{seconds}</color> seconds.";
             seconds--;
             yield return new WaitForSeconds(1);
         }
