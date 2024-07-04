@@ -45,6 +45,11 @@ public class DisplaySetting : MonoBehaviour
         ///
     }
 
+    private void OnDisable()
+    {
+        isInitialized = false;
+    }
+
     // You have to put this function into 'On Value Changed (int32)' slot in dropdown GameObject
     public void SetDisplayMode()
     {
