@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHUD : NetworkBehaviour
 {
-    [SerializeField] private Health playerHealth;
+    [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text currentHpText;
     [SerializeField] private Image hpBar;

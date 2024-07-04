@@ -8,7 +8,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float smoothTime = 0.1f;  // Adjust the smooth time
 
     [Header("References")]
-    [SerializeField] private Health player;
+    [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private SpriteRenderer playerSprite;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private InputReader inputReader;
@@ -60,7 +60,7 @@ public class PlayerMovement : NetworkBehaviour
         movementInput.Normalize();
 
         // Calculate the target velocity
-        Vector2 targetVelocity = movementInput * player.PlayerAgi;
+        Vector2 targetVelocity = movementInput * playerHealth.PlayerAgi;
 
         // Smoothly interpolate between the current velocity and the target velocity
         rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, smoothTime);

@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour
     public NetworkVariable<FixedString32Bytes> PlayerName = new();
     public NetworkVariable<int> PlayerColorIndex = new();
 
-    [field: SerializeField] public Health Health { get; private set; }
+    [field: SerializeField] public PlayerHealth PlayerHealth { get; private set; }
 
     [Header("Camera Settings")]
     [SerializeField] private int ownerPriority = 15;

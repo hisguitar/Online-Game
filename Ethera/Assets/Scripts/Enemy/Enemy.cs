@@ -266,7 +266,7 @@ public class Enemy : NetworkBehaviour
         }
 
         // Deal damage to player
-        if (col.TryGetComponent(out Health player))
+        if (col.TryGetComponent(out PlayerHealth player))
         {
             player.TakeDamage(enemyStr);
         }
@@ -292,8 +292,7 @@ public class Enemy : NetworkBehaviour
         {
             if (IsServer)
             {
-                Health player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<Health>();
-                if (player != null)
+                if (NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.TryGetComponent<PlayerHealth>(out PlayerHealth player))
                 {
                     player.GainExp(EXPBounty);
                 }

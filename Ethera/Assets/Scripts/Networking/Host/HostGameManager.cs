@@ -105,7 +105,7 @@ public class HostGameManager : IDisposable
         }
     }
 
-    public async void Dispose()
+    public void Dispose()
     {
         Shutdown();
     }

@@ -13,7 +13,7 @@ public class PlayerRangeAttack : NetworkBehaviour
     [SerializeField] private GameObject serverProjectilePrefab;
     [SerializeField] private GameObject clientProjectilePrefab;
     [SerializeField] private Collider2D playerCollider;
-    [SerializeField] private Health player; // Add this line
+    [SerializeField] private PlayerHealth player; // Add this line
 
     private bool shouldFire;
     private float previousFireTime;

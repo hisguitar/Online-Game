@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Ethera.sln"
+    "dotnet.defaultSolution": "Ethera.sln",
+    "dotnet.preferCSharpExtension": true
 }

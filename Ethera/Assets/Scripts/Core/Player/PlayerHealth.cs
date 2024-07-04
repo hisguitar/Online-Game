@@ -3,7 +3,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine; 
 
-public class Health : NetworkBehaviour
+public class PlayerHealth : NetworkBehaviour
 {
     // Player Level & Exp
     public NetworkVariable<int> Level { get; private set; } = new(1);
@@ -16,8 +16,8 @@ public class Health : NetworkBehaviour
     public int PlayerStr { get; private set; } = 11;
     public int PlayerVit { get; private set; } = 11;
     public float PlayerAgi { get; private set; } = 3f;
-
-    public Action<Health> OnDie;
+    
+    public Action<PlayerHealth> OnDie;
     private ulong playerID;
     private bool isDead;
     private readonly int EXPBounty = 75;
@@ -124,7 +124,7 @@ public class Health : NetworkBehaviour
         if (CurrentHp.Value == 0)
         {
             // Gain exp when killing other players.
-            Health player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<Health>();
+            PlayerHealth player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<PlayerHealth>();
             if (player != null)
             {
                 player.GainExp(EXPBounty);

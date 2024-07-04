@@ -67,21 +67,23 @@ public class Leaderboard : NetworkBehaviour
             Exp = 0
         });
 
-        player.Health.Exp.OnValueChanged += (oldExp, newExp) =>
+        player.PlayerHealth.Exp.OnValueChanged += (oldExp, newExp) =>
             HandleExpChanged(player.OwnerClientId, newExp);
     }
 
     private void HandlePlayerDespawned(Player player)
     {
-        if(NetworkManager.ShutdownInProgress) { return; }
-        foreach (LeaderboardEntityState entity in leaderboardEntities)
+        if (NetworkManager.ShutdownInProgress) { return; }
+        for (int i = 0; i < leaderboardEntities.Count; i++)
         {
-            if(entity.ClientId != player.OwnerClientId) { continue; }
-            leaderboardEntities.Remove(entity);
-            break;
+            if (leaderboardEntities[i].ClientId == player.OwnerClientId)
+            {
+                leaderboardEntities.RemoveAt(i);
+                break;
+            }
         }
 
-        player.Health.Exp.OnValueChanged -= (oldExp, newExp) =>
+        player.PlayerHealth.Exp.OnValueChanged -= (oldExp, newExp) =>
             HandleExpChanged(player.OwnerClientId, newExp);
     }
 
@@ -157,8 +159,7 @@ public class Leaderboard : NetworkBehaviour
                 PlayerName = leaderboardEntities[i].PlayerName,
                 Exp = newExp
             };
-
-            return;
+            break;
         }
     }
 }

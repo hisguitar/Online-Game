@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -28,24 +29,27 @@ public class RespawnHandler : NetworkBehaviour
 
     private void HandlePlayerSpawned(Player player)
     {
-        player.Health.OnDie += (health) => HandlePlayerDie(player);
+        player.PlayerHealth.OnDie += (health) => HandlePlayerDie(player);
     }
 
     private void HandlePlayerDespawned(Player player)
     {
-        player.Health.OnDie -= (health) => HandlePlayerDie(player);
+        player.PlayerHealth.OnDie -= (health) => HandlePlayerDie(player);
     }
 
     private void HandlePlayerDie(Player player)
     {
-        int keptExp = (int)(player.Health.Exp.Value * (keptExpPercentage / 100));
+        // Keep player data, before die
+        FixedString32Bytes playerName = player.PlayerName.Value;
+        int playerColorIndex = player.PlayerColorIndex.Value;
+        int keptExp = (int)(player.PlayerHealth.Exp.Value * (keptExpPercentage / 100));        
 
         Destroy(player.gameObject);
 
-        StartCoroutine(RespawnPlayer(player.OwnerClientId, keptExp));
+        StartCoroutine(RespawnPlayer(player.OwnerClientId, playerName, playerColorIndex, keptExp));
     }
 
-    private IEnumerator RespawnPlayer(ulong ownerClientId, int keptExp)
+    private IEnumerator RespawnPlayer(ulong ownerClientId, FixedString32Bytes playerName, int playerColorIndex, int keptExp)
     {
         yield return null;
 
@@ -54,7 +58,9 @@ public class RespawnHandler : NetworkBehaviour
             playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
         playerInstance.NetworkObject.SpawnAsPlayerObject(ownerClientId);
 
-        // Modify Exp.Value
-        playerInstance.Health.Exp.Value += keptExp;
+        // Modify userData(from data before die) PlayerName, PlayerColorIndex, Exp.Value
+        playerInstance.PlayerName.Value = playerName;
+        playerInstance.PlayerColorIndex.Value = playerColorIndex;
+        playerInstance.PlayerHealth.Exp.Value += keptExp;
     }
 }
