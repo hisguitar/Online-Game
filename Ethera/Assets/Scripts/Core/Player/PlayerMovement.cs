@@ -60,7 +60,7 @@ public class PlayerMovement : NetworkBehaviour
         movementInput.Normalize();
 
         // Calculate the target velocity
-        Vector2 targetVelocity = movementInput * playerHealth.PlayerAgi;
+        Vector2 targetVelocity = movementInput * playerHealth.playerData.playerAgi;
 
         // Smoothly interpolate between the current velocity and the target velocity
         rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, smoothTime);

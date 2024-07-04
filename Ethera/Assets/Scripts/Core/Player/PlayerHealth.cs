@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerHealth : NetworkBehaviour
 {
+    public PlayerData playerData;
+
     // Player Level & Exp
     public NetworkVariable<int> Level { get; private set; } = new(1);
     public NetworkVariable<int> Exp = new();
@@ -13,15 +15,10 @@ public class PlayerHealth : NetworkBehaviour
     // Player Status
     public NetworkVariable<int> MaxHp = new();
     public NetworkVariable<int> CurrentHp = new();
-    public int PlayerStr { get; private set; } = 11;
-    public int PlayerVit { get; private set; } = 11;
-    public float PlayerAgi { get; private set; } = 3f;
     
     public Action<PlayerHealth> OnDie;
     private ulong playerID;
     private bool isDead;
-    private readonly int EXPBounty = 75;
-    private readonly int statusConverter = 10;
 
     [SerializeField] private GameObject floatingTextPrefab;
 
@@ -41,7 +38,7 @@ public class PlayerHealth : NetworkBehaviour
     private void CheckAndResetsPlayerStats()
     {
         // Convert stats to use in game
-        MaxHp.Value = PlayerVit * statusConverter;
+        MaxHp.Value = playerData.playerVit * playerData.statusConverter;
 
         // Set to maximum value at first
         CurrentHp.Value = MaxHp.Value;
@@ -85,9 +82,9 @@ public class PlayerHealth : NetworkBehaviour
 
     private void LevelUpRewards()
     {
-        PlayerStr += 1;
-        PlayerVit += 1;
-        PlayerAgi += 0.1f;
+        playerData.playerStr += 1;
+        playerData.playerVit += 1;
+        playerData.playerAgi += 0.1f;
 
         CheckAndResetsPlayerStats();
     }
@@ -127,7 +124,7 @@ public class PlayerHealth : NetworkBehaviour
             PlayerHealth player = NetworkManager.Singleton.ConnectedClients[playerID].PlayerObject.GetComponent<PlayerHealth>();
             if (player != null)
             {
-                player.GainExp(EXPBounty);
+                player.GainExp(playerData.EXPBounty);
             }
 
             // Player die process

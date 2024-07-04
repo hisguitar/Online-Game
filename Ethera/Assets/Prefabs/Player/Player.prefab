@@ -885,7 +885,7 @@ MonoBehaviour:
   serverProjectilePrefab: {fileID: 3811696718406717514, guid: f3f3ae450a642a94e85de95db7453420, type: 3}
   clientProjectilePrefab: {fileID: 151569949056747313, guid: 0d281e7cd30a4db4a97b93558d3166cf, type: 3}
   playerCollider: {fileID: 18049942847462137}
-  player: {fileID: 1173771568001547991}
+  playerHealth: {fileID: 1173771568001547991}
 --- !u!114 &6547508417981183928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -928,6 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862d9e7263d41f942b5b5ddeffbdfd84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 14a7b34ea033a0e4c94068776ecf4eed, type: 2}
   Exp:
     m_InternalValue: 0
   MaxHp:

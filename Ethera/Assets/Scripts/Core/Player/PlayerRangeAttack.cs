@@ -13,7 +13,7 @@ public class PlayerRangeAttack : NetworkBehaviour
     [SerializeField] private GameObject serverProjectilePrefab;
     [SerializeField] private GameObject clientProjectilePrefab;
     [SerializeField] private Collider2D playerCollider;
-    [SerializeField] private PlayerHealth player; // Add this line
+    [SerializeField] private PlayerHealth playerHealth; // Add this line
 
     private bool shouldFire;
     private float previousFireTime;
@@ -81,7 +81,7 @@ public class PlayerRangeAttack : NetworkBehaviour
         if (projectile.TryGetComponent(out DealDamageOnContact dealDamage))
         {
             // Send 'ClientId of bullet' to 'DealDamageOnContact.cs'
-            dealDamage.SetOwner(OwnerClientId, player.PlayerStr);
+            dealDamage.SetOwner(OwnerClientId, playerHealth.playerData.playerStr);
         }
 
         if (projectile.TryGetComponent(out Rigidbody2D rb))
