@@ -8,244 +8,249 @@ using System.Text;
 
 public class NetworkChat : NetworkBehaviour
 {
-    [Header("MessageText Settings")]
-    [SerializeField] [Range(0, 100)] private int maxMessages = 25;
-    [SerializeField] private GameObject messageTextPrefab, chatPanel;
-    [SerializeField] private TMP_InputField textInput;
-    [SerializeField] [Tooltip("Different types of text colors")] private Color playerMessage, info;
+	[Header("MessageText Settings")]
+	[SerializeField] [Range(0, 100)] private int maxMessages = 25;
+	[SerializeField] private GameObject messageTextPrefab, chatPanel;
+	[SerializeField] private TMP_InputField textInput;
+	[SerializeField] [Tooltip("Different types of text colors")] private Color playerMessage, info;
 
-    [Header("Button")]
-    [SerializeField] private Button _generalButton;
-    [SerializeField] private Button _messageButton;
-    [SerializeField] private Button _infoButton;
-    [SerializeField] private Color activeButtonColor;
-    [SerializeField] private Color inactiveButtonColor;
+	[Header("Button")]
+	[SerializeField] private Button _generalButton;
+	[SerializeField] private Button _messageButton;
+	[SerializeField] private Button _infoButton;
+	[SerializeField] private Color activeButtonColor;
+	[SerializeField] private Color inactiveButtonColor;
+	
+	private readonly List<Message> messageList = new();
+	private string playerName;
+	private enum MessageTypeFilter
+	{
+		General,
+		PlayerMessage,
+		Info,
+	}
+	private MessageTypeFilter currentFilter = MessageTypeFilter.General;
 
-    private readonly List<Message> messageList = new();
-    private string playerName;
-    private enum MessageTypeFilter
-    {
-        General,
-        PlayerMessage,
-        Info,
-    }
-    private MessageTypeFilter currentFilter = MessageTypeFilter.General;
+	public override void OnNetworkSpawn()
+	{
+		SetPlayerName();
+		SendFirstMessage();
+	}
 
-    public override void OnNetworkSpawn()
-    {
-        SetPlayerName();
-        if (IsServer)
-        {
-            SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
-        }
-        else
-        {
-            SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
-        }
+	public override void OnNetworkDespawn()
+	{
+		SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.info);
+	}
 
-        SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.info);
-    }
+	#region Register & Unregister button click event, Update Button States
+	private void OnEnable()
+	{
+		_generalButton.onClick.AddListener(OnClick_General);
+		_messageButton.onClick.AddListener(OnClick_PlayerMessage);
+		_infoButton.onClick.AddListener(OnClick_Info);
+	}
 
-    public override void OnNetworkDespawn()
-    {
-        SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.info);
-    }
+	private void OnDisable()
+	{
+		_generalButton.onClick.RemoveListener(OnClick_General);
+		_messageButton.onClick.RemoveListener(OnClick_PlayerMessage);
+		_infoButton.onClick.RemoveListener(OnClick_Info);
+	}
 
-    #region Register & Unregister button click event, Update Button States
-    private void OnEnable()
-    {
-        _generalButton.onClick.AddListener(OnClick_General);
-        _messageButton.onClick.AddListener(OnClick_PlayerMessage);
-        _infoButton.onClick.AddListener(OnClick_Info);
-    }
+	private void UpdateButtonStates()
+	{
+		_generalButton.image.color = currentFilter == MessageTypeFilter.General ? activeButtonColor : inactiveButtonColor;
+		_messageButton.image.color = currentFilter == MessageTypeFilter.PlayerMessage ? activeButtonColor : inactiveButtonColor;
+		_infoButton.image.color = currentFilter == MessageTypeFilter.Info ? activeButtonColor : inactiveButtonColor;
+	}
+	#endregion
 
-    private void OnDisable()
-    {
-        _generalButton.onClick.RemoveListener(OnClick_General);
-        _messageButton.onClick.RemoveListener(OnClick_PlayerMessage);
-        _infoButton.onClick.RemoveListener(OnClick_Info);
-    }
+	private void Start()
+	{
+		UpdateButtonStates();
+	}
 
-    private void UpdateButtonStates()
-    {
-        _generalButton.image.color = currentFilter == MessageTypeFilter.General ? activeButtonColor : inactiveButtonColor;
-        _messageButton.image.color = currentFilter == MessageTypeFilter.PlayerMessage ? activeButtonColor : inactiveButtonColor;
-        _infoButton.image.color = currentFilter == MessageTypeFilter.Info ? activeButtonColor : inactiveButtonColor;
-    }
-    #endregion
+	private void Update()
+	{
+		DetectTyping();
+	}
 
-    private void Start()
-    {
-        UpdateButtonStates();
-    }
+	private void DetectTyping()
+	{
+		// Typing
+		if (textInput.text != "")
+		{
+			if (Input.GetKeyDown(KeyCode.Return))
+			{
+				SendMessageServerRpc(playerName + ": " + textInput.text, Message.MessageType.playerMessage);
+				textInput.text = "";
+			}
+		}
+		else
+		{
+			if (!textInput.isFocused && Input.GetKeyDown(KeyCode.Return))
+			{
+				textInput.ActivateInputField();
+			}
+		}
+	}
 
-    private void Update()
-    {
-        DetectTyping();
-    }
+	#region Set PlayerName & MessageTypeColor & Send first message
+	private void SetPlayerName()
+	{
+		if (IsServer)
+		{
+			UserData userData =
+			HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+			
+			// Check userData isn't null
+			if (userData != null)
+			{
+				playerName = userData.userName;
+			}
+			else
+			{
+				Debug.LogError("UserData is null. Ensure Connection Approval is enabled in the NetworkManager.");
+			}
+		}
+		else
+		{
+			string payload = Encoding.UTF8.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
+			UserData userData = JsonUtility.FromJson<UserData>(payload);
+			
+			// Check userData isn't null
+			if (userData != null)
+			{
+				playerName = userData.userName;
+			}
+			else
+			{
+				Debug.LogError("Failed to deserialize UserData from payload.");
+			}
+		}
+	}
 
-    private void DetectTyping()
-    {
-        // Typing
-        if (textInput.text != "")
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                SendMessageServerRpc(playerName + ": " + textInput.text, Message.MessageType.playerMessage);
-                textInput.text = "";
-            }
-        }
-        else
-        {
-            if (!textInput.isFocused && Input.GetKeyDown(KeyCode.Return))
-            {
-                textInput.ActivateInputField();
-            }
-        }
-    }
+	private Color MessageTypeColor(Message.MessageType messageType)
+	{
+		Color color = info;
 
-    #region Set PlayerName & MessageTypeColor
-    private void SetPlayerName()
-{
-    if (IsServer)
-    {
-        UserData userData =
-            HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+		switch (messageType)
+		{
+			case Message.MessageType.playerMessage:
+				color = playerMessage;
+				break;
 
-        // Check userData isn't null
-        if (userData != null)
-        {
-            playerName = userData.userName;
-        }
-        else
-        {
-            Debug.LogError("UserData is null. Ensure Connection Approval is enabled in the NetworkManager.");
-        }
-    }
-    else
-    {
-        string payload = Encoding.UTF8.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
-        UserData userData = JsonUtility.FromJson<UserData>(payload);
+			case Message.MessageType.info:
+				color = info;
+				break;
+		}
 
-        // Check userData isn't null
-        if (userData != null)
-        {
-            playerName = userData.userName;
-        }
-        else
-        {
-            Debug.LogError("Failed to deserialize UserData from payload.");
-        }
-    }
-}
+		return color;
+	}
+	
+	private void SendFirstMessage()
+	{
+		if (IsServer)
+		{
+			SendMessageToChat("[System] Your join code is '" + HostSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
+		}
+		else
+		{
+			SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
+		}
 
-    private Color MessageTypeColor(Message.MessageType messageType)
-    {
-        Color color = info;
+		SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.info);
+	}
+	#endregion
 
-        switch (messageType)
-        {
-            case Message.MessageType.playerMessage:
-                color = playerMessage;
-                break;
+	#region Send Message
+	[ServerRpc(RequireOwnership = false)]
+	private void SendMessageServerRpc(string text, Message.MessageType messageType)
+	{
+		SendMessageClientRpc(text, messageType);
+	}
 
-            case Message.MessageType.info:
-                color = info;
-                break;
-        }
+	[ClientRpc]
+	private void SendMessageClientRpc(string text, Message.MessageType messageType)
+	{
+		SendMessageToChat(text, messageType);
+	}
 
-        return color;
-    }
-    #endregion
+	private void SendMessageToChat(string text, Message.MessageType messageType)
+	{
+		if (messageList.Count >= maxMessages)
+		{
+			Destroy(messageList[0].messageTextPrefab.gameObject);
+			messageList.RemoveAt(0);
+		}
 
-    #region Send Message
-    [ServerRpc(RequireOwnership = false)]
-    private void SendMessageServerRpc(string text, Message.MessageType messageType)
-    {
-        SendMessageClientRpc(text, messageType);
-    }
+		Message newMessage = new()
+		{
+			text = text,
+			messageType = messageType
+		};
 
-    [ClientRpc]
-    private void SendMessageClientRpc(string text, Message.MessageType messageType)
-    {
-        SendMessageToChat(text, messageType);
-    }
+		messageList.Add(newMessage);
+		UpdateChatDisplay();
+	}
+	#endregion
 
-    private void SendMessageToChat(string text, Message.MessageType messageType)
-    {
-        if (messageList.Count >= maxMessages)
-        {
-            Destroy(messageList[0].messageTextPrefab.gameObject);
-            messageList.RemoveAt(0);
-        }
+	#region Chat Filter
+	public void ChangeFilter(int filter)
+	{
+		currentFilter = (MessageTypeFilter)filter;
+		UpdateChatDisplay();
+		UpdateButtonStates();
+	}
 
-        Message newMessage = new()
-        {
-            text = text,
-            messageType = messageType
-        };
+	private void UpdateChatDisplay()
+	{
+		foreach (Transform child in chatPanel.transform)
+		{
+			Destroy(child.gameObject);
+		}
 
-        messageList.Add(newMessage);
-        UpdateChatDisplay();
-    }
-    #endregion
+		IEnumerable<Message> filteredMessages = messageList;
 
-    #region Chat Filter
-    public void ChangeFilter(int filter)
-    {
-        currentFilter = (MessageTypeFilter)filter;
-        UpdateChatDisplay();
-        UpdateButtonStates();
-    }
+		switch (currentFilter)
+		{
+			case MessageTypeFilter.General:
+				default: filteredMessages = messageList;
+				break;
+			case MessageTypeFilter.PlayerMessage:
+				filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.playerMessage);
+				break;
+			case MessageTypeFilter.Info:
+				filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.info);
+				break;
+		}
 
-    private void UpdateChatDisplay()
-    {
-        foreach (Transform child in chatPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        IEnumerable<Message> filteredMessages = messageList;
-
-        switch (currentFilter)
-        {
-            case MessageTypeFilter.General:
-                default: filteredMessages = messageList;
-                break;
-            case MessageTypeFilter.PlayerMessage:
-                filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.playerMessage);
-                break;
-            case MessageTypeFilter.Info:
-                filteredMessages = messageList.Where(m => m.messageType == Message.MessageType.info);
-                break;
-        }
-
-        foreach (var message in filteredMessages)
-        {
-            GameObject newText = Instantiate(messageTextPrefab, chatPanel.transform);
-            TMP_Text textComponent = newText.GetComponent<TMP_Text>();
-            textComponent.text = message.text;
-            textComponent.color = MessageTypeColor(message.messageType);
-        }
-    }
-    // Chat filter button
-    // If you confuse thid code, This is a short version of how to write the method.
-    public void OnClick_General() => ChangeFilter(0);
-    public void OnClick_PlayerMessage() => ChangeFilter(1);
-    public void OnClick_Info() => ChangeFilter(2);
-    #endregion
+		foreach (var message in filteredMessages)
+		{
+			GameObject newText = Instantiate(messageTextPrefab, chatPanel.transform);
+			TMP_Text textComponent = newText.GetComponent<TMP_Text>();
+			textComponent.text = message.text;
+			textComponent.color = MessageTypeColor(message.messageType);
+		}
+	}
+	// Chat filter button
+	// If you confuse thid code, This is a short version of how to write the method.
+	public void OnClick_General() => ChangeFilter(0);
+	public void OnClick_PlayerMessage() => ChangeFilter(1);
+	public void OnClick_Info() => ChangeFilter(2);
+	#endregion
 }
 
 [System.Serializable]
 public class Message
 {
-    public string text;
-    public TMP_Text messageTextPrefab;
-    public MessageType messageType;
+	public string text;
+	public TMP_Text messageTextPrefab;
+	public MessageType messageType;
 
-    public enum MessageType
-    {
-        playerMessage,
-        info,
-    }
+	public enum MessageType
+	{
+		playerMessage,
+		info,
+	}
 }
