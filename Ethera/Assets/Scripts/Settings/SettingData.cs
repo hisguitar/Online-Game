@@ -4,6 +4,6 @@ using UnityEngine;
 public class SettingData : ScriptableObject
 {
     [Header("Sound Setting Data")]
-    public int musicVolume;
-    public int SFXVolume;
+    [Range(0, 100)] public int musicVolume;
+    [Range(0, 100)] public int SFXVolume;
 }
