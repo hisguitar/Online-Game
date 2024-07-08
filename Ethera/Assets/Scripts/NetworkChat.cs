@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using System.Text;
+using System.Net;
 
 public class NetworkChat : NetworkBehaviour
 {
@@ -13,7 +14,7 @@ public class NetworkChat : NetworkBehaviour
 	[SerializeField] private GameObject messageTextPrefab, chatPanel;
 	[SerializeField] private TMP_InputField textInput;
 	[SerializeField] [Tooltip("Different types of text colors")] private Color playerMessage, info;
-
+	
 	[Header("Button")]
 	[SerializeField] private Button _generalButton;
 	[SerializeField] private Button _messageButton;
@@ -30,17 +31,21 @@ public class NetworkChat : NetworkBehaviour
 		Info,
 	}
 	private MessageTypeFilter currentFilter = MessageTypeFilter.General;
-
+	private GameObject player;
+	
+	#region OnNetworkSpawn & OnNetworkDespawn
 	public override void OnNetworkSpawn()
 	{
 		SetPlayerName();
 		SendFirstMessage();
+		player = FindPlayerObject();
 	}
 
 	public override void OnNetworkDespawn()
 	{
 		SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.info);
 	}
+	#endregion
 
 	#region Register & Unregister button click event, Update Button States
 	private void OnEnable()
@@ -65,6 +70,7 @@ public class NetworkChat : NetworkBehaviour
 	}
 	#endregion
 
+	#region Get Component & Detect typing
 	private void Start()
 	{
 		UpdateButtonStates();
@@ -77,12 +83,12 @@ public class NetworkChat : NetworkBehaviour
 
 	private void DetectTyping()
 	{
-		// Typing
 		if (textInput.text != "")
 		{
 			if (Input.GetKeyDown(KeyCode.Return))
 			{
 				SendMessageServerRpc(playerName + ": " + textInput.text, Message.MessageType.playerMessage);
+				ShowBubbleText(textInput.text);
 				textInput.text = "";
 			}
 		}
@@ -94,6 +100,7 @@ public class NetworkChat : NetworkBehaviour
 			}
 		}
 	}
+	#endregion
 
 	#region Set PlayerName & MessageTypeColor & Send first message
 	private void SetPlayerName()
@@ -103,7 +110,6 @@ public class NetworkChat : NetworkBehaviour
 			UserData userData =
 			HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
 			
-			// Check userData isn't null
 			if (userData != null)
 			{
 				playerName = userData.userName;
@@ -118,7 +124,6 @@ public class NetworkChat : NetworkBehaviour
 			string payload = Encoding.UTF8.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
 			UserData userData = JsonUtility.FromJson<UserData>(payload);
 			
-			// Check userData isn't null
 			if (userData != null)
 			{
 				playerName = userData.userName;
@@ -163,6 +168,22 @@ public class NetworkChat : NetworkBehaviour
 	}
 	#endregion
 
+	#region Find PlayerObject by ClientId
+	private GameObject FindPlayerObject()
+	{
+		NetworkObject[] players = FindObjectsOfType<NetworkObject>();
+		
+		foreach (NetworkObject player in players)
+		{
+			if (player.OwnerClientId == OwnerClientId)
+			{
+				return player.gameObject;
+			}
+		}
+		return null;
+	}
+	#endregion
+
 	#region Send Message
 	[ServerRpc(RequireOwnership = false)]
 	private void SendMessageServerRpc(string text, Message.MessageType messageType)
@@ -192,6 +213,15 @@ public class NetworkChat : NetworkBehaviour
 
 		messageList.Add(newMessage);
 		UpdateChatDisplay();
+	}
+	
+	private void ShowBubbleText(string text)
+	{
+		if (player == null) { player = FindPlayerObject(); }
+		if (player.TryGetComponent<PlayerHealth>(out var playerHealth))
+		{
+			playerHealth.ShowBubbleTextClientRpc(text);
+		}
 	}
 	#endregion
 
@@ -233,8 +263,7 @@ public class NetworkChat : NetworkBehaviour
 			textComponent.color = MessageTypeColor(message.messageType);
 		}
 	}
-	// Chat filter button
-	// If you confuse thid code, This is a short version of how to write the method.
+
 	public void OnClick_General() => ChangeFilter(0);
 	public void OnClick_PlayerMessage() => ChangeFilter(1);
 	public void OnClick_Info() => ChangeFilter(2);
