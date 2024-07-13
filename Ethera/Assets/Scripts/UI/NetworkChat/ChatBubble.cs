@@ -7,7 +7,18 @@ public class ChatBubble : MonoBehaviour
 	[SerializeField] private TMP_Text messageText;
 	[SerializeField] private Vector2 bubbleSizeOffset = new(0.2f, 0.1f);
 	
-	private void Start()
+	private void OnEnable()
+	{
+		UpdateBackgroundSize();
+	}
+	
+	public void SetText(string text)
+	{
+		messageText.text = text;
+		UpdateBackgroundSize();
+	}
+	
+	private void UpdateBackgroundSize()
 	{
 		// Force update the text mesh to ensure accurate size calculation
 		messageText.ForceMeshUpdate();

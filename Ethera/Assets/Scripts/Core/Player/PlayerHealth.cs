@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using TMPro;
-using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine; 
 
@@ -19,10 +19,11 @@ public class PlayerHealth : NetworkBehaviour
 	private ulong playerID;
 	private bool isDead;
 	
-	[Header("Floating Text")]
+	[Header("Floating Text & Bubble Text")]
 	[SerializeField] private GameObject floatingTextPrefab;
-	[SerializeField] private GameObject bubbleTextPrefab;
-	[SerializeField] private Vector3 bubbleTextOffset = new(0f, 1.66f, 0f);
+	[SerializeField] private GameObject bubbleText;
+	[SerializeField] private float bubbleTextDuration = 5f;
+	private Coroutine bubbleTextCoroutine;
 
 	[Header("New Color")]
 	public Color RedFF6666 = new(1f, 0.4f, 0.4f);
@@ -34,6 +35,11 @@ public class PlayerHealth : NetworkBehaviour
 	{
 		if (!IsServer) return;
 		CheckAndResetsPlayerStats();
+	}
+	
+	private void Start()
+	{
+		bubbleText.SetActive(false);
 	}
 
 	#region Check & Reset player stats
@@ -177,11 +183,25 @@ public class PlayerHealth : NetworkBehaviour
 	}
 	
 	private void ShowBubbleText(string text)
+	{		
+		// If old message hasn't expired yet
+		if (bubbleTextCoroutine != null)
+		{
+			StopCoroutine(bubbleTextCoroutine);
+		}
+		
+		// Call SetText(text) in ChatBubble.cs then set BubbleTextPrefab active(true)
+		bubbleText.GetComponent<ChatBubble>().SetText(text);
+		bubbleText.SetActive(true);
+		
+		// Start new coroutine to deactivate bubble text
+		bubbleTextCoroutine = StartCoroutine(DeactivateBubbleText(bubbleTextDuration));
+	}
+	
+	private IEnumerator DeactivateBubbleText(float time)
 	{
-		GameObject go = Instantiate(bubbleTextPrefab, transform.position + bubbleTextOffset, quaternion.identity);
-		go.transform.SetParent(transform);
-		go.GetComponentInChildren<TMP_Text>().text = text;
-		Destroy(go, 5f);
+		yield return new WaitForSeconds(time);
+		bubbleText.SetActive(false);
 	}
 	#endregion
 }
