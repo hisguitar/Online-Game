@@ -5,7 +5,6 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using System.Text;
-using System.Net;
 
 public class NetworkChat : NetworkBehaviour
 {
@@ -46,7 +45,6 @@ public class NetworkChat : NetworkBehaviour
 		SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.info);
 	}
 	#endregion
-
 	#region Register & Unregister button click event, Update Button States
 	private void OnEnable()
 	{
@@ -69,7 +67,6 @@ public class NetworkChat : NetworkBehaviour
 		_infoButton.image.color = currentFilter == MessageTypeFilter.Info ? activeButtonColor : inactiveButtonColor;
 	}
 	#endregion
-
 	#region Get Component & Detect typing
 	private void Start()
 	{
@@ -101,7 +98,6 @@ public class NetworkChat : NetworkBehaviour
 		}
 	}
 	#endregion
-
 	#region Set PlayerName & MessageTypeColor & Send first message
 	private void SetPlayerName()
 	{
@@ -167,7 +163,6 @@ public class NetworkChat : NetworkBehaviour
 		SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.info);
 	}
 	#endregion
-
 	#region Find PlayerObject by ClientId
 	private GameObject FindPlayerObject()
 	{
@@ -175,7 +170,7 @@ public class NetworkChat : NetworkBehaviour
 		
 		foreach (NetworkObject player in players)
 		{
-			if (player.OwnerClientId == OwnerClientId)
+			if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)
 			{
 				return player.gameObject;
 			}
@@ -183,7 +178,6 @@ public class NetworkChat : NetworkBehaviour
 		return null;
 	}
 	#endregion
-
 	#region Send Message
 	[ServerRpc(RequireOwnership = false)]
 	private void SendMessageServerRpc(string text, Message.MessageType messageType)
@@ -196,7 +190,7 @@ public class NetworkChat : NetworkBehaviour
 	{
 		SendMessageToChat(text, messageType);
 	}
-
+	
 	private void SendMessageToChat(string text, Message.MessageType messageType)
 	{
 		if (messageList.Count >= maxMessages)
@@ -214,17 +208,17 @@ public class NetworkChat : NetworkBehaviour
 		messageList.Add(newMessage);
 		UpdateChatDisplay();
 	}
-	
+	#endregion
+	#region Send Bubble
 	private void ShowBubbleText(string text)
 	{
 		if (player == null) { player = FindPlayerObject(); }
 		if (player.TryGetComponent<PlayerHealth>(out var playerHealth))
 		{
-			playerHealth.ShowBubbleTextClientRpc(text);
+			playerHealth.ShowBubbleTextServerRpc(text);
 		}
 	}
 	#endregion
-
 	#region Chat Filter
 	public void ChangeFilter(int filter)
 	{

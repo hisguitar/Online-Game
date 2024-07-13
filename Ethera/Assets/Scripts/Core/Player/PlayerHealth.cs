@@ -46,7 +46,6 @@ public class PlayerHealth : NetworkBehaviour
 		CurrentHp.Value = MaxHp.Value;
 	}
 	#endregion
-
 	#region Exp & Level
 	public void GainExp(int amount)
 	{
@@ -91,7 +90,6 @@ public class PlayerHealth : NetworkBehaviour
 		CheckAndResetsPlayerStats();
 	}
 	#endregion
-
 	#region Take Damage
 	public void TakeDamage(int amount)
 	{
@@ -135,7 +133,6 @@ public class PlayerHealth : NetworkBehaviour
 		}
 	}
 	#endregion
-
 	#region Check owner of bullet
 	// Check owner of bullet to give exp to player who killed this player.
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -151,7 +148,6 @@ public class PlayerHealth : NetworkBehaviour
 		}
 	}
 	#endregion
-
 	#region Show Floating Text
 	[ClientRpc]
 	private void ShowFloatingTextClientRpc(string text, Color textColor)
@@ -167,10 +163,15 @@ public class PlayerHealth : NetworkBehaviour
 		go.GetComponent<TMP_Text>().text = text;
 	}
 	#endregion
-	
 	#region Show Bubble Text
-	[ClientRpc]
-	public void ShowBubbleTextClientRpc(string text)
+	[ServerRpc] // Send data to server
+	public void ShowBubbleTextServerRpc(string text, ServerRpcParams serverRpcParams = default)
+	{
+		ShowBubbleTextClientRpc(text);
+	}
+	
+	[ClientRpc] // Receive data from server
+	public void ShowBubbleTextClientRpc(string text, ClientRpcParams clientRpcParams = default)
 	{
 		ShowBubbleText(text);
 	}

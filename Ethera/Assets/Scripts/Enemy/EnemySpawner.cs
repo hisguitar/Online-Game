@@ -5,26 +5,6 @@ using UnityEngine;
 
 public class EnemySpawner : NetworkBehaviour
 {
-    /// <summary>
-    /// Old EnemySpawner
-    /// Press 'F' to spawn enemy
-    /// </summary>
-    //[SerializeField] private GameObject enemyPrefab;
-
-    //private void Update()
-    //{
-    //    if (IsServer && Input.GetKeyDown(KeyCode.F))
-    //    {
-    //        SpawnEnemy(new Vector3(0, 0, 0));
-    //    }
-    //}
-
-    //private void SpawnEnemy(Vector3 position)
-    //{
-    //    GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
-    //    enemy.GetComponent<NetworkObject>().Spawn();
-    //}
-
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float spawnRadius = 2f;
     [SerializeField] private float spawnInterval = 5f;
