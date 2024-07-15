@@ -35,7 +35,7 @@ public class PlayerHUD : NetworkBehaviour
 
         // Update Hp-Text & Level-Text
         currentHpText.text = playerHealth.CurrentHp.Value + "/" + playerHealth.MaxHp.Value;
-        levelText.text = "Lv." + playerHealth.Level.Value.ToString();
+        levelText.text = "Lv." + playerHealth.Level.Value;
         #endregion
     }
 }
