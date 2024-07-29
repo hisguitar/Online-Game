@@ -72,6 +72,7 @@ public class PlayerHealth : NetworkBehaviour
 			Level.Value++;
 			Exp.Value -= ExpToLevelUp;
 			ExpToLevelUp = CalculateExpToLevelUp();
+			SoundManager.Instance.Play(SoundManager.SoundName.NewLevel);
 			LevelUpRewards();
 
 			// Show FloatingText

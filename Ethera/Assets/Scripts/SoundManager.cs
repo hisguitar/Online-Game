@@ -9,7 +9,8 @@ public class SoundManager : SingletonPersistent<SoundManager>
 	public enum SoundName
 	{
 		FastMagicGameSpell,
-		ShatterShotExplosion
+		ShatterShotExplosion,
+		NewLevel
 	}
 
 	// For playing sound
