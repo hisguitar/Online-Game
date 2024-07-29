@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour
 		else
 		{
 			Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+			SoundManager.Instance.Play(SoundManager.SoundName.ShatterShotExplosion);
 			Destroy(gameObject);
 		}
 	}
