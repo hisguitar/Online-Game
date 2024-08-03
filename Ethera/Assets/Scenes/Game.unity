@@ -51760,6 +51760,8 @@ GameObject:
   - component: {fileID: 891815824}
   - component: {fileID: 891815826}
   - component: {fileID: 891815825}
+  - component: {fileID: 891815827}
+  - component: {fileID: 891815828}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -51914,6 +51916,34 @@ MonoBehaviour:
   _mainMenuButton: {fileID: 2049332482}
   _quitButton: {fileID: 1465446969}
   _backToMenuButton: {fileID: 88498340}
+--- !u!114 &891815827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891815819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9d90d1c9777b9478f60507c1ef2004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 1104173146}
+  canvas: {fileID: 891815823}
+--- !u!114 &891815828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891815819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9d90d1c9777b9478f60507c1ef2004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 233566402}
+  canvas: {fileID: 891815823}
 --- !u!1 &907084682
 GameObject:
   m_ObjectHideFlags: 0
