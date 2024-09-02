@@ -1417,7 +1417,7 @@ MonoBehaviour:
   - soundName: 0
     clip: {fileID: 8300000, guid: 51917766fa6df3d408b90a0f77149430, type: 3}
     loop: 0
-    volume: 0.25
+    volume: 0.15
     audioSource: {fileID: 0}
   - soundName: 1
     clip: {fileID: 8300000, guid: 0d9836d0220880b4f9f1555719d6201a, type: 3}
