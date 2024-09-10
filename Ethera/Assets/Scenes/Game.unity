@@ -1417,12 +1417,12 @@ MonoBehaviour:
   - soundName: 0
     clip: {fileID: 8300000, guid: 51917766fa6df3d408b90a0f77149430, type: 3}
     loop: 0
-    volume: 0.15
+    volume: 0.1
     audioSource: {fileID: 0}
   - soundName: 1
     clip: {fileID: 8300000, guid: 0d9836d0220880b4f9f1555719d6201a, type: 3}
     loop: 0
-    volume: 0.15
+    volume: 0.075
     audioSource: {fileID: 0}
   - soundName: 2
     clip: {fileID: 8300000, guid: fffd906174544644e8ba60955126c556, type: 3}
@@ -1778,6 +1778,7 @@ MonoBehaviour:
   countdownText: {fileID: 956624171}
   confirmButton: {fileID: 1229963525}
   revertButton: {fileID: 931418431}
+  redColorCode: '#FF1A1A'
 --- !u!114 &233566405
 MonoBehaviour:
   m_ObjectHideFlags: 0
