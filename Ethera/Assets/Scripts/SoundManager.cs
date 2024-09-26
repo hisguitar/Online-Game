@@ -10,7 +10,8 @@ public class SoundManager : SingletonPersistent<SoundManager>
 	{
 		FastMagicGameSpell,
 		ShatterShotExplosion,
-		NewLevel
+		NewLevel,
+		WhiteMorning
 	}
 
 	// For setting sound
