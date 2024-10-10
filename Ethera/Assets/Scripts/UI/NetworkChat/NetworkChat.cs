@@ -22,7 +22,7 @@ public class NetworkChat : NetworkBehaviour
 	[SerializeField] private Color inactiveButtonColor;
 	
 	private readonly List<Message> messageList = new();
-	private string playerName;
+	public string PlayerName {get; private set;}
 	private enum MessageTypeFilter
 	{
 		General,
@@ -42,7 +42,7 @@ public class NetworkChat : NetworkBehaviour
 
 	public override void OnNetworkDespawn()
 	{
-		SendMessageServerRpc("[System] " + playerName + " has left.", Message.MessageType.info);
+		SendMessageServerRpc("[System] " + PlayerName + " has left.", Message.MessageType.info);
 	}
 	#endregion
 	#region Register & Unregister button click event, Update Button States
@@ -84,7 +84,7 @@ public class NetworkChat : NetworkBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.Return))
 			{
-				SendMessageServerRpc(playerName + ": " + textInput.text, Message.MessageType.playerMessage);
+				SendMessageServerRpc(PlayerName + ": " + textInput.text, Message.MessageType.playerMessage);
 				ShowBubbleText(textInput.text);
 				textInput.text = "";
 			}
@@ -108,7 +108,7 @@ public class NetworkChat : NetworkBehaviour
 			
 			if (userData != null)
 			{
-				playerName = userData.userName;
+				PlayerName = userData.userName;
 			}
 			else
 			{
@@ -122,7 +122,7 @@ public class NetworkChat : NetworkBehaviour
 			
 			if (userData != null)
 			{
-				playerName = userData.userName;
+				PlayerName = userData.userName;
 			}
 			else
 			{
@@ -160,7 +160,7 @@ public class NetworkChat : NetworkBehaviour
 			SendMessageToChat("[System] Your join code is '" + ClientSingleton.Instance.GameManager.JoinCode + "', You can use this code to invite friends.", Message.MessageType.info);
 		}
 
-		SendMessageServerRpc("[System] " + playerName + " has joined.", Message.MessageType.info);
+		SendMessageServerRpc("[System] " + PlayerName + " has joined.", Message.MessageType.info);
 	}
 	#endregion
 	#region Find PlayerObject by ClientId

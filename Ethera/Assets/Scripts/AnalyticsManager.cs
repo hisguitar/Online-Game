@@ -1,13 +1,19 @@
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Analytics;
+using System.Collections.Generic;
 
 public class AnalyticsManager : MonoBehaviour
 {
+	[SerializeField] private NetworkChat networkChat;
+	
 	// count parameters in unity analytics
-	private int purchasesOneHundredExpCount = 0; // 100 exp
-	private int purchasesTwoHundredFiftyExpCount = 0; // 250 exp
-	private int purchasesSixHundredExpCount = 0; // 600 exp
+	private Dictionary<string, int> purchaseCounts = new Dictionary<string, int>()
+	{
+	{ "100 Exp", 0 },
+	{ "250 Exp", 0 },
+	{ "600 Exp", 0 }
+	};
 	
 	private async void Start()
 	{
@@ -15,47 +21,28 @@ public class AnalyticsManager : MonoBehaviour
 		AnalyticsService.Instance.StartDataCollection();
 	}
 	
-	#region Exp purchase
-	public void Buy100Exp()
+	public void BuyExp(string itemName)
 	{
-		purchasesOneHundredExpCount++;
-		
-		CustomEvent oneHundredExp = new CustomEvent("buy100Exp")
+		if (purchaseCounts.ContainsKey(itemName))
 		{
-			{"itemName", "100 Exp"},
-			{"count", purchasesOneHundredExpCount}
-		};
-		
-		AnalyticsService.Instance.RecordEvent(oneHundredExp);
-		Debug.Log("Buy 100 Exp, Total Count: " + purchasesOneHundredExpCount);
+			purchaseCounts[itemName]++;
+			RecordPurchase(itemName, purchaseCounts[itemName]);
+			Debug.Log($"Buy {itemName}, Total Count: {purchaseCounts[itemName]}");
+ 		}
+		else
+		{
+			Debug.Log("This item has never been in game.");
+		}
 	}
 	
-	public void Buy250Exp()
+	private void RecordPurchase(string itemName, int count)
 	{
-		purchasesTwoHundredFiftyExpCount++;
-		
-		CustomEvent twoHundredFiftyExp = new CustomEvent("buy250Exp")
+		CustomEvent purchaseEvent = new CustomEvent($"buy{itemName.Replace(" ", "")}")
 		{
-			{"itemName", "250 Exp"},
-			{"count", purchasesTwoHundredFiftyExpCount}
+			{"itemName", itemName},
+			{"count", count},
+			{"playerName", networkChat.PlayerName}
 		};
-		
-		AnalyticsService.Instance.RecordEvent(twoHundredFiftyExp);
-		Debug.Log("Buy 250 Exp, Total Count: " + purchasesTwoHundredFiftyExpCount);
+		AnalyticsService.Instance.RecordEvent(purchaseEvent);
 	}
-	
-	public void Buy600Exp()
-	{
-		purchasesSixHundredExpCount++;
-		
-		CustomEvent sixHundredExp = new CustomEvent("buy600Exp")
-		{
-			{"itemName", "600 Exp"},
-			{"count", purchasesSixHundredExpCount}
-		};
-		
-		AnalyticsService.Instance.RecordEvent(sixHundredExp);
-		Debug.Log("Buy 600 Exp, Total Count: " + purchasesSixHundredExpCount);
-	}
-	#endregion
 }

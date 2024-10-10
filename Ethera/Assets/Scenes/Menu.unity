@@ -178,8 +178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '"For players looking for a room"'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3286,8 +3286,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3375,7 +3375,7 @@ GameObject:
   - component: {fileID: 684589870}
   - component: {fileID: 684589869}
   m_Layer: 0
-  m_Name: JoinCodeText
+  m_Name: HeaderText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3422,8 +3422,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Create Room:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3511,7 +3511,7 @@ GameObject:
   - component: {fileID: 691003059}
   - component: {fileID: 691003058}
   m_Layer: 0
-  m_Name: JoinCodeText
+  m_Name: HeaderText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3558,8 +3558,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Join Room:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4825,8 +4825,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Join Code...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5201,7 +5201,7 @@ GameObject:
   - component: {fileID: 1086478364}
   - component: {fileID: 1086478363}
   m_Layer: 0
-  m_Name: JoinCodeText
+  m_Name: HeaderText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5248,8 +5248,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Find Room:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7780,8 +7780,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '"For players who want to be a room leader"'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8382,7 +8382,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_KeepTextSelectionVisible: 0
@@ -8405,7 +8405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.25, g: 0.25, b: 0.25, a: 1}
+  m_Color: {r: 0.18, g: 0.18, b: 0.18, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9283,8 +9283,8 @@ MonoBehaviour:
   m_text: '"For players who want to join other people''s rooms with a code received
     from the leader or players in that room"'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10717,7 +10717,7 @@ GameObject:
   - component: {fileID: 2033195024}
   - component: {fileID: 2033195023}
   m_Layer: 0
-  m_Name: Rank_Button
+  m_Name: Options_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
