@@ -162,9 +162,9 @@ public class NetworkChat : NetworkBehaviour
 
 		SendMessageServerRpc("[System] " + PlayerName + " has joined.", Message.MessageType.info);
 	}
-	#endregion
-	#region Find PlayerObject by ClientId
-	private GameObject FindPlayerObject()
+    #endregion
+    #region Find PlayerObject by ClientId
+    private GameObject FindPlayerObject()
 	{
 		NetworkObject[] players = FindObjectsOfType<NetworkObject>();
 		
