@@ -192,6 +192,7 @@ public class PlayerHealth : NetworkBehaviour
 		}
 		
 		// Call SetText(text) in ChatBubble.cs then set BubbleTextPrefab active(true)
+		Debug.Log("Here, bubble text should be active");
 		bubbleText.GetComponent<ChatBubble>().SetText(text);
 		bubbleText.SetActive(true);
 		

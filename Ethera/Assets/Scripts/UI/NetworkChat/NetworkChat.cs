@@ -30,7 +30,7 @@ public class NetworkChat : NetworkBehaviour
 		Info,
 	}
 	private MessageTypeFilter currentFilter = MessageTypeFilter.General;
-	private GameObject player;
+	[SerializeField] private GameObject player;
 	
 	#region OnNetworkSpawn & OnNetworkDespawn
 	public override void OnNetworkSpawn()
@@ -162,15 +162,16 @@ public class NetworkChat : NetworkBehaviour
 
 		SendMessageServerRpc("[System] " + PlayerName + " has joined.", Message.MessageType.info);
 	}
-    #endregion
-    #region Find PlayerObject by ClientId
-    private GameObject FindPlayerObject()
+	#endregion
+	#region Find PlayerObject by ClientId
+	[System.Obsolete]
+	private GameObject FindPlayerObject()
 	{
 		NetworkObject[] players = FindObjectsOfType<NetworkObject>();
 		
 		foreach (NetworkObject player in players)
 		{
-			if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId)
+			if (player.OwnerClientId == NetworkManager.Singleton.LocalClientId && player.CompareTag("Player"))
 			{
 				return player.gameObject;
 			}
@@ -208,13 +209,19 @@ public class NetworkChat : NetworkBehaviour
 		messageList.Add(newMessage);
 		UpdateChatDisplay();
 	}
-	#endregion
-	#region Send Bubble
-	private void ShowBubbleText(string text)
+    #endregion
+    #region Send Bubble
+    [System.Obsolete]
+    private void ShowBubbleText(string text)
 	{
-		if (player == null) { player = FindPlayerObject(); }
-		if (player.TryGetComponent<PlayerHealth>(out var playerHealth))
+		Debug.Log("ShowBubbleText() called here!");
+		if (player == null)
 		{
+			player = FindPlayerObject();
+		}
+		else if (player.TryGetComponent<PlayerHealth>(out var playerHealth))
+		{
+			Debug.Log("Here, bubble text should be called");
 			playerHealth.ShowBubbleTextServerRpc(text);
 		}
 	}
