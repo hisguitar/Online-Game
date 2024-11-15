@@ -31,9 +31,12 @@ public class NetworkChat : NetworkBehaviour
 	}
 	private MessageTypeFilter currentFilter = MessageTypeFilter.General;
 	[SerializeField] private GameObject player;
-	
+
 	#region OnNetworkSpawn & OnNetworkDespawn
+	[System.Obsolete]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 	public override void OnNetworkSpawn()
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 	{
 		SetPlayerName();
 		SendFirstMessage();
@@ -68,16 +71,19 @@ public class NetworkChat : NetworkBehaviour
 	}
 	#endregion
 	#region Get Component & Detect typing
+	[System.Obsolete]
 	private void Start()
 	{
 		UpdateButtonStates();
 	}
 
+	[System.Obsolete]
 	private void Update()
 	{
 		DetectTyping();
 	}
 
+	[System.Obsolete]
 	private void DetectTyping()
 	{
 		if (textInput.text != "")
@@ -209,10 +215,10 @@ public class NetworkChat : NetworkBehaviour
 		messageList.Add(newMessage);
 		UpdateChatDisplay();
 	}
-    #endregion
-    #region Send Bubble
-    [System.Obsolete]
-    private void ShowBubbleText(string text)
+	#endregion
+	#region Send Bubble
+	[System.Obsolete]
+	private void ShowBubbleText(string text)
 	{
 		Debug.Log("ShowBubbleText() called here!");
 		if (player == null)

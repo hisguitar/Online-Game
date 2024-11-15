@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -32,7 +31,7 @@ public class Enemy : NetworkBehaviour
 	[Header("Enemy Chase Stats")]
 	private float chaseSpeed;
 	private float chaseDistance;
-
+	
 	private ulong playerID;
 	private float countIdleTime = 0f;
 	private float distance;
