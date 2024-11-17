@@ -317,6 +317,7 @@ public class Enemy : NetworkBehaviour
 				{
 					player.GainExp(EXPBounty);
 				}
+				AnalyticsManager.Instance.RecordCombatHit();
 				enemySpawner.EnemyDestroyed(gameObject);
 				NetworkObject.Despawn();
 			}

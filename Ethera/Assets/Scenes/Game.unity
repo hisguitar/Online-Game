@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.6244445, g: 0.8, b: 0.18039213, a: 0.9019608}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -36007,6 +36007,8 @@ GameObject:
   m_Component:
   - component: {fileID: 263626035}
   - component: {fileID: 263626034}
+  - component: {fileID: 263626037}
+  - component: {fileID: 263626036}
   m_Layer: 0
   m_Name: AnalyticsManager
   m_TagString: Untagged
@@ -36026,7 +36028,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ca0a4d4e911604e9fa242facfc2035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkChat: {fileID: 16597145}
+  expPurchaseAnalytics: {fileID: 263626037}
+  combatAnalytics: {fileID: 263626036}
 --- !u!4 &263626035
 Transform:
   m_ObjectHideFlags: 0
@@ -36042,6 +36045,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &263626036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263626033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcea7a32221be794e8825e0e3ef07a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &263626037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263626033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5c214dfe94669942b453f449b6169ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &290967701 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7325081587279775066, guid: 4a66e10ac18a48745ad45a5ff94d12ff, type: 3}
@@ -36294,10 +36321,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.18431373, b: 0, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.111764714, b: 0, a: 1}
-    m_SelectedColor: {r: 0.8, g: 0.14640522, b: 0, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.111764714, b: 0, a: 0.5019608}
+    m_HighlightedColor: {r: 0.5733334, g: 0.8, b: 0, a: 1}
+    m_PressedColor: {r: 0.43000004, g: 0.6, b: 0, a: 1}
+    m_SelectedColor: {r: 0.5733334, g: 0.8, b: 0, a: 1}
+    m_DisabledColor: {r: 0.43000004, g: 0.6, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -36318,7 +36345,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 263626034}
         m_TargetAssemblyTypeName: AnalyticsManager, Assembly-CSharp
-        m_MethodName: BuyExp
+        m_MethodName: RecordExpPurchase
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36958,10 +36985,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.18431373, b: 0, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.111764714, b: 0, a: 1}
-    m_SelectedColor: {r: 0.8, g: 0.14640522, b: 0, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.111764714, b: 0, a: 0.5019608}
+    m_HighlightedColor: {r: 0.5733334, g: 0.8, b: 0, a: 1}
+    m_PressedColor: {r: 0.43000004, g: 0.6, b: 0, a: 1}
+    m_SelectedColor: {r: 0.5733334, g: 0.8, b: 0, a: 1}
+    m_DisabledColor: {r: 0.43000004, g: 0.6, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -36982,7 +37009,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 263626034}
         m_TargetAssemblyTypeName: AnalyticsManager, Assembly-CSharp
-        m_MethodName: BuyExp
+        m_MethodName: RecordExpPurchase
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -53994,7 +54021,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041904475}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -54371,7 +54398,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104173145}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -56025,7 +56052,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284074082}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -56297,7 +56324,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1296309178}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -57828,7 +57855,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629890706}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -57854,7 +57881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
+  m_Color: {r: 0.6244445, g: 0.8, b: 0.18039213, a: 0.03137255}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -62834,7 +62861,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836291392}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -64724,7 +64751,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Item Purchase Successful!
+  m_text: Purchase Successful!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 1b88a63d9f733ad49b3e746d371ba08c, type: 2}
@@ -65079,10 +65106,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_HighlightedColor: {r: 1, g: 0.18431373, b: 0, a: 1}
-    m_PressedColor: {r: 0.6, g: 0.111764714, b: 0, a: 1}
-    m_SelectedColor: {r: 0.8, g: 0.14640522, b: 0, a: 1}
-    m_DisabledColor: {r: 0.6, g: 0.111764714, b: 0, a: 0.5019608}
+    m_HighlightedColor: {r: 0.5733334, g: 0.8, b: 0, a: 1}
+    m_PressedColor: {r: 0.43000004, g: 0.6, b: 0, a: 1}
+    m_SelectedColor: {r: 0.5733334, g: 0.8, b: 0, a: 1}
+    m_DisabledColor: {r: 0.43000004, g: 0.6, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -65103,7 +65130,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 263626034}
         m_TargetAssemblyTypeName: AnalyticsManager, Assembly-CSharp
-        m_MethodName: BuyExp
+        m_MethodName: RecordExpPurchase
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
