@@ -3,7 +3,7 @@ using Unity.Services.Analytics;
 
 public class CombatAnalytics : MonoBehaviour
 {
-	public readonly float countDownTime = 3f;
+	public readonly float countDownTime = 6f;
 	
 	private float combatStartTime;
 	private float lastKillTime;
