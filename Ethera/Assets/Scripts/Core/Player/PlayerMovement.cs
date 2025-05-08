@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float smoothTime = 0.1f;  // Adjust the smooth time
+    [SerializeField] private float smoothTime = 0.2f;  // Adjust the smooth time
 
     [Header("References")]
     [SerializeField] private PlayerHealth playerHealth;

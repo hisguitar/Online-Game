@@ -155,7 +155,10 @@ public class Enemy : NetworkBehaviour
 
 	private Vector2 GetRandomDirection()
 	{
-		Vector2 direction = new Vector2(Random.Range(-patrolDistance, patrolDistance), Random.Range(-patrolDistance, patrolDistance)).normalized;
+		Vector2 direction = new Vector2(
+			Random.Range(-patrolDistance, patrolDistance), 
+			Random.Range(-patrolDistance, patrolDistance)
+			).normalized;
 		return startPosition + direction * 3;
 	}
 	#endregion
